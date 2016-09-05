@@ -1,0 +1,47 @@
+<div ng-controller="CubesViewerViewsCubeExploreController">
+
+    <!-- ($(view.container).find('.cv-view-viewdata').children().size() == 0)  -->
+    <h3 ng-if="!cvOptions.readOnly"><i class="fa fa-fw fa-arrow-circle-down"></i> Dados agregados
+        <i ng-show="view.pendingRequests > 0" class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+    </h3>
+
+    <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+        <span class="loadingbar-expand"></span>
+    </div>
+
+    <div ui-grid="view.grid" ng-if="!cvOptions.readOnly"
+         ui-grid-resize-columns ui-grid-move-columns ui-grid-selection ui-grid-auto-resize
+         ui-grid-pagination ui-grid-pinning
+         style="width: 100%;" ng-style="{height: ((view.grid.data.length < 15 ? view.grid.data.length : 15) * 24) + 44 + 34 + 'px'}">
+    </div>
+    <div ng-if="cvOptions.readOnly">
+      <table class="print-friendly-table">
+        <thead>
+          <tr>
+              <th ng-repeat="col in view.grid.columnDefs" ng-if="col.visible === undefined || col.visible" ng-style="{ 'max-width': col.width + 'px'}">{{ col.name }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="datum in view.grid.data">
+            <td ng-repeat="col in view.grid.columnDefs"
+                ng-class="{ 'text-right': col.formatter }"
+                ng-if="col.visible === undefined || col.visible" ng-style="{ 'max-width': col.width + 'px'}"
+                ng-init="COL_FIELD = datum[col.field]; col.colDef = col;">
+              <div bind-html-compile="col.cellTemplate"></div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td ng-repeat="col in view.grid.columnDefs"
+                ng-if="col.visible === undefined || col.visible" ng-style="{ 'max-width': col.width + 'px'}"
+                ng-init="COL_FIELD = datum[col.field]; col.colDef = col;">
+              <div bind-html-compile="col.footerCellTemplate"></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div style="height: 30px;">&nbsp;</div>
+
+</div>

@@ -1,0 +1,40 @@
+business-reports-index-list {
+  tbody {
+    tr:hover {
+      background-color: #ebf6fd;
+      cursor: pointer;
+    }
+
+    tr {
+      font-size: 14px;
+    }
+  }
+
+  .edit-hover {
+    background-color: #fdfcee !important;
+  }
+
+  .remove-hover {
+    background-color: #fde4e8 !important;
+  }
+
+  tr {
+    &:last-child {
+      border-bottom: 1px solid #ddd;
+    }
+  }
+
+  .unflashy-text {
+    color: #888;
+  }
+
+  .nice-and-centered {
+    margin-top: 15px;
+  }
+}
+
+.businessReportDestroyModal {
+  input[type="text"] {
+    text-transform: uppercase !important;
+  }
+}

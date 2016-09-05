@@ -1,0 +1,156 @@
+.state-flows-show-steps-edit {
+  .mode-selector {
+    button {
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px 26px;
+      font-size: 13px;
+
+      &:hover {
+        z-index: 0;
+      }
+    }
+
+    .btn-default {
+      color: #999;
+      border-color: #BBB;
+    }
+
+    &:last-child {
+      border-left: none;
+    }
+
+    &:first-child {
+      border-right: none;
+    }
+
+    .btn-primary {
+      background-color: #259ECB;
+      border-color: #259ECB;
+      border-right: none !important;
+    }
+  }
+
+  .edit-permissions {
+    background: #FFF;
+    padding: 0 50px 100px 50px;
+
+    h3 {
+      padding: 18px 0;
+      border-bottom: 1px solid #C5C5C5;
+      font-size: 19px;
+    }
+
+    .custom-switch .has-switch {
+      min-width: 250px;
+
+      span {
+        padding: 11px 14px;
+      }
+    }
+  }
+
+  .multipleValues {
+    div[flows-single-value] {
+      line-height: 28px;
+
+      .value {
+        position: relative;
+        display: inline-block;
+        top: -1px;
+        font-size: 18px;
+      }
+
+      .edit_label {
+        display: inline-block;
+        margin-bottom: -6px;
+        line-height: 20px;
+      }
+
+      .edit_value {
+        margin: 0 5px -5px 3px;
+        position: relative;
+        font-size: 15px;
+      }
+
+      .remove_value {
+        font-weight: normal;
+        position: relative;
+        bottom: -1px
+      }
+    }
+
+    a[flows-create-value] {
+      margin-top: 20px;
+      display: inline-block;
+    }
+  }
+
+  .flow-field-multiline {
+    height: 110px !important;
+  }
+
+  .flow-field-attachment {
+    .input-group {
+      float: left;
+    }
+    button {
+      position: relative;
+      float: left;
+      margin-left: 10px;
+      height: 37px;
+      font-weight: bold;
+      color: #7e7e7e;
+    }
+    .input-group-addon {
+      background: #EEEEEE;
+      color: #BBBBBB;
+      font-size: 18px;
+    }
+    input {
+      border-left: none;
+    }
+  }
+
+  .sneaky {
+    font-size: 9px;
+    color: #888888;
+    margin-top: -5px;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .flow-field-image {
+    background-color: #F2F2F2;
+    text-align: center;
+    padding: 10px;
+
+    .drop-area {
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+      border: dashed 2px #D9D9D9;
+      vertical-align: top;
+
+      span {
+        font-size: 12px;
+        font-weight: 400;
+        color: #CECECE;
+        margin: 28px 8px;
+        display: inline-block;
+      }
+    }
+
+    p {
+      text-align: center;
+      display: block;
+      color: #7A7A7A;
+      font-size: 12px;
+      margin: 10px 0;
+    }
+
+    button {
+      font-weight: bold;
+      color: #7e7e7e;
+    }
+  }
+}

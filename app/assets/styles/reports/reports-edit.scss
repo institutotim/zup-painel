@@ -1,0 +1,262 @@
+@import "compass/css3";
+
+.editReports {
+  .select2-container .select2-choice {
+    font-size: 16px;
+    height: 50px;
+    padding: 11px 17px;
+  }
+
+  .select2-container .select2-arrow b {
+    margin-top: 18px;
+    margin-left: -10px;
+  }
+
+  .categoryIcon {
+    display: inline-block;
+    width: 70px;
+    text-align: center;
+    margin: 10px 16px 10px 10px;
+    vertical-align: top;
+    opacity: 0.7;
+
+    &:hover, &.active {
+      opacity: 1;
+    }
+
+    span.icon {
+      width: 70px;
+      height: 70px;
+      display: block;
+      margin: 0 auto;
+      background-size: 70px 70px;
+    }
+
+    span.text {
+      font-size: 13px;
+      display: inline-block;
+      color: #666;
+      margin-top: 10px;
+    }
+  }
+
+  textarea {
+    height: 209px;
+  }
+
+  .upload {
+    width: 100%;
+
+    .btn-upload {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      width: 170px;
+      margin: 0 auto;
+      margin-top: 10px;
+
+      input[type="file"] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 10px 0;
+        font-size: 20px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer;
+      }
+    }
+
+    .queue {
+      text-align: center;
+
+      .image {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border: 1px #D9D9D9;
+        margin-right: 10px;
+        position: relative;
+        background: #FFF;
+
+        img {
+          vertical-align: bottom;
+        }
+
+        button {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 30px;
+          height: 30px;
+          border: 0;
+          color: #FFF;
+          background: rgba(0, 0, 0, 0.8);
+        }
+      }
+    }
+
+    .or {
+      text-align: center;
+      display: block;
+      color: #7A7A7A;
+      font-size: 12px;
+      margin: 10px 0;
+    }
+
+    .drop-zone {
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+      border: dashed 2px #D9D9D9;
+      vertical-align: top;
+
+      span {
+        font-size: 12px;
+        font-weight: 400;
+        color: #CECECE;
+        margin: 28px 8px;
+        display: inline-block;
+      }
+    }
+
+    .nv-file-over {
+      border: dashed 2px #57B6E4;
+    }
+  }
+}
+
+.modal-reports-select-user {
+  .modal-dialog {
+    width: 930px;
+  }
+
+  .modal-body {
+    padding: 0;
+  }
+
+  .simple_search {
+    border-bottom: 1px solid #E5E5E5;
+    background: #F2F2F2;
+    padding: 7px 0 7px 0;
+
+    .search_column1 {
+      position: relative;
+
+      .search_icon {
+        position: absolute;
+        top: 11px;
+        left: 17px;
+        color: #B5B5B5;
+      }
+
+      input {
+        width: 100%;
+        color: #ADABAB;
+        background: #F2F2F2;
+        border: 0;
+        padding: 8px 30px;
+        outline: none;
+      }
+    }
+
+    .filter_dropdown {
+      float: right;
+      margin-left: 7px;
+
+      p {
+        float: left;
+        margin: 12px 10px 0 0;
+      }
+
+      .btn-group {
+        margin-top: 1px;
+        float: left;
+
+        .dropdown-toggle {
+          min-width: 158px;
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  table td {
+    padding: 10px 25px !important;
+    vertical-align: middle !important;
+  }
+}
+
+.image-wrapper-images {
+  margin: auto;
+  text-align: left;
+}
+.image-wrapper {
+  margin: 5px 10px;
+  border: solid #cecece 1px;
+  width: 252px;
+  display: inline-table;
+  text-align: justify;
+  vertical-align: top;
+}
+.image-thumb {
+  display: block;
+  background-size: cover;
+  background-position: center;
+  height: 250px;
+  width: 250px;
+}
+.image-details {
+  padding: 15px;
+  width: 250px;
+}
+.image-date-label {
+  font-weight: bold;
+}
+.image-title {
+  margin-top: 15px;
+  min-height: 95px;
+}
+
+.upload-image {
+  border: dashed #CECECE 2px;
+  text-align: center;
+  line-height: 140px;
+  background: #fff !important;
+}
+.upload-image .upload-image-span {
+  color: #7c7c7c;
+  font-size: 15px;
+  font-weight: bold;
+}
+.upload-image .btn-upload-image {
+  display: inline !important;
+  margin: 5px !important;
+}
+
+.table-image-label {
+  display: table;
+  width: 100%;
+}
+.table-cell-image-label {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 10px;
+  width: 100%;
+}
+.table-cell-image-label.first {
+  width: 100px;
+}
+.table-cell-image-label.second {
+  padding: 0 20px;
+}
+.table-cell-image-label.second textarea {
+  height: 100px;
+}
+.table-cell-image-label.second div {
+  margin: 0 !important;
+}
+.table-cell-image-label.third a {
+  font-size: 18px;
+}

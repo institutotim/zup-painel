@@ -1,0 +1,169 @@
+.multiple-select-list {
+  width: 100%;
+  min-width: 250px;
+  background: #FFF;
+  border-radius: 6px;
+
+  .dropdown-toggle {
+    width: 100%;
+    text-align: left;
+    padding: 12px 18px;
+    box-shadow: none;
+
+    span.excerpt {
+      width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &.open {
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-toggle {
+    box-shadow: none;
+
+    &:hover, &:focus {
+      border: 1px solid #CDCDCD !important;
+      background-color: #fff !important;
+    }
+
+    &:active {
+      background: #FFF !important;
+      box-shadow: none;
+    }
+
+    &.active {
+      border-radius: 4px 4px 0 0;
+      background: #FFF;
+      border: 1px solid #CDCDCD;
+      border-bottom: 0;
+    }
+  }
+
+  .dropdown {
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid #CDCDCD;
+    border-top: 0;
+    border-radius: 0 0 6px 6px;
+    position: absolute;
+    z-index: 8;
+    background: #FFF;
+    top: 35px;
+
+    .search-input {
+      width: 100%;
+      height: 45px;
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+      background-color: #fff;
+      outline: 0;
+      padding-left: 10px;
+    }
+
+    .search-bar {
+      margin: 10px;
+
+      input {
+        border: 1px solid #CCCCCC;
+        border-right: none;
+        box-shadow: none;
+        font-size: 14px;
+      }
+
+      .input-group-addon {
+        background: #FFF;
+        border-color: #CCCCCC;
+        color: #B3B3B3;
+      }
+    }
+
+    ul {
+      list-style: none;
+      max-height: 200px;
+      overflow: auto;
+
+      &, li {
+        padding: 0 !important;
+        margin: 0 !important;
+        left: 0 !important;
+      }
+
+      li ul {
+        height: auto;
+        padding-left: 10px;
+
+        a {
+          font-weight: normal;
+        }
+      }
+
+      li a {
+        color: #000;
+        padding: 9px 20px !important;
+        display: inline-block;
+        text-decoration: none;
+        width: 100%;
+        margin: 0 !important;
+
+        .ui-select-highlight {
+          font-weight: bold;
+          color: #999;
+          width: auto;
+          float: none;
+          display: inline-block !important;
+        }
+
+        .glyphicon {
+          display: none;
+          color: #57B1E5;
+          font-size: 15px;
+        }
+
+        .selected.glyphicon {
+          display: block;
+        }
+      }
+
+      li a span {
+        display: inline-block !important;
+        width: 90%;
+        padding: 0;
+        margin: 0 !important;
+        font-size: 14px !important;
+        font-weight: bold !important;
+      }
+
+      li.active > a > .glyphicon {
+        display: block;
+      }
+
+      li > li > a.active > .glyphicon {
+        display: block;
+      }
+
+      li > ul li a span {
+        font-weight: normal !important;
+        padding-left: 20px;
+      }
+    }
+
+    .footer {
+      border-top: 1px solid #E6E6E6;
+      padding: 15px 20px;
+
+      a {
+        color: #7F7F7F;
+        line-height: 43px;
+        font-size: 13px;
+      }
+    }
+
+    .btn-custom {
+      padding: 12px 29px;
+    }
+  }
+}

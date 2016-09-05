@@ -1,0 +1,360 @@
+@import "compass/css3/transition";
+@import "compass/css3/animation";
+
+.reference-field {
+  padding: 13px;
+  width: 100%;
+  height: 50px;
+  border: 1px solid #CCCCCC;
+  outline: none;
+  border-radius: 5px;
+  background-color: #fff;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1;
+  margin-bottom: 20px;
+  box-shadow: none;
+}
+
+div.report-image {
+  width: 100%;
+  text-align: left;
+  img {
+    max-width: 150px !important;
+    padding: 5px !important;
+  }
+  span {
+    display: inline-table;
+  }
+}
+
+ul.report-menu {
+  background: #FFF;
+  width: 100%;
+  list-style: none;
+  border-bottom: 1px solid #CCCCCC;
+  margin: 0;
+  padding: 0;
+  z-index: 900;
+  position: fixed;
+
+  li {
+    float: left;
+    border-bottom: 4px solid #FFF;
+    padding: 15px 0;
+
+    &.active {
+      border-bottom: 4px solid #469CCD;
+
+      a {
+        color: #000;
+      }
+    }
+
+    a {
+      display: block;
+      padding: 0 22px;
+      color: #999;
+      border-right: 1px solid #CCCCCC;
+      font-weight: bold;
+      text-decoration: none;
+
+      &:hover, &:active {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.reports-show {
+  padding-top: 70px;
+
+  .status-bar {
+    border-top: 1px solid #CCC;
+  }
+
+  .report-data p {
+    float: left;
+    margin: 0;
+  }
+
+  .report-data a.link {
+    float: right;
+    font-weight: bold;
+  }
+
+  .gallery a.image {
+    width: 250px !important;
+    height: 200px !important;
+    background-size: cover !important;
+    border: 1px solid #E7E7EF;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .user-message {
+    .avatar {
+      width: 10%;
+      float: left;
+      text-align: center;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+      }
+    }
+
+    .infos {
+      width: 90%;
+      float: left;
+      padding-left: 10px;
+
+      h2 {
+        font-size: 16px;
+        margin: 0 0 15px 0;
+
+        span {
+          font-size: 12px;
+          color: #CCC;
+          font-weight: normal;
+          padding-left: 5px;
+        }
+      }
+
+      textarea.form-control {
+        box-shadow: none;
+        resize: none;
+        padding: 15px 20px;
+
+        @include transition-property(height);
+
+        &:focus {
+          box-shadow: 0 0 0 1px #4293C8;
+        }
+      }
+
+      .options {
+        margin-top: 20px;
+
+        &.ng-hide-add,
+        &.ng-hide-remove {
+          @include transition-property(4s linear all);
+
+          display: block !important;
+
+          @include animation-fill-mode(both);
+          @include animation-duration(0.6s);
+          @include animation-name(flipInX);
+        }
+
+        &.ng-hide {
+          @include animation-fill-mode(both);
+          @include animation-duration(0.6s);
+          @include animation-name(flipOutX);
+        }
+
+        .processing-comment {
+          @include animation(pulse 3s infinite);
+        }
+
+        .bootstrap-switch {
+          min-width: 140px;
+          float: left;
+        }
+
+        span.help {
+          font-size: 12px;
+          color: #CCC;
+          margin: 7px 0 0 10px;
+          float: left;
+        }
+      }
+    }
+
+    &.system-comment {
+      textarea.form-control {
+        background: #FAF3C7;
+      }
+
+      p {
+        background: #FAF3C7;
+        border: 1px solid #D6CE79;
+        border-radius: 4px;
+        padding: 20px 30px;
+      }
+    }
+
+    &.animate-repeat.ng-enter {
+      @include transition-property(3s linear all);
+
+      display: block !important;
+
+      @include animation-fill-mode(both);
+      @include animation-duration(0.6s);
+      @include animation-name(fadeInDown);
+    }
+
+  }
+}
+
+#related-case {
+  .row {
+    height: 220px;
+    padding-top: 25px;
+  }
+
+  .left-col {
+    float: left;
+    text-align: center;
+    margin-left: 40px;
+  }
+
+  .right-col {
+    float: left;
+    margin-left: 25px;
+    line-height: 30px;
+    margin-top: 10px;
+
+    label {
+      width: 147px;
+    }
+  }
+
+  i {
+    font-size: 70px;
+    color: #D9D9D9;
+    margin-right: 5px;
+    margin-top: 20px;
+  }
+
+  .case-button-container {
+    display: inline-block;
+    width: 165px;
+    height: 165px;
+    padding: 10px;
+    background-color: #F2F2F2;
+    border-radius: 5px;
+
+    button {
+      width: 90%;
+      margin-top: 10px;
+    }
+  }
+}
+
+.report-edit-category-modal {
+  .modal-dialog {
+    width: 580px;
+  }
+
+  .modal-header, .modal-body, .modal-footer {
+    padding: 30px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .spacing {
+    height: 30px;
+  }
+
+  .color-ball {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    margin-right: 5px;
+  }
+
+  .ui-select-bootstrap .ui-select-match {
+    height: 50px;
+    padding: 6px 20px;
+    box-shadow: none;
+  }
+
+  .ui-select-bootstrap .ui-select-search {
+    height: 50px;
+    padding: 6px 20px;
+  }
+}
+
+.reports-forward-modal {
+  .modal-dialog {
+    width: 580px;
+  }
+
+  .add-comment {
+    textarea.form-control {
+      box-shadow: none;
+      resize: none;
+      padding: 15px 20px;
+      height: auto;
+
+      @include transition-property(height);
+
+      &:focus {
+        box-shadow: 0 0 0 1px #4293C8;
+      }
+    }
+  }
+}
+
+/* Print layout classes */
+.print-template {
+  background: #FFF;
+
+  #report-info {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+
+    -webkit-column-break-after: always;
+    page-break-after: always;
+    break-after: always;
+
+    height: 8.25in;
+
+    #report-user, .report-data {
+      -webkit-column-break-inside: avoid;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+  }
+
+  .content {
+    width: 800px;
+    margin: 0 auto;
+    top: 100px;
+
+    .header {
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .row {
+      margin-bottom: 50px;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .history .row {
+      margin-bottom: 0;
+    }
+
+    .history-date {
+      text-align: right;
+    }
+  }
+}
+
+@media print {
+  img {
+    max-width: none !important;
+  }
+}

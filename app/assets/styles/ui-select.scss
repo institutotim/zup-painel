@@ -1,0 +1,15 @@
+// add an ellipsis at the end of every option
+.ui-select-bootstrap .ui-select-choices-row > a div {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ui-select-bootstrap > .ui-select-match span.ng-binding {
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}

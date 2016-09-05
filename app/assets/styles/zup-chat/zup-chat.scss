@@ -1,0 +1,214 @@
+@import "compass/css3";
+
+
+.scrollable-menu {
+  height: auto;
+  max-height: 300px;
+  overflow: auto;
+  padding: 2px;
+  li {
+    padding: 1px;
+    border-bottom: 1px solid #aaa;
+  }
+
+  li:last-child {
+    border: none;
+  }
+
+  li:hover, li.active {
+    background: #ddd;
+    cursor: pointer;
+  }
+}
+.menu-highlighted {
+  font-weight: bold;
+}
+
+.zc-preview-message {
+  border: 1px dashed #dde;
+  background-color: rgba(220,236,249,0.18);
+}
+
+zup-chat {
+
+  .zc-container {
+    @include display-flex;
+    @include flex-direction(column);
+    @include justify-content(flex-end);
+    height: 100%;
+  }
+
+  .zc-messages {
+    height: 100%;
+    flex: 1;
+    overflow-y: scroll;
+  }
+
+  .animate.ng-hide-remove,
+  .animate.ng-hide-add {
+    transition: .5s linear all;
+    opacity: 1;
+    overflow: hidden;
+  }
+
+  .animate.ng-hide {
+    opacity: 0;
+  }
+
+  .animate.ng-enter,
+  .animate.ng-leave {
+    transition: .5s linear all;
+  }
+
+  .animate.ng-enter,
+  .animate.ng-leave.ng-leave-active {
+    opacity: 0;
+  }
+
+  .animate.ng-leave,
+  .animate.ng-enter.ng-enter-active {
+    opacity: 1;
+    overflow: hidden;
+  }
+
+
+  fieldset {
+    display: block;
+    margin: 20px 1% 20px 1%;
+    padding: 0 auto;
+    padding: 15px 0;
+    border: 0;
+    border-top: 1px solid #DDD;
+  }
+
+  fieldset:last-of-type {
+    margin-bottom: 0;
+  }
+
+  legend {
+    display: table;
+    position: relative;
+    margin: auto;
+    padding: 5px 20px;
+    color: #000000;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    border: 0;
+    width: auto;
+    padding: 0 20px 0 20px;
+  }
+
+  $zup-chat-height: 40px;
+
+  @mixin calc($property, $expression) {
+    #{$property}: -moz-calc(#{$expression});
+    #{$property}: -webkit-calc(#{$expression});
+    #{$property}: calc(#{$expression});
+  }
+
+  .zc-post-message {
+    padding: 20px 10px;
+  }
+
+  .zc-ul-item-list {
+    list-style-type: none;
+    .zc-li-item {
+      border: 1px solid #dddddd;
+      border-collapse: collapse;
+      line-height: $zup-chat-height;
+    }
+  }
+
+  .zc-message-header, .zc-message-header-system, .zc-post-message {
+    .zc-profile-pic, .zc-user-name, .zc-message-time, .zc-system-message, .zc-message-icon, .zc-message-input {
+      display: inline-block;
+    }
+
+    .zc-message-input {
+      margin: 0 0 0 $zup-chat-height;
+      @include calc(width, '100% - 100px');
+      textarea {
+        padding: 10px 15px;
+        @include border-radius(5px);
+        border: 1px solid #a8a8a8;
+        resize: none;
+      }
+    }
+
+    a {
+      font-weight: bold;
+      color: #51A9D7;
+    }
+
+    .zc-profile-pic {
+      background: #eeeeee;
+      color: #cccccc;
+    }
+
+    .zc-message-icon {
+      background: #ffffff;
+      color: #3E95CA;
+    }
+
+    .zc-profile-pic, .zc-message-icon {
+      width: $zup-chat-height;
+      text-align: center;
+      float: left;
+      @include border-radius(8px);
+      img {
+        @include border-radius(8px);
+      }
+    }
+
+    .zc-profile-pic {
+      span {
+        line-height: $zup-chat-height;
+        font-size: 30px;
+      }
+    }
+
+    .zc-message-icon {
+      span {
+        line-height: $zup-chat-height;
+        font-size: 25px;
+      }
+    }
+
+    .zc-user-name {
+      line-height: $zup-chat-height;
+      padding-left: $zup-chat-height;
+      font-weight: bold;
+    }
+
+    .zc-system-message {
+      background: #DCECF9;
+      color: #000000;
+      line-height: $zup-chat-height;
+      margin: 0 $zup-chat-height;
+      padding: 0 15px;
+      @include border-radius(5px);
+      @include calc(width, '100% - 160px');
+    }
+
+    .zc-message-time {
+      line-height: $zup-chat-height;
+      color: #8b8585;
+      float: right;
+    }
+
+    .zc-clear {
+      clear: both;
+    }
+  }
+
+  .zc-message-content {
+    padding: 10px 0px 20px 80px;
+    a {
+      font-weight: bold;
+      color: #51A9D7;
+    }
+  }
+
+}
+

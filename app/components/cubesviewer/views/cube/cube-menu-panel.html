@@ -1,0 +1,19 @@
+  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-submenu>
+    <i class="fa fa-fw fa-file"></i> <span class="hidden-xs" ng-class="{ 'hidden-sm hidden-md': cvOptions.studioTwoColumn }">Painel</span> <span class="caret"></span>
+  </button>
+
+  <ul class="dropdown-menu dropdown-menu-right cv-view-menu cv-view-menu-view">
+
+    <li ng-click="viewsService.studioViewsService.studioScope.showRenameView(view)"><a><i class="fa fa-fw fa-pencil"></i> Renomear...</a></li>
+    <li ng-click="viewsService.studioViewsService.studioScope.cloneView(view)"><a><i class="fa fa-fw fa-clone"></i> Clonar</a></li>
+
+    <div ng-if="cvOptions.backendUrl" class="divider"></div>
+    <li ng-if="cvOptions.backendUrl" ng-click="reststoreService.saveView(view)"><a><i class="fa fa-fw fa-save"></i> Salvar</a></li>
+    <li ng-if="cvOptions.backendUrl" ng-click="reststoreService.shareView(view, ! view.shared)"><a><i class="fa fa-fw fa-share"></i> {{ view.shared ? "Unshare" : "Share" }}</a></li>
+    <li ng-if="cvOptions.backendUrl" ng-click="reststoreService.deleteView(view)"><a><i class="fa fa-fw fa-trash-o"></i> Deletar...</a></li>
+
+    <div class="divider"></div>
+    <li ng-click="viewsService.studioViewsService.studioScope.showSerializeView(view)"><a><i class="fa fa-fw fa-code"></i> Serializar...</a></li>
+    <div class="divider"></div>
+    <li ng-click="viewsService.studioViewsService.closeView(view)"><a><i class="fa fa-fw fa-close"></i> Fechar</a></li>
+  </ul>

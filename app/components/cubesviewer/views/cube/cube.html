@@ -1,0 +1,152 @@
+<div class="cv-view-panel" ng-controller="CubesViewerViewsCubeController as cubeView" >
+
+    <div ng-if="view.state == 3">
+        <div class="alert alert-danger" style="margin: 0px;">
+            <p>Ocorreu um erro. Não é possível apresentar a visualização.</p>
+            <p ng-if="cubesService.state != 3">{{ view.error }}</p>
+            <p ng-if="cubesService.state == 3">Não foi possível conectar ao servidor de dados: {{ cubesService.stateText }}</p>
+            <p>Por favor, tente novamente e contate o administrador se o problema persistir.</p>
+            <p class="text-right">
+                <a class="alert-link" href="http://jjmontesl.github.io/cubesviewer/" target="_blank">Visualizador de dados</a>
+            </p>
+        </div>
+    </div>
+
+    <div>
+        <h2 ng-show="view.getControlsHidden() && !view.cvOptions.readOnly" style="margin-top: 5px;">
+            <i class="fa fa-fw fa-file-o"></i> {{ view.params.name }}
+        </h2>
+
+        <div ng-include="'views/cube/alerts.html'"></div>
+    </div>
+
+    <div ng-if="view.state == 2" style="min-height: 80px;">
+
+        <div class="cv-view-viewmenu hidden-print" ng-hide="view.getControlsHidden()">
+
+            <div class="panel panel-primary pull-right" style="padding: 3px; white-space: nowrap; margin-bottom: 6px; margin-left: 6px;">
+
+                <div ng-if="cvOptions.undoEnabled" class="btn-group" role="group" ng-controller="CubesViewerViewsUndoController">
+                  <button type="button" ng-click="undo()" ng-disabled="view.undoPos <= 0" class="btn btn-default btn-sm" title="Undo"><i class="fa fa-fw fa-undo"></i></button>
+                  <button type="button" ng-click="redo()" ng-disabled="view.undoPos >= view.undoList.length - 1" class="btn btn-default btn-sm" title="Redo"><i class="fa fa-fw fa-undo fa-flip-horizontal"></i></button>
+                </div>
+
+                <div class="btn-group" role="group" aria-label="..." style="margin-left: 5px;">
+                  <button type="button" ng-click="setViewMode('explore')" ng-class="{'active': view.params.mode == 'explore'}" class="btn btn-primary btn-sm explorebutton" title="Exporar"><i class="fa fa-fw fa-arrow-circle-down"></i></button>
+                  <button type="button" ng-click="setViewMode('series')" ng-class="{'active': view.params.mode == 'series'}" class="btn btn-primary btn-sm " title="Séries"><i class="fa fa-fw fa-clock-o"></i></button>
+                  <button type="button" ng-click="setViewMode('chart')" ng-class="{'active': view.params.mode == 'chart'}" class="btn btn-primary btn-sm " title="Gráficos"><i class="fa fa-fw fa-area-chart"></i></button>
+                </div>
+
+                <div ng-include="'views/cube/cube-menu-drilldown.html'" class="dropdown m-b" style="display: inline-block; margin-left: 5px;"></div>
+
+                <div ng-include="'views/cube/cube-menu-filter.html'" class="dropdown m-b" style="display: inline-block; margin-left: 2px;"></div>
+
+                <div ng-include="'views/cube/cube-menu-view.html'" class="dropdown m-b" style="display: inline-block; margin-left: 5px;"></div>
+
+                <div ng-if="cvOptions.container" ng-include="'views/cube/cube-menu-panel.html'" class="dropdown m-b" style="display: inline-block; margin-left: 5px;"></div>
+
+            </div>
+
+            <div class="pull-right" style="white-space: nowrap; padding-top: 4px; padding-bottom: 4px; margin-left: 6px; margin-bottom: 6px;">
+
+            </div>
+
+        </div>
+
+        <div class="cv-view-viewinfo" ng-if="!view.cvOptions.readOnly">
+            <div>
+                <div class="label label-secondary cv-infopiece cv-view-viewinfo-cubename" style="color: white; background-color: black;">
+                    <span><i class="fa fa-fw fa-cube" title="Cubo"></i> <b class="hidden-xs hidden-sm">Cubo:</b> {{ view.cube.label }}</span>
+                    <button type="button" class="btn btn-info btn-xs" style="visibility: hidden;"><i class="fa fa-fw fa-info"></i></button>
+                </div>
+
+                <div class="cv-view-viewinfo-drill">
+
+
+                    <div ng-repeat="drilldown in view.params.drilldown" ng-init="parts = view.cube.dimensionParts(drilldown);" ng-if="view.params.mode != 'facts'" class="label label-secondary cv-infopiece cv-view-viewinfo-drill" style="color: black; background-color: #ccffcc;">
+                        <span><i class="fa fa-fw fa-arrow-down" title="Drilldown"></i> <b class="hidden-xs hidden-sm">Detalhamento:</b> <span title="{{ view.cube.dimensionParts(drilldown).label }}">{{ parts.labelShort }}</span></span>
+                        <button type="button" class="btn btn-info btn-xs" style="visibility: hidden; margin-left: -20px;"><i class="fa fa-fw fa-info"></i></button>
+
+                        <button ng-hide="view.getControlsHidden() || parts.hierarchy.levels.length < 2" ng-disabled="! parts.drilldownDimensionMinus" type="button" ng-click="selectDrill(parts.drilldownDimensionMinus, true)" class="btn btn-secondary btn-xs hidden-print" style="margin-left: 3px;"><i class="fa fa-fw fa-minus"></i></button>
+                        <button ng-hide="view.getControlsHidden() || parts.hierarchy.levels.length < 2" ng-disabled="! parts.drilldownDimensionPlus" type="button" ng-click="selectDrill(parts.drilldownDimensionPlus, true)" class="btn btn-secondary btn-xs hidden-print" style="margin-left: 0px;"><i class="fa fa-fw fa-plus"></i></button>
+
+                        <button ng-hide="view.getControlsHidden()" type="button" ng-click="showDimensionFilter(drilldown)" class="btn btn-secondary btn-xs hidden-print" style="margin-left: 3px;"><i class="fa fa-fw fa-search"></i></button>
+                        <button ng-hide="view.getControlsHidden()" type="button" ng-click="selectDrill(drilldown, '')" class="btn btn-danger btn-xs hidden-print" style="margin-left: 1px;"><i class="fa fa-fw fa-trash"></i></button>
+                    </div>
+
+                </div>
+                <div class="cv-view-viewinfo-cut">
+                    <!--
+                        var dimensionString = $(this).parents('.cv-view-infopiece-cut').first().attr('data-dimension');
+                        var parts = view.cube.dimensionParts(dimensionString);
+                        var depth = $(this).parents('.cv-view-infopiece-cut').first().attr('data-value').split(';')[0].split(",").length;
+                        cubesviewer.views.cube.dimensionfilter.drawDimensionFilter(view, dimensionString + ":" + parts.hierarchy.levels[depth - 1] );
+                     -->
+                    <div ng-repeat="cut in view.params.cuts" ng-init="equality = cut.invert ? ' &ne; ' : ' = ';" class="label label-secondary cv-infopiece cv-view-viewinfo-cut" style="color: black; background-color: #ffcccc;">
+                        <span style="max-width: 480px;"><i class="fa fa-fw fa-filter" title="Filter"></i> <b class="hidden-xs hidden-sm">Filtro:</b> <span title="{{ view.cube.dimensionPartsFromCut(cut).label }}">{{ view.cube.dimensionPartsFromCut(cut).labelShort }}</span> <span ng-class="{ 'text-danger': cut.invert }">{{ equality }}</span> <span title="{{ cut.label }}">{{ cut.label }}</span></span>
+                        <button type="button" class="btn btn-info btn-xs" style="visibility: hidden; margin-left: -20px;"><i class="fa fa-fw fa-info"></i></button>
+                        <button ng-hide="view.getControlsHidden()" type="button" ng-click="showDimensionFilter(view.cube.dimensionPartsFromCut(cut).drilldownDimension)" class="btn btn-secondary btn-xs hidden-print" style="margin-left: 3px;"><i class="fa fa-fw fa-search"></i></button>
+                        <button ng-hide="view.getControlsHidden()" type="button" ng-click="selectCut(cut.dimension, '', cut.invert)" class="btn btn-danger btn-xs hidden-print" style="margin-left: 1px;"><i class="fa fa-fw fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <div ng-include="'views/cube/filter/datefilter.html'"></div>
+
+                <div class="cv-view-viewinfo-extra">
+
+                    <div ng-if="view.params.mode == 'series' || view.params.mode == 'chart'" class="label label-secondary cv-infopiece cv-view-viewinfo-extra" style="color: black; background-color: #ccccff;">
+                        <span style="max-width: 350px;"><i class="fa fa-fw fa-crosshairs" title="Measure"></i> <b class="hidden-xs hidden-sm">Medição:</b> {{ (view.params.yaxis != null) ? view.cube.aggregateFromName(view.params.yaxis).label : "Nenhum" }}</span>
+                        <button type="button" class="btn btn-info btn-xs" style="visibility: hidden; margin-left: -20px;"><i class="fa fa-fw fa-info"></i></button>
+                    </div>
+
+                    <div ng-if="view.params.mode == 'series' || view.params.mode == 'chart'" class="label label-secondary cv-infopiece cv-view-viewinfo-extra" style="color: black; background-color: #ccddff;">
+                        <span style="max-width: 350px;"><i class="fa fa-fw fa-long-arrow-right" title="Horizontal dimension"></i> <b class="hidden-xs hidden-sm">Dimensão horizontal:</b> {{ (view.params.xaxis != null) ? view.cube.dimensionParts(view.params.xaxis).labelShort : "Nenhum" }}</span>
+                        <button type="button" class="btn btn-info btn-xs" style="visibility: hidden; margin-left: -20px;"><i class="fa fa-fw fa-info"></i></button>
+
+                        <button ng-hide="view.getControlsHidden() || !view.params.xaxis || view.cube.dimensionParts(view.params.xaxis).hierarchy.levels.length < 2" ng-disabled="! view.cube.dimensionParts(view.params.xaxis).drilldownDimensionMinus" type="button" ng-click="selectXAxis(view.cube.dimensionParts(view.params.xaxis).drilldownDimensionMinus, true)" class="btn btn-secondary btn-xs hidden-print" style="margin-left: 3px;"><i class="fa fa-fw fa-minus"></i></button>
+                        <button ng-hide="view.getControlsHidden() || !view.params.xaxis || view.cube.dimensionParts(view.params.xaxis).hierarchy.levels.length < 2" ng-disabled="! view.cube.dimensionParts(view.params.xaxis).drilldownDimensionPlus" type="button" ng-click="selectXAxis(view.cube.dimensionParts(view.params.xaxis).drilldownDimensionPlus, true)" class="btn btn-secondary btn-xs hidden-print" style="margin-left: 0px;"><i class="fa fa-fw fa-plus"></i></button>
+
+                        <!-- <button type="button" ng-click="showDimensionFilter(view.params.xaxis)" class="btn btn-secondary btn-xs" style="margin-left: 3px;"><i class="fa fa-fw fa-search"></i></button>  -->
+                        <!-- <button type="button" ng-click="selectXAxis(null)" class="btn btn-danger btn-xs" style="margin-left: 1px;"><i class="fa fa-fw fa-trash"></i></button>  -->
+                    </div>
+
+                </div>
+
+                <div class="cv-view-viewinfo-extra"
+                     ng-if="view.params.quantity_filter && view.params.quantity_filter.amount && !view.quantity_filter_open">
+                  <div class="label label-secondary cv-infopiece cv-view-viewinfo-extra"
+                       style="color: black; background-color: #ffecc6;">
+                    <span><i class="fa fa-fw fa-arrow-down" title="Filtro de quantidade"></i> <b
+                      class="hidden-xs hidden-sm">Quantidade:</b>
+                      <span title="{{ view.params.quantity_filter.amount }}">Exibindo apenas os {{ view.params.quantity_filter.amount }} </span>
+                      <span ng-if="view.params.quantity_filter.order == 'desc'">maiores resultados.</span>
+                      <span ng-if="view.params.quantity_filter.order == 'asc'">menores resultados.</span>
+                    </span>
+                    <button ng-hide="view.getControlsHidden()" type="button" ng-click="selectQuantityFilter()" class="btn btn-secondary btn-xs hidden-print" style="margin-left: 3px;"><i class="fa fa-fw fa-search"></i></button>
+                    <button ng-hide="view.getControlsHidden()" type="button" ng-click="resetQuantityFilter()" class="btn btn-danger btn-xs hidden-print" style="margin-left: 1px;"><i class="fa fa-fw fa-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="cv-view-viewdialogs">
+            <div ng-if="view.dimensionFilter" ng-include="'views/cube/filter/dimension.html'"></div>
+            <div ng-if="view.quantity_filter_open" ng-include="'views/cube/filter/quantity.html'"></div>
+        </div>
+
+        <div class="cv-view-viewdata">
+
+            <div ng-if="view.params.mode == 'explore'" ng-include="'views/cube/explore/explore.html'"></div>
+            <div ng-if="view.params.mode == 'facts'" ng-include="'views/cube/facts/facts.html'"></div>
+            <div ng-if="view.params.mode == 'series'" ng-include="'views/cube/series/series.html'"></div>
+            <div ng-if="view.params.mode == 'chart'" ng-include="'views/cube/chart/chart.html'"></div>
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="cv-view-viewfooter"></div>
+
+    </div>
+
+</div>

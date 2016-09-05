@@ -1,0 +1,122 @@
+<div ng-controller="CubesViewerViewsCubeFilterDimensionController">
+
+  <div class="panel panel-default panel-outline hidden-print" ng-hide="view.getControlsHidden()"
+       style="border-color: #ffcccc;">
+    <div class="panel-heading clearfix" style="border-color: #ffcccc;">
+      <button class="btn btn-xs btn-danger pull-right" ng-click="closeDimensionFilter()"><i
+        class="fa fa-fw fa-close"></i></button>
+      <h4 style="margin: 2px 0px 0px 0px;"><i class="fa fa-fw fa-filter"></i> Filtro de dimensão: <b>{{ parts.label }}</b>
+      </h4>
+    </div>
+    <div class="panel-body">
+
+      <div>
+        <form>
+
+          <div class="form-group has-feedback"
+               style="display: inline-block; margin-bottom: 0; vertical-align: middle; margin-bottom: 2px;">
+            <!-- <label for="search">Search:</label>  -->
+            <input type="text" class="form-control" ng-model="searchString" ng-model-options="{ debounce: 300 }"
+                   placeholder="Pesquisar..." style="width: 16em;">
+            <i class="fa fa-fw fa-times-circle form-control-feedback" ng-click="searchString = ''"
+               style="cursor: pointer; pointer-events: inherit;"></i>
+          </div>
+
+          <div class="btn-group"
+               style="margin-left: 10px; display: inline-block; vertical-align: middle; margin-bottom: 2px; margin-right: 5px;">
+            <button class="btn btn-default" ng-click="selectAll();" type="button" title="Selecionar todos"><i
+              class="fa fa-fw fa-check-square-o"></i></button>
+            <button class="btn btn-default" ng-click="selectNone();" type="button" title="Desselecionar todos"><i
+              class="fa fa-fw fa-square-o"></i></button>
+          </div>
+
+          <div class="btn-group"
+               style="display: inline-block; vertical-align: middle; margin-bottom: 2px; margin-right: 5px;">
+            <button ng-hide="parts.hierarchy.levels.length < 2" ng-disabled="! parts.drilldownDimensionMinus"
+                    class="btn btn-default" ng-click="showDimensionFilter(parts.drilldownDimensionMinus)" type="button"
+                    title="Detalhar menos"><i class="fa fa-fw fa-minus"></i></button>
+            <button ng-hide="parts.hierarchy.levels.length < 2" ng-disabled="! parts.drilldownDimensionPlus"
+                    class="btn btn-default" ng-click="showDimensionFilter(parts.drilldownDimensionPlus)" type="button"
+                    title="Detalhar mais"><i class="fa fa-fw fa-plus"></i></button>
+            <button class="btn btn-default" type="button" title="Detalhar isto"
+                    ng-click="selectDrill(parts.drilldownDimension, true)"><i class="fa fa-fw fa-arrow-down"></i>
+            </button>
+          </div>
+
+          <div class="form-group"
+               style="display: inline-block; margin-bottom: 0; vertical-align: middle; margin-bottom: 2px; margin-right: 5px;">
+            <div class="btn btn-default" ng-click="filterShowAll = ! filterShowAll"
+                 ng-class="{ 'active': filterShowAll, 'btn-info': filterShowAll }">
+              <i class="fa fa-fw fa-filter fa-rotate-180"></i> Exibir todos
+            </div>
+          </div>
+
+          <div class="form-group"
+               style="display: inline-block; margin-bottom: 0; vertical-align: middle; margin-bottom: 2px; ">
+
+            <div class="btn btn-default" ng-click="filterInverted = !filterInverted"
+                 ng-class="{ 'active': filterInverted, 'btn-danger': filterInverted }">
+              <input type="checkbox" ng-model="filterInverted"
+                     style="pointer-events: none; margin: 0px; vertical-align: middle;"/>
+              <b>&ne;</b> Inverter
+            </div>
+
+          </div>
+
+          <div class="form-group"
+               style="display: inline-block; margin-bottom: 0; vertical-align: middle; margin-bottom: 2px;">
+            <button ng-click="applyFilter()" class="btn btn-success" type="button"><i class="fa fa-fw fa-filter"></i>
+              Aplicar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-xs-9 col-sm-6">
+          <div style="margin-top: 5px;">
+            <div class="panel panel-default panel-outline" style="margin-bottom: 0px; ">
+              <div class="panel-body" style="max-height: 180px; overflow-y: auto; overflow-x: hidden;">
+                <div ng-show="loadingDimensionValues"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i> Carregando...
+                </div>
+
+                <div ng-if="!loadingDimensionValues">
+                  <div ng-repeat="val in dimensionValues | filter:filterDimensionValue(searchString)"
+                       style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    <label style="font-weight: normal; margin-bottom: 2px;">
+                      <input type="checkbox" name="selectedValues[]" ng-model="val.selected"
+                             value="{{ val.value }}" style="vertical-align: bottom;"/>
+                      <span title="{{ val.label }}" bind-once>{{ val.label }}</span>
+                    </label>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div ng-if="!loadingDimensionValues" class="" style="margin-bottom: 0px; ">
+              <div class="text-right">
+                {{ dimensionValues.length }} itens
+              </div>
+            </div>
+
+            <div
+              ng-if="!loadingDimensionValues && dimensionValues.length >= cubesService.cubesserver.info.json_record_limit"
+              class="alert alert-warning" style="margin-bottom: 0px;">
+              <div style="display: inline-block;"><i class="fa fa-exclamation"></i></div>
+              <div style="display: inline-block; margin-left: 20px;">
+                O limite de itens {{ cubesService.cubesserver.info.json_record_limit }} foi atingido. A lista de valores de dimensão está <b>incompleta</b>.<br/>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+
+</div>

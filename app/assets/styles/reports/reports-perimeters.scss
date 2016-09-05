@@ -1,0 +1,183 @@
+@import "compass/css3";
+
+.perimeter-btn-cell {
+  width: 30px;
+  font-size: 15px;
+  text-align: right;
+}
+.perimeter-table-tr {
+  height: 65px;
+  .perimeter-status-cell {
+    font-weight: bold;
+  }
+}
+.perimeter-span-title {
+  cursor: pointer;
+}
+.perimeter-title-cell {
+  width: 30%;
+  padding-left: 5px !important;
+}
+.perimeter-group-cell {
+  width: 20%;  
+}
+.perimeter-status-cell {
+  width: 20%;
+  padding-left: 0 !important;
+}
+.perimeter-date-cell {
+  width: 20%;
+}
+.perimeters-table {
+  margin-top: 44px;  
+}
+.perimeters-table thead tr td {
+  font-size: 12px;
+  line-height: 40px;
+}
+
+.glyphicon-refresh-animate {
+  @include animation(spin .7s infinite linear);
+  display: inline-block;
+}
+
+@include keyframes(spin){
+  from { transform: scale(1) rotate(0deg);}
+  to { transform: scale(1) rotate(360deg);}
+}
+
+
+.perimeter-loading-indicator, .perimeter-status-cell-loading {
+  width: 15px !important;
+  padding: 0 !important;
+}
+.perimeter-title-cell-header {
+  padding-left: 10px !important;
+}
+
+.perimeter-status-cell-header {
+  padding-left: 0 !important;
+}
+
+.perimeter-status-process {
+  color: #9b9b9b;
+}
+.perimeter-status-ok {
+  color: #5fb971;
+}
+.perimeter-status-error {
+  color: #f14446;
+}
+.perimeters-empty-message {
+  font-weight: bold;
+}
+
+// MODAL CLASSES
+
+.perimeters-modal {
+  .btn-upload {
+    margin-top: 10px;
+    position: relative;
+    display: block;
+    width: 150px;
+    overflow: hidden;
+    padding: 10px;
+    color: #000000;
+
+    input {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+      padding: 10px 0;
+      font-size: 20px;
+      @include opacity(0);
+      cursor: pointer;
+    }
+  }
+}
+
+.perimeters-modal-header {
+  .modal-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .close {
+    font-size: 25px;
+  }
+}
+
+.perimeters-labels {
+  font-weight: bold;
+}
+
+.perimeters-disclaimer {
+  background-color: #F0F0F0;
+  color: #949494;
+  border: 1px solid #e5e5e5;
+  border-left: none;
+  border-right: none;
+  margin: -21px -20px 20px -20px;
+  padding: 10px;
+}
+.btn-perimeter-modal {
+  float: left;
+}
+.perimeters-input {
+  width: 300px;
+  margin-top: 10px;
+}
+.perimeters-upload-ok {
+  color: #cccccc;
+}
+.perimeters-error-messages {
+  color: #EE4E3D;
+  font-weight: bold;
+}
+.perimeters-info-message {
+  line-height: 42px;
+}
+
+.perimeter-title-cell .ng-inline-edit__text {
+  display: inline-block;
+}
+.perimeter-title-cell {
+
+  .ng-inline-edit__text, .ng-inline-edit__input {
+    width: 100%;
+    padding: 5px;
+    border: 1px transparent solid;
+    position: relative;
+  }
+
+  .ng-inline-edit__text:after {
+    background: #ccc url("../images/edit-pencil.png") no-repeat center;
+    border-left: 1px solid #ccc;
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    visibility: hidden;
+    width: 20px;
+  }
+
+  .ng-inline-edit__text:hover {
+    border: 1px #ccc solid;
+  }
+
+  .ng-inline-edit__text:hover:after {
+    border: 1px #ccc solid;
+    visibility: visible;
+  }
+
+}
+
+.reports-perimeters-loading {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+}
+

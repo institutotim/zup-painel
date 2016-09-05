@@ -1,0 +1,58 @@
+<div ng-show="(view.grid.data.length > 0 && view.params.yaxis != null) &&
+              (!(view.params.charttype == 'pie' && view.grid.columnDefs.length > 2)) &&
+              (!(view.params.charttype == 'lines' && view.params.xaxis == null)) &&
+              (!(view.params.charttype == 'lines-stacked' && view.params.xaxis == null)) &&
+              (!(view.params.charttype == 'radar' && view.grid.columnDefs.length < 4))" style="width: 99%;">
+    <div>
+        <div class="cv-chart-container">
+            <svg style="height: 400px;" />
+        </div>
+        <div ng-hide="view.getControlsHidden() || view.params.charttype == 'radar'" style="font-size: 8px; float: right;">
+            <a href="" class="cv-chart-height" ng-click="chartCtrl.resizeChart(400);">Pequeno</a>
+            <a href="" class="cv-chart-height" ng-click="chartCtrl.resizeChart(550);">Médio</a>
+            <a href="" class="cv-chart-height" ng-click="chartCtrl.resizeChart(700);">Grande</a>
+        </div>
+    </div>
+</div>
+
+<div ng-if="view.params.yaxis == null" class="alert alert-info" style="margin-bottom: 0px;">
+    <p>
+        Não é possível apresentar o gráfico: nenhuma <b>medida</b> foi selecionada.
+    </p>
+    <p>
+        Dica: utilize o menu <kbd><i class="fa fa-fw fa-cogs"></i> Visualizações &gt; <i class="fa fa-fw fa-crosshairs"></i> Medida</kbd>.
+    </p>
+</div>
+
+<div ng-if="view.pendingRequests == 0 && view.params.yaxis != null && view.grid.data.length == 0" class="alert alert-info" style="margin-bottom: 0px;">
+    <p>
+        Não é possível apresentar o gráfico: <b>nenhum dado retornado</b> pela combinação atual de filtros, dimensão horizontal e detalhamento.
+    </p>
+    <p>
+        Dica: utilize o menu de<kbd><i class="fa fa-fw fa-cogs"></i> Visualização</kbd> para selecionar uma dimensão horizontal.
+    </p>
+</div>
+
+<div ng-if="(view.params.charttype == 'lines-stacked' || view.params.charttype == 'lines') && !view.params.xaxis" class="alert alert-info" style="margin-bottom: 0px;">
+  <p>
+    Não é possível apresentar o gráfico: <b>dimensão horizontal não foi selecionada</b>.
+  </p>
+  <p>
+    Dica: utilize o <kbd><i class="fa fa-fw fa-cogs"></i> menu de visualização</kbd> para selecionar uma dimensão horizontal.
+  </p>
+</div>
+
+<div ng-if="view.pendingRequests == 0 && view.params.charttype == 'pie' && view.grid.columnDefs.length > 2" class="alert alert-info" style="margin-bottom: 0px;">
+    <p>
+        Não é possível apresentar um <b>gráfico de torta</b> quando <b>mais de uma coluna</b> está presente.<br />
+    </p>
+    <p>
+        Dica: revise os dados e colunas do gráfico no <a href="" ng-click="setViewMode('series')" class="alert-link">modo de séries</a>,
+        ou <a href="" ng-click="selectXAxis(null);" class="alert-link">remova a dimensão horizontal</a>.
+    </p>
+</div>
+
+<div ng-if="view.pendingRequests == 0 && view.params.yaxis != null && view.params.charttype == 'radar' && view.grid.columnDefs.length < 3 && view.grid.data.length != 0" class="alert alert-info" style="margin-bottom: 0px;">
+    Não é possível apresentar um <b>gráfico de radar</b> quando <b>menos de 3 colunas</b> estão presentes.<br />
+    Dica: revise os dados e colunas do gráfico no <a href="" ng-click="setViewMode('series')" class="alert-link">modo de séries</a>.
+</div>

@@ -1,0 +1,305 @@
+@import 'compass/css3';
+
+#flows-show {
+  .btn-success.btn-custom {
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+  }
+  .btn[disabled] .caret {
+    opacity: 0.3;
+  }
+}
+
+.modal-step {
+  padding: 0;
+
+  .modal-tab {
+    background: #BFBFBF;
+    padding: 20px 20px 0 20px;
+
+    div {
+      width: 100%;
+
+      .link-tab {
+        display: block;
+        float: left;
+        width: 50%;
+        height: 50px;
+        text-align: center;
+        padding-top: 14px;
+        background-color: #F2F2F2;
+        font-weight: bold;
+
+        &.first {
+          border-top-left-radius: 4px;
+        }
+
+        &.second {
+          border-top-right-radius: 4px;
+        }
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      .active {
+        color: #333;
+        background-color: #fff;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .select-flow {
+    .ui-widget {
+      border-bottom: 1px solid #ccc;
+      font-size: 14px;
+      height: 45px;
+    }
+  }
+
+  .new-step-form {
+    padding: 20px 30px;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .list-steps {
+    padding: 0;
+    list-style-type: none;
+    border-top: 1px solid #C7C7C7;
+
+    li {
+      padding: 12px 18px;
+      background: #F0F0F0;
+      border-bottom: 1px solid #C7C7C7;
+      cursor: pointer;
+
+      &.active {
+        background: #DFF7FF;
+      }
+    }
+  }
+
+  .modal-footer {
+    border-top: none;
+  }
+}
+
+.addFlowModal {
+  .modal-dialog {
+    width: 700px;
+  }
+
+  .modal-body {
+    padding: 0 !important;
+  }
+
+  .new-status {
+    border-bottom: 1px solid #E5E5E5;
+    background: #F2F2F2;
+    padding: 7px 0 7px 0;
+
+    .col-md-3 {
+      text-align: right;
+      padding-right: 25px;
+    }
+
+    input {
+      width: 100%;
+      color: #333;
+      background: #F2F2F2;
+      border: 0;
+      padding: 8px 20px;
+      outline: none;
+    }
+
+    button.btn {
+      padding: 8px 20px;
+    }
+  }
+
+  table {
+    width: 100%;
+    margin-top: 10px;
+
+    thead {
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+
+      tr td {
+        padding-bottom: 5px;
+
+        &:first-child {
+          padding-left: 20px;
+        }
+      }
+    }
+
+    tbody {
+      text-align: center;
+
+      tr {
+        border-top: 1px solid #E5E5E5;
+
+        td {
+          padding: 10px 0 10px 0;
+          position: relative;
+
+          &:first-child {
+            padding-left: 20px;
+          }
+
+          .edit_title {
+            color: #000;
+            padding: 5px 7px;
+
+            &:hover {
+              background: #E5E5E5;
+              text-decoration: none;
+              border-radius: 5px;
+            }
+          }
+
+          .edit_status_title {
+            position: absolute;
+            width: 677px;
+            height: 100%;
+            background: #F2F2F2;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            text-align: right;
+            padding-right: 20px;
+
+            input {
+              height: 100%;
+              border: 0;
+              outline: none;
+              background: #F2F2F2;
+              padding-left: 27px;
+              float: left;
+            }
+
+            a {
+              display: inline-block;
+              margin-top: 12px;
+              margin-right: 10px;
+              font-weight: bold;
+            }
+
+            &.remove-div {
+              left: -573px;
+            }
+
+            .remove-message {
+              text-align: left;
+              margin-left: 27px;
+              span {
+                margin-left: 200px;
+              }
+              .cancel-link {
+                color: #1E1E1E;
+                margin-right: 60px;
+              }
+              .remove-link {
+                color: #D65452;
+              }
+            }
+          }
+        }
+      }
+
+      .colorpicker_input {
+        width: 80px;
+        border: 0;
+        border-bottom: 1px solid #E5E5E5;
+        background: #F2F2F2;
+        text-align: center;
+        padding: 5px 12px;
+        float: left;
+      }
+
+      .show_status_color {
+        width: 20px;
+        height: 31px;
+        box-shadow: 1px 0 0 rgba(000, 000, 000, 0.5);
+        float: left;
+      }
+    }
+  }
+
+  .modal-footer {
+    margin-top: 0;
+  }
+}
+
+.editStepModal {
+  .modal-header {
+    border-bottom: 1px solid #A3A3A3;
+  }
+}
+
+.flow-step-order-placeholder {
+  background-color: #ddd;
+}
+
+.menu-btn-group button {
+  margin: 0 !important;
+}
+
+.flows-tabs {
+  .nav-tabs {
+    position: fixed;
+    top: 128px;
+    padding-bottom: 7px;
+    background-color: #fff;
+    z-index: 2;
+
+    a, a:hover {
+      padding: 25px;
+      @include border-radius(0);
+      border-top-color: #f0f0f0;
+      font-weight: bold;
+      color: #333333;
+      background: #f0f0f0;
+    }
+
+    .active a, .active a:hover {
+      color: #999999;
+      border-top-color: #fff;
+    }
+  }
+
+  .tab-content {
+    margin-top: 70px;
+    z-index: 1;
+  }
+
+  .flows.nice-and-centered {
+    margin-top: 85px;
+  }
+}
+
+.flows-table {
+  tr {
+    background-color: #fff;
+  }
+
+  .ui-sortable-helper {
+    display: table;
+    width: 100%;
+  }
+
+  .ui-state-highlight {
+    display: table;
+    height: 65px;
+  }
+}

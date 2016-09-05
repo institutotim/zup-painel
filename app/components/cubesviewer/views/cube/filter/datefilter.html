@@ -1,0 +1,72 @@
+<div class="cv-view-viewinfo-date">
+    <div ng-repeat="datefilter in view.params.datefilters" ng-controller="CubesViewerViewsCubeFilterDateController" ng-init="dimparts = view.cube.dimensionParts(datefilter.dimension);" class="label label-secondary cv-infopiece cv-view-viewinfo-cut text-left" style="color: black; background-color: #ffdddd; text-align: left;">
+        <span style="max-width: 280px; white-space: nowrap;"><i class="fa fa-fw fa-filter"></i> <b class="hidden-xs hidden-sm">Filtro:</b> {{ dimparts.labelNoLevel }}:</span>
+
+        <!--
+        <br class="hidden-sm hidden-md hidden-lg" />
+        <i class="fa fa-fw hidden-sm hidden-md hidden-lg" />
+         -->
+
+        <div class="cv-datefilter" style="overflow: visible; display: inline-block;">
+
+            <form class="form-inline">
+
+                 <div class="form-group" style="display: inline-block; margin: 0px;">
+                    <div class="dropdown" style="display: inline-block;">
+                      <button ng-hide="view.getControlsHidden()" style="height: 20px;" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-submenu>
+                        <i class="fa fa-fw fa-calendar"></i> {{ datefilter.mode | datefilterMode }} <span class="caret"></span>
+                      </button>
+                      <span ng-show="view.getControlsHidden()"><i class="fa fa-fw fa-calendar"></i> {{ datefilter.mode | datefilterMode }}</span>
+
+                      <ul class="dropdown-menu cv-view-menu cv-view-menu-view">
+                        <li ng-click="setMode('custom')"><a><i class="fa fa-fw"></i> Personalizado</a></li>
+                        <div class="divider"></div>
+                        <li ng-click="setMode('auto-last1m')"><a><i class="fa fa-fw"></i> Último mês</a></li>
+                        <li ng-click="setMode('auto-last3m')"><a><i class="fa fa-fw"></i> Últimos 3 meses</a></li>
+                        <li ng-click="setMode('auto-last6m')"><a><i class="fa fa-fw"></i> Últimos 6 meses</a></li>
+                        <li ng-click="setMode('auto-last12m')"><a><i class="fa fa-fw"></i> Último ano</a></li>
+                        <li ng-click="setMode('auto-last24m')"><a><i class="fa fa-fw"></i> Últimos 2 anos</a></li>
+                        <li ng-click="setMode('auto-january1st')"><a><i class="fa fa-fw"></i> Desde 1º de Janeiro</a></li>
+                        <li ng-click="setMode('auto-yesterday')"><a><i class="fa fa-fw"></i> Ontem</a></li>
+                      </ul>
+                  </div>
+                 </div>
+
+            <div ng-show="datefilter.mode == 'custom'" style="display: inline-block; margin: 0px;">
+
+                 &rArr;
+
+                 <div class="form-group" style="display: inline-block; margin: 0px;">
+                    <p class="input-group disabled" style="margin: 0px; display: inline-block;">
+                      <input ng-disabled="view.getControlsHidden()" autocomplete="off" type="text" style="height: 20px; width: 80px; display: inline-block;" class="form-control input-sm" ng-model="dateStart.value" is-open="dateStart.opened" ng-required="true" close-text="Fechar" />
+                      <span ng-hide="view.getControlsHidden()"  class="input-group-btn" style="display: inline-block;">
+                        <button type="button" style="height: 20px;" class="btn btn-default" ng-click="dateStartOpen()"><i class="fa fa-fw fa-calendar"></i></button>
+                      </span>
+                    </p>
+                </div>
+
+                <span ng-hide="view.getControlsHidden()" style="margin-left: 17px; margin-right: 0px;">-</span>
+                <span ng-show="view.getControlsHidden()" style="margin-left: 0px; margin-right: 0px;">-</span>
+
+                 <div class="form-group" style="display: inline-block; margin: 0px;">
+                    <p class="input-group" style="margin: 0px; display: inline-block;">
+                      <input ng-disabled="view.getControlsHidden()" autocomplete="off" type="text" style="height: 20px; width: 80px; display: inline-block;" class="form-control input-sm" ng-model="dateEnd.value" ng-required="true" close-text="Fechar" />
+                      <span ng-hide="view.getControlsHidden()" class="input-group-btn" style="display: inline-block;">
+                        <button type="button" style="height: 20px;" class="btn btn-default" ng-click="dateStartOpen()"><i class="fa fa-fw fa-calendar"></i></button>
+                      </span>
+                    </p>
+                </div>
+
+            </div>
+
+        </form>
+
+        </div>
+
+        <button type="button" ng-hide="view.getControlsHidden()" ng-click="selectDateFilter(datefilter.dimension, false)" class="btn btn-danger btn-xs" style="margin-left: 20px;"><i class="fa fa-fw fa-trash"></i></button>
+        <button type="button" class="btn btn-info btn-xs" style="visibility: hidden; margin-left: -20px;"><i class="fa fa-fw fa-info"></i></button>
+
+
+    </div>
+</div>
+

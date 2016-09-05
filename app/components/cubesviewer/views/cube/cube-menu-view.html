@@ -1,0 +1,146 @@
+  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-submenu>
+    <i class="fa fa-fw fa-cogs"></i> <span class="hidden-xs" ng-class="{ 'hidden-sm hidden-md': cvOptions.studioTwoColumn }">Visualização</span> <span class="caret"></span>
+  </button>
+
+  <ul class="dropdown-menu dropdown-menu-right cv-view-menu cv-view-menu-view">
+
+    <li ng-show="view.params.mode == 'chart'" class="dropdown-submenu">
+        <a tabindex="0" ><i class="fa fa-fw fa-area-chart"></i> Tipo do gráfico</a>
+        <ul class="dropdown-menu">
+          <li ng-click="selectChartType('pie')"><a href=""><i class="fa fa-fw fa-pie-chart"></i> Torta</a></li>
+          <li ng-click="selectChartType('bars-vertical')"><a href=""><i class="fa fa-fw fa-bar-chart"></i> Barras verticais</a></li>
+          <li ng-click="selectChartType('bars-horizontal')"><a href=""><i class="fa fa-fw fa-rotate-270 fa-bar-chart"></i> Barras horizontais</a></li>
+          <li ng-click="selectChartType('lines')"><a href=""><i class="fa fa-fw fa-line-chart"></i> Linhas</a></li>
+          <li ng-click="selectChartType('lines-stacked')"><a href=""><i class="fa fa-fw fa-area-chart"></i> Áreas</a></li>
+          <li ng-click="selectChartType('radar')"><a href=""><i class="fa fa-fw fa-bullseye"></i> Radar</a></li>
+
+          <!-- <div class="divider"></div>  -->
+
+          <!--
+          <li><a href=""><i class="fa fa-fw fa-dot-circle-o"></i> Bubbles</a></li>
+          <li><a href=""><i class="fa fa-fw fa-square"></i> Treemap</a></li>
+          <li ng-click="selectChartType('sunburst')"><a href=""><i class="fa fa-fw fa-sun-o"></i> Sunburst</a></li>
+          -->
+
+          <!--
+          <div class="divider"></div>
+
+          <li><a href=""><i class="fa fa-fw fa-globe"></i> Map</a></li>
+           -->
+
+        </ul>
+    </li>
+
+    <!--
+    <li ng-show="view.params.mode == 'chart' && (view.params.charttype == 'lines-stacked' || view.params.charttype == 'lines' || view.params.charttype == 'bars-horizontal')" class="dropdown-submenu">
+        <a tabindex="0" ><i class="fa fa-fw fa-sliders"></i> Chart options</a>
+        <ul class="dropdown-menu">
+    -->
+        <li class="dropdown-submenu" ng-show="view.params.mode == 'chart' && (view.params.charttype == 'lines-stacked' || view.params.charttype == 'lines')">
+            <a href=""><i class="fa fa-fw fa-angle-up"></i> Tipo de curva</a>
+            <ul class="dropdown-menu">
+                <li ng-class="{'active': view.params.chartoptions.lineInterpolation == 'linear'}" ng-click="view.params.chartoptions.lineInterpolation = 'linear'; refreshView();"><a href=""> Linear</a></li>
+                <li ng-class="{'active': view.params.chartoptions.lineInterpolation == 'monotone'}" ng-click="view.params.chartoptions.lineInterpolation = 'monotone'; refreshView();"><a href=""> Suave</a></li>
+                <!-- <li ng-class="{'active': view.params.chartoptions.lineInterpolation == 'cardinal'}" ng-click="view.params.chartoptions.lineInterpolation = 'cardinal'; refreshView();"><a href=""> Smooth (Cardinal)</a></li>  -->
+            </ul>
+        </li>
+
+        <li ng-class="{'disabled': view.grid.data.length != 2 }" ng-show="view.params.mode == 'chart' && view.params.charttype == 'bars-horizontal'" ng-click="view.params.chartoptions.mirrorSerie2 = !view.params.chartoptions.mirrorSerie2; refreshView();">
+            <a><i class="fa fa-fw fa-arrows-h"></i> Inverter séries secundárias
+                <span style="margin-left: 5px;" class="label label-default" ng-class="{ 'label-success': view.params.chartoptions.mirrorSerie2 }">{{ view.params.chartoptions.mirrorSerie2 ? "Ligado" : "Desligado" }}</span>
+            </a>
+        </li>
+
+    <!--
+        </ul>
+    </li>
+     -->
+
+    <li ng-show="view.params.mode == 'chart'" ng-click="view.params.chartoptions.showLegend = !view.params.chartoptions.showLegend; refreshView();">
+        <a><i class="fa fa-fw" ng-class="{'fa-toggle-on': view.params.chartoptions.showLegend, 'fa-toggle-off': ! view.params.chartoptions.showLegend }"></i> Alternar legenda
+            <span style="margin-left: 5px;" class="label label-default" ng-class="{ 'label-success': view.params.chartoptions.showLegend }">{{ view.params.chartoptions.showLegend ? "Ligado" : "Desligado" }}</span>
+        </a>
+    </li>
+
+    <div ng-show="view.params.mode == 'chart'" class="divider"></div>
+
+    <li ng-show="view.params.mode == 'series' || view.params.mode == 'chart'" class="dropdown-submenu">
+        <a tabindex="0"><i class="fa fa-fw fa-long-arrow-right"></i> Dimensão horizontal</a>
+        <ul class="dropdown-menu">
+
+          <li on-repeat-done ng-repeat-start="dimension in view.cube.dimensions" ng-if="dimension.levels.length == 1" ng-click="selectXAxis(dimension.name)">
+            <a href="">{{ dimension.label }}</a>
+          </li>
+          <li ng-repeat-end ng-if="dimension.levels.length != 1" class="dropdown-submenu">
+            <a tabindex="0">{{ dimension.label }}</a>
+
+            <ul ng-if="dimension.hierarchies_count() != 1" class="dropdown-menu">
+                <li ng-repeat="(hikey,hi) in dimension.hierarchies" class="dropdown-submenu">
+                    <a tabindex="0" href="" onclick="return false;">{{ hi.label }}</a>
+                    <ul class="dropdown-menu">
+                        <!-- ng-click="selectDrill(dimension.name + '@' + hi.name + ':' + level.name, true)"  -->
+                        <li ng-repeat="level in hi.levels" ng-click="selectXAxis(dimension.name + '@' + hi.name + ':' + level.name )"><a href="">{{ level.label }}</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul ng-if="dimension.hierarchies_count() == 1" class="dropdown-menu">
+                <!--  selectDrill(dimension.name + ':' + level.name, true) -->
+                <li ng-repeat="level in dimension.default_hierarchy().levels" ng-click="selectXAxis(dimension.name + ':' + level.name);"><a href="">{{ level.label }}</a></li>
+            </ul>
+
+          </li>
+
+          <div class="divider"></div>
+
+          <li ng-click="selectXAxis(null);"><a href=""><i class="fa fa-fw fa-close"></i> Nenhuma</a></li>
+
+        </ul>
+    </li>
+
+    <li ng-show="view.params.mode == 'series' || view.params.mode == 'chart'" class="dropdown-submenu">
+        <a tabindex="0"><i class="fa fa-fw fa-crosshairs"></i> Medida</a>
+        <ul class="dropdown-menu">
+
+          <li ng-repeat="measure in view.cube.measures" ng-if="view.cube.measureAggregates(measure.name).length > 0" class="dropdown-submenu">
+            <a href="">{{ measure.label }}</a>
+            <ul class="dropdown-menu">
+                <li ng-repeat="aggregate in view.cube.measureAggregates(measure.name)" >
+                    <a href="" ng-click="selectMeasure(aggregate.ref)">{{ aggregate.label }}</a>
+                </li>
+            </ul>
+          </li>
+
+          <div class="divider" ng-if="view.cube.measureAggregates(null).length > 0"></div>
+          <li ng-repeat="aggregate in view.cube.measureAggregates(null)" ng-if="view.cube.measureAggregates(null).length > 0" >
+            <a href="" ng-click="selectMeasure(aggregate.ref)">{{ aggregate.label }}</a>
+          </li>
+
+        </ul>
+    </li>
+
+    <div ng-show="cvOptions.seriesOperationsEnabled && (view.params.mode == 'series' || view.params.mode == 'chart')" class="divider"></div>
+
+    <li ng-show="cvOptions.seriesOperationsEnabled && (view.params.mode == 'series' || view.params.mode == 'chart')" class="dropdown-submenu">
+        <a tabindex="0" ><i class="fa fa-fw fa-calculator"></i> Series operations</a>
+        <ul class="dropdown-menu">
+          <li ng-click="selectOperation('difference')"><a href=""><i class="fa fa-fw fa-line-chart"></i> Diferença</a></li>
+          <li ng-click="selectOperation('percentage')"><a href=""><i class="fa fa-fw fa-percent"></i> Taxa de alteração</a></li>
+          <!--
+          <li ng-click="selectOperation('accum')"><a href=""><i class="fa fa-fw">&sum;</i> Accumulated</a></li>
+          <div class="divider"></div>
+          <li ng-click="selectOperation('fill-zeros')"><a href=""><i class="fa fa-fw">0</i> Replace blanks with zeroes</a></li>
+           -->
+          <div class="divider"></div>
+          <li ng-click="selectOperation(null)"><a href=""><i class="fa fa-fw fa-times"></i> Limpar operações</a></li>
+        </ul>
+    </li>
+
+    <div ng-show="view.params.mode == 'series' || view.params.mode == 'chart'" class="divider"></div>
+
+    <li ng-show="view.params.mode != 'chart'" ng-click="exportService.exportGridAsCsv(view)"><a><i class="fa fa-fw fa-table"></i> Exportar tabela</a></li>
+    <li ng-show="view.params.mode == 'chart' && view.params.charttype != 'radar' " ng-click="view.exportChartAsPNG()"><a><i class="fa fa-fw fa-picture-o"></i> Exportar gráfico</a></li>
+    <li ng-click="exportService.exportFacts(view)"><a><i class="fa fa-fw fa-th"></i> Exportar fatos</a></li>
+
+  </ul>
+

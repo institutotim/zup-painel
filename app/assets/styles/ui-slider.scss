@@ -1,0 +1,173 @@
+@import "compass";
+
+@mixin calc($property, $expression) {
+  #{$property}: -moz-calc(#{$expression});
+  #{$property}: -webkit-calc(#{$expression});
+  #{$property}: calc(#{$expression});
+}
+
+//colors
+$background_color_theme_default: #009688;
+$background_color_theme_blue: #29C2ED;
+$background_color: #d4d4d4;
+$background_handle_color: #ccc;
+$white: #fff;
+
+.noUi-target {
+  @include border-radius(0);
+  @include box-shadow(none);
+  border: 0;
+}
+
+.noUi-background {
+  background: $background_color;
+  @include box-shadow(none);
+}
+
+.noUi-horizontal {
+  height: 3px;
+}
+
+.noUi-horizontal .noUi-handle {
+  top: -8px;
+}
+
+.noUi-vertical {
+  width: 3px;
+}
+
+.noUi-horizontal .noUi-handle,
+.noUi-vertical .noUi-handle {
+  width: 19px;
+  height: 19px;
+  border: 0;
+  @include border-radius(100%);
+  @include box-shadow(none);
+  @include transition(box-shadow);
+  @include transition-duration(200ms);
+  cursor: pointer;
+  position: relative;
+}
+
+.noUi-horizontal .noUi-handle:before,
+.noUi-vertical .noUi-handle:before,
+.noUi-horizontal .noUi-handle:after,
+.noUi-vertical .noUi-handle:after {
+  display: none;
+}
+
+.noUi-horizontal .noUi-handle:active,
+.noUi-vertical .noUi-handle:active {
+  background: $background_handle_color !important;
+}
+
+.noUi-horizontal .noUi-handle .is-tooltip,
+.noUi-vertical .noUi-handle .is-tooltip {
+  position: absolute;
+  bottom: 32px;
+  height: 35px;
+  @include border-radius(2px);
+  color: $white;
+  text-align: center;
+  line-height: 33px;
+  width: 50px;
+  left: 50%;
+  margin-left: -25px;
+  padding: 0 10px;
+  @include transition(all);
+  @include transition-duration(200ms);
+  @include backface-visibility(hidden);
+  @include opacity(0);
+  @include scale(0);
+}
+
+.noUi-horizontal .noUi-handle .is-tooltip:after,
+.noUi-vertical .noUi-handle .is-tooltip:after {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 10px 0 10px;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  margin-left: -9px;
+  content: "";
+}
+
+.noUi-horizontal .noUi-active,
+.noUi-vertical .noUi-active {
+  @include box-shadow(0 0 0 13px rgba(0, 0, 0, 0.1));
+}
+
+.noUi-horizontal .noUi-active .is-tooltip,
+.noUi-vertical .noUi-active .is-tooltip {
+  @include scale(1);
+  @include opacity(1);
+  bottom: 40px;
+}
+
+.input-slider:not([data-is-color]) .noUi-handle,
+.input-slider-range:not([data-is-color]) .noUi-handle,
+.input-slider-values:not([data-is-color]) .noUi-handle,
+.input-slider:not([data-is-color]).noUi-connect,
+.input-slider-range:not([data-is-color]).noUi-connect,
+.input-slider-values:not([data-is-color]).noUi-connect {
+  background: $background_color_theme_default !important;
+}
+
+.input-slider:not([data-is-color]).noUi-connect,
+.input-slider-range:not([data-is-color]).noUi-connect,
+.input-slider-values:not([data-is-color]).noUi-connect {
+  @include box-shadow(none);
+}
+
+.input-slider:not([data-is-color]) .is-tooltip,
+.input-slider-range:not([data-is-color]) .is-tooltip,
+.input-slider-values:not([data-is-color]) .is-tooltip {
+  background: $background_color_theme_default;
+}
+
+.input-slider:not([data-is-color]) .is-tooltip:after,
+.input-slider-range:not([data-is-color]) .is-tooltip:after,
+.input-slider-values:not([data-is-color]) .is-tooltip:after {
+  border-color: $background_color_theme_default transparent transparent transparent;
+}
+
+.input-slider[data-is-color=cyan] .noUi-handle,
+.input-slider-range[data-is-color=cyan] .noUi-handle,
+.input-slider-values[data-is-color=cyan] .noUi-handle,
+.input-slider[data-is-color=cyan].noUi-connect,
+.input-slider-range[data-is-color=cyan].noUi-connect,
+.input-slider-values[data-is-color=cyan].noUi-connect {
+  background: $background_color_theme_blue !important;
+}
+
+.input-slider[data-is-color=cyan].noUi-connect,
+.input-slider-range[data-is-color=cyan].noUi-connect,
+.input-slider-values[data-is-color=cyan].noUi-connect, {
+  @include box-shadow(none);
+}
+
+.input-slider .noUi-origin {
+  background: $background_color;
+}
+
+.input-slider:not([data-is-color]) .noUi-base {
+  background: $background_color_theme_default !important;
+}
+
+.input-slider[data-is-color=cyan] .noUi-base,
+.input-slider-range[data-is-color=cyan] .noUi-connect {
+  background: $background_color_theme_blue !important;
+}
+
+.input-slider[data-is-color=cyan] .noUi-connect,
+.input-slider-range[data-is-color=cyan] .noUi-connect {
+  @include box-shadow(none);
+}
+
+.input-slider[data-is-color=cyan] .noUi-base,
+.input-slider-range[data-is-color=cyan] .noUi-base {
+  left: 17px;
+  @include calc( width, '100% - 17px');
+}

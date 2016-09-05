@@ -1,0 +1,34 @@
+@import 'compass/css3';
+
+.edit-chart-modal {
+  .selected-categories {
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-top: 10px;
+      list-style: none;
+      padding: 10px;
+      border: 1px solid #ddd;
+      height: 50px;
+      line-height: 30px;
+      @include border-radius(2px);
+    }
+  }
+
+  label {
+    margin-top: 15px;
+  }
+
+  label:first-child {
+    margin-top: 0;
+  }
+
+  .ui-select-bootstrap button, .ui-select-bootstrap input {
+    height: 45px;
+  }
+
+  .ui-select-bootstrap input {
+    padding-left: 12px;
+  }
+}

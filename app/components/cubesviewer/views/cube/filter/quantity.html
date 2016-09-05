@@ -1,0 +1,33 @@
+<div ng-controller="CubesViewerViewsCubeFilterQuantityController">
+
+  <div class="panel panel-default panel-outline hidden-print" ng-hide="view.getControlsHidden()"
+       style="border-color: #ffcccc;">
+    <div class="panel-heading clearfix" style="border-color: #ffcccc;">
+      <button class="btn btn-xs btn-danger pull-right" ng-click="closeQuantityFilter()"><i
+        class="fa fa-fw fa-close"></i></button>
+      <h4 style="margin: 2px 0px 0px 0px;"><i class="fa fa-fw fa-filter"></i> Filtro de quantidade
+      </h4>
+    </div>
+    <div class="panel-body">
+      <div>
+        <form>
+          <span>Retornar apenas os</span>
+          <input style="width: 40px" type="number" ng-model="quantity_filter.amount" placeholder="10" />
+          <span style="text-decoration: underline; color: dodgerblue; cursor: pointer" ng-if="quantity_filter.order == 'top'" ng-click="quantity_filter.order = 'bottom'">maiores</span>
+          <span style="text-decoration: underline; color: dodgerblue; cursor: pointer" ng-if="quantity_filter.order == 'bottom'" ng-click="quantity_filter.order = 'top'">menores</span>
+          <span>resultados</span>. <input type="checkbox" ng-model="quantity_filter.group_remaining"> Agrupar o restante como "Outros".
+
+
+          <div class="form-group"
+               style="display: inline-block; margin-bottom: 0; vertical-align: middle; margin-bottom: 2px;">
+            <button ng-click="applyFilter()" class="btn btn-success" type="button"><i class="fa fa-fw fa-filter"></i>
+              Aplicar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

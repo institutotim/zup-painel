@@ -1,0 +1,87 @@
+<div ng-controller="CubesViewerViewsCubeChartController as chartCtrl">
+
+    <div ng-if="view.params.charttype == 'pie'">
+        <h3 ng-if="!view.cvOptions.readOnly"><i class="fa fa-fw fa-pie-chart"></i> Gráfico
+            <i ng-show="view.pendingRequests > 0" class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+        </h3>
+        <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+            <span class="loadingbar-expand"></span>
+        </div>
+        <div ng-controller="CubesViewerViewsCubeChartPieController">
+            <div ng-include="'views/cube/chart/chart-common.html'"></div>
+        </div>
+    </div>
+
+    <div ng-if="view.params.charttype == 'bars-vertical'">
+        <h3 ng-if="!view.cvOptions.readOnly"><i class="fa fa-fw fa-bar-chart"></i> Gráfico
+            <i ng-show="view.pendingRequests > 0" class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+        </h3>
+        <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+            <span class="loadingbar-expand"></span>
+        </div>
+        <div ng-controller="CubesViewerViewsCubeChartBarsVerticalController">
+            <div ng-include="'views/cube/chart/chart-common.html'"></div>
+        </div>
+    </div>
+
+    <div ng-if="view.params.charttype == 'bars-horizontal'">
+        <h3 ng-if="!view.cvOptions.readOnly"><i class="fa fa-fw fa-bar-chart fa-rotate-270"></i> Gráfico
+            <i ng-show="view.pendingRequests > 0" class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+        </h3>
+        <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+            <span class="loadingbar-expand"></span>
+        </div>
+        <div ng-controller="CubesViewerViewsCubeChartBarsHorizontalController">
+            <div ng-include="'views/cube/chart/chart-common.html'"></div>
+        </div>
+    </div>
+
+    <div ng-if="view.params.charttype == 'lines'">
+        <h3 ng-if="!view.cvOptions.readOnly"><i class="fa fa-fw fa-line-chart"></i> Gráfico
+            <i ng-show="view.pendingRequests > 0" class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+        </h3>
+        <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+            <span class="loadingbar-expand"></span>
+        </div>
+        <div ng-controller="CubesViewerViewsCubeChartLinesController">
+            <div ng-include="'views/cube/chart/chart-common.html'"></div>
+        </div>
+    </div>
+
+    <div ng-if="view.params.charttype == 'lines-stacked'">
+        <h3 ng-if="!view.cvOptions.readOnly"><i class="fa fa-fw fa-area-chart"></i> Gráfico
+            <i ng-show="view.pendingRequests > 0" class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+        </h3>
+        <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+            <span class="loadingbar-expand"></span>
+        </div>
+        <div ng-controller="CubesViewerViewsCubeChartLinesController">
+            <div ng-include="'views/cube/chart/chart-common.html'"></div>
+        </div>
+    </div>
+
+    <div ng-if="view.params.charttype == 'radar'">
+        <h3 ng-if="!view.cvOptions.readOnly"><i class="fa fa-fw fa-bullseye"></i> Gráfico
+            <i ng-show="view.pendingRequests > 0" class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+        </h3>
+        <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+            <span class="loadingbar-expand"></span>
+        </div>
+        <div ng-controller="CubesViewerViewsCubeChartRadarController">
+            <div ng-include="'views/cube/chart/chart-common.html'"></div>
+        </div>
+    </div>
+
+    <div ng-if="view.params.charttype == 'sunburst'">
+        <h3 ng-if="!view.cvOptions.readOnly"><i class="fa fa-fw fa-sun-o"></i> Chart
+            <i ng-show="view.pendingRequests > 0" class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+        </h3>
+        <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+            <span class="loadingbar-expand"></span>
+        </div>
+        <div ng-controller="CubesViewerViewsCubeChartSunburstController">
+            <div ng-include="'views/cube/chart/chart-common.html'"></div>
+        </div>
+    </div>
+
+</div>

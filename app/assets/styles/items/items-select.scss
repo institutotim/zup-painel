@@ -1,0 +1,42 @@
+.itemsSelectModal {
+  .modal-body {
+    padding: 0;
+    height: 59vh;
+    overflow-y: auto;
+  }
+
+  .modal-dialog {
+    width: 80vw;
+    max-width: 1000px;
+  }
+
+  .actions {
+    text-align: right;
+  }
+
+  .simple_search {
+    border-bottom: 1px solid #E5E5E5;
+    background: #F2F2F2;
+    padding: 7px 0 7px 0;
+
+    .search_column1 {
+      position: relative;
+
+      .search_icon {
+        position: absolute;
+        top: 11px;
+        left: 17px;
+        color: #B5B5B5;
+      }
+
+      input {
+        width: 100%;
+        color: #ADABAB;
+        background: #F2F2F2;
+        border: 0;
+        padding: 8px 30px;
+        outline: none;
+      }
+    }
+  }
+}

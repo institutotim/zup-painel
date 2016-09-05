@@ -1,0 +1,84 @@
+.theme {
+
+  %logo {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  #login .logo {
+    width: 280px;
+    height: 37px;
+    margin-bottom: 60px;
+    background-image: url('../images/logo-dark.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    .img {
+      @extend %logo;
+    }
+
+    .slogan-title::before {
+      content: "Zeladoria Urbana Participativa";
+    }
+  }
+
+  #login .sponsor_logo {
+    height: 27px;
+    background-image: url('../images/Logo_Instituto_TIM_RGB_Fundo_escuro.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    margin: 28px 0 20px 0;
+
+    .img {
+      @extend %logo;
+    }
+  }
+
+  #main_layout {
+    #sidebar {
+      .logo {
+        display: block;
+        width: 300px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        .img {
+          @extend %logo;
+          width: 300px;
+          height: 37px;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-image: url('../images/logo-light.png');
+        }
+      }
+    }
+  }
+
+  #printContent {
+    .logo > .img {
+      @extend %logo;
+      width: 300px;
+      height: 37px;
+
+      &::before {
+        content: url('../images/logo-dark.png');
+      }
+    }
+  }
+
+  .initial-loading-page {
+    .logo > .img {
+      @extend %logo;
+      width: 300px;
+      height: 37px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-image: url('../images/logo-light.png');
+    }
+  }
+}

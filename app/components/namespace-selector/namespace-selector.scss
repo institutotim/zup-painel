@@ -1,0 +1,52 @@
+namespace-selector {
+  font-size: 11px;
+  text-align: center;
+  color: #888;
+  position: absolute;
+  right: 70px;
+  top: 36px;
+}
+
+.namespaceListModal {
+  .namespacesModalList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      line-height: 20px;
+      border-bottom: 1px solid #ddd;
+      padding: 5px 0 5px 0;
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .namespacesModalListLabel {
+    display: inline-block;
+    width: 430px;
+    font-size: 16px;
+  }
+
+  .namespacesModalListActions {
+    display: inline-block;
+    text-align: right;
+  }
+
+  .no-namespaces-found {
+    line-height: 40px;
+    text-align: center;
+    color: #888;
+    margin: 0;
+    padding: 0;
+  }
+
+  .inline-elements {
+    * {
+      float: left;
+    }
+  }
+}

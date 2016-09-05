@@ -1,0 +1,35 @@
+.mapModal {
+  .modal-dialog {
+    width: 700px;
+  }
+
+  .map {
+    width: 100%;
+    height: 400px;
+  }
+
+  .search-bar {
+    padding: 15px 15px 0 15px;
+
+    input {
+      width: 78%;
+      float: left;
+    }
+
+    button {
+      width: 20%;
+      margin-left: 2%;
+      float: left;
+    }
+  }
+
+  .buttons {
+    padding: 15px;
+
+    span {
+      display: block;
+      float: left;
+      margin-top: 8px;
+    }
+  }
+}

@@ -1,0 +1,104 @@
+case-step {
+  .case-header, .case-sub-header {
+    border-bottom: 1px solid #E1E1E1;
+  }
+
+  .case-content {
+    form div:nth-last-child(2) {
+      border-bottom: none;
+    }
+
+    .error {
+      margin-top: 5px;
+      margin-bottom: 10px;
+      color: red;
+      font-size: 0.9em;
+    }
+
+    .label {
+      color: #333;
+      padding: 0;
+      display: inline-block;
+      margin-bottom: 10px !important;
+    }
+
+    li {
+      margin-bottom: .5em;
+    }
+  }
+
+  .form-group {
+    border-bottom: 1px solid #E1E1E1;
+  }
+
+  .case-footer {
+    border-top: 1px solid #E1E1E1;
+  }
+}
+
+.case-content {
+  li.related-report {
+    padding: 20px;
+
+    table {
+      th, td {
+        padding: 15px;
+      }
+
+      tr {
+        border-bottom: 1px solid #EDEDED;
+      }
+    }
+  }
+
+  .related-reports {
+    margin-top: 20px;
+  }
+}
+
+case-history {
+  p {
+    display: inline-block;
+  }
+}
+
+.casesSelectConductorModal {
+  .modal-dialog {
+    width: 700px;
+  }
+}
+
+case-step-field .uploader {
+  background-color: #F2F2F2;
+  padding: 10px 0 5px 0;
+
+  .upload-image {
+    border: none;
+    background-color: transparent !important;
+    line-height: 120px;
+  }
+
+  p {
+    color: #7c7c7c;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .uploader--attachment {
+    li > div {
+      display: inline-block;
+      font-weight: bold;
+    }
+  }
+}
+
+#step-display
+{
+  .displayable-li {
+    list-style: disc;
+    padding: 0;
+    margin: 0 0 0 20px;
+  }
+}

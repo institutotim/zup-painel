@@ -1,0 +1,73 @@
+<div ng-controller="CubesViewerViewsCubeSeriesController">
+  <h3 ng-if="!cvOptions.readOnly"><i class="fa fa-fw fa-clock-o"></i> Tabela de séries
+    <i ng-show="view.pendingRequests > 0"
+       class="fa fa-circle-o-notch fa-spin fa-fw margin-bottom text-info pull-right"></i>
+  </h3>
+
+  <div ng-if="view.pendingRequests > 0" class="loadingbar-content">
+    <span class="loadingbar-expand"></span>XXXX
+  </div>
+
+  <div ng-if="view.grid.data.length > 0 && !cvOptions.readOnly"
+       ui-grid="view.grid"
+       ui-grid-resize-columns ui-grid-move-columns ui-grid-selection ui-grid-auto-resize
+       ui-grid-pagination ui-grid-pinning
+       style="width: 100%;" ng-style="{height: ((view.grid.data.length < 15 ? view.grid.data.length : 15) * 24) + 44 + 34 + 'px'}">
+  </div>
+  <div ng-if="cvOptions.readOnly">
+    <table class="print-friendly-table">
+      <thead>
+      <tr>
+        <th ng-repeat="col in view.grid.columnDefs" ng-if="col.visible === undefined || col.visible"
+            ng-style="{ 'max-width': col.width + 'px'}">{{ col.name }}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="datum in view.grid.data">
+        <td ng-repeat="col in view.grid.columnDefs"
+            ng-class="{ 'text-right': col.formatter }"
+            ng-if="col.visible === undefined || col.visible" ng-style="{ 'max-width': col.width + 'px'}"
+            ng-init="COL_FIELD = datum[col.field]; col.colDef = col;">
+          <div ng-if="col.cellTemplate" bind-html-compile="col.cellTemplate"></div>
+          <div ng-if="!col.cellTemplate">{{ COL_FIELD }}</div>
+        </td>
+      </tr>
+      </tbody>
+      <tfoot ng-if="view.grid.showColumnFooter">
+      <tr>
+        <td ng-repeat="col in view.grid.columnDefs"
+            ng-if="col.visible === undefined || col.visible" ng-style="{ 'max-width': col.width + 'px'}"
+            ng-init="COL_FIELD = datum[col.field]; col.colDef = col;">
+          <div bind-html-compile="col.footerCellTemplate"></div>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div ng-if="view.grid.data.length > 0" style="height: 30px;">&nbsp;</div>
+
+  <div ng-if="view.pendingRequests == 0 && view.params.yaxis == null" class="alert alert-info"
+       style="margin-bottom: 0px;">
+    <p>
+      Não é possível apresentar a tabela de séries: nem uma <b>medida</b> foi selecionada.
+    </p>
+    <p>
+      Dica: utilize o <kbd><i class="fa fa-fw fa-cogs"></i> menu de &gt; <i class="fa fa-fw fa-crosshairs"></i>
+      visualizações</kbd> de medidas.
+    </p>
+  </div>
+
+  <div ng-if="view.pendingRequests == 0 && view.params.yaxis != null && view.grid.data.length == 0"
+       class="alert alert-info" style="margin-bottom: 0px;">
+    <p>
+      Não é possível apresentar a tabela de séries: <b>nenhum dado</b> foi retornado pela combinação de dimensão
+      horizontal, detalhamento ou filtro.
+    </p>
+    <p>
+      Dica: utilize o menu <kbd><i class="fa fa-fw fa-cogs"></i> Visualização</kbd> para selecionar a dimensão
+      horizontal.
+    </p>
+  </div>
+
+</div>

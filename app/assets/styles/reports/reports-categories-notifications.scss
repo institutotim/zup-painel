@@ -1,0 +1,353 @@
+@import "compass/css3";
+
+$notification-list-height: 50px;
+
+#layout_editor {
+  #cke_1_top {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.reports-categories-notifications-sortable-list {
+
+  list-style: none outside none;
+  padding-left: 0;
+  margin-top: 10px;
+
+  .ui-sortable-placeholder {
+    background: #ccc;
+  }
+
+  li:last-child {
+    border-bottom: 0;
+  }
+
+  li {
+    font-size: 14px;
+    background: #FFF;
+    border-top: 1px transparent;
+    border-bottom: 1px solid #E1E1E1;
+    display: block;
+    line-height: $notification-list-height;
+
+    label {
+      font-size: 14px;
+    }
+
+    .info {
+      float: left;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .edit-mode {
+      border-top: 1px solid #E1E1E1;
+      padding-top: 20px;
+      .edit-mode-buttons {
+        padding-bottom: 20px;
+      }
+    }
+
+    .actions {
+      display: inline-block;
+      float: right;
+      height: $notification-list-height;
+
+      .layout, .edit, .trash, .move {
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 18px;
+      }
+
+      .move {
+        cursor: move;
+        a {
+          cursor: move;
+        }
+      }
+    }
+
+    // page animation
+    .animate-show {
+
+    }
+
+    .animate-show.ng-hide-remove,
+    .animate-show.ng-hide-add {
+      transition: .5s linear all;
+      height: 500px;
+      overflow: hidden;
+    }
+
+    .animate-show.ng-hide {
+      height: 0;
+    }
+
+    .animate-show.ng-enter,
+    .animate-show.ng-leave {
+      @include transition(.5s linear all);
+    }
+
+    .animate-show.ng-enter,
+    .animate-show.ng-leave.ng-leave-active {
+      height: 0;
+    }
+
+    .animate-show.ng-leave,
+    .animate-show.ng-enter.ng-enter-active {
+      height: 500px;
+      overflow: hidden;
+    }
+
+  }
+
+  // Layout modal
+
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  margin: 100px auto;
+}
+
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  @include border-radius(50%);
+  @include opacity(.6);
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  @include animation(sk-bounce 2.0s infinite ease-in-out);
+}
+
+.double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@include keyframes(sk-bounce) {
+  0%, 100% {
+    @include scale(0.0);
+  }
+  50% {
+    @include scale(1.0);
+  }
+}
+
+.animate-if.ng-enter,
+.animate-if.ng-leave {
+  @include transition(all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s);
+}
+
+.animate-if.ng-enter,
+.animate-if.ng-leave.ng-leave-active {
+  @include opacity(0);
+}
+
+.animate-if.ng-leave,
+.animate-if.ng-enter.ng-enter-active {
+  @include opacity(1);
+}
+
+.loading_dots {
+
+  span {
+    @include animation(loading_dots 1.2s linear infinite);
+    background: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+  }
+
+  span:nth-child(2) {
+    @include animation-delay(0.3s);
+  }
+
+  span:nth-child(3) {
+    @include animation-delay(0.6s);
+  }
+
+}
+
+@include keyframes(loading_dots){
+  0% {
+    background: transparent;
+  }
+  50% {
+    background: #000000;
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+.notifications-type-layout {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.85);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  overflow: auto;
+  @include perspective(1000px);
+  @include transition(opacity 0.5s, visibility 0s 0.5s);
+
+  .notifications-type-layout-inner {
+    width: 100%;
+    height: 100%;
+    @include transform-style(preserve-3d);
+    @include translate3d(0, 0, 150px);
+    @include transition(transform 0.5s);
+  }
+
+  .notifications-type-layout-content {
+    width: 100%;
+    height: 100%;
+
+    table {
+      border-collapse: separate;
+      border-spacing: 2px;
+      border-color: grey;
+    }
+
+    .header {
+      position: fixed;
+      width: 100%;
+      height: 70px;
+      background: #333333;
+      z-index: 1000;
+
+      a.back {
+        float: left;
+        display: block;
+        background: #292929;
+        padding: 18px 23px;
+        font-size: 24px;
+        color: #B7B7B7;
+      }
+
+      .title {
+        float: left;
+        font-size: 22px;
+        font-weight: normal;
+        margin: 19px 0 0 23px;
+        color: #FFF;
+      }
+
+      a.submit_button {
+        float: right;
+        width: 120px;
+        height: 100%;
+        background: #259ECB;
+        display: table;
+
+        span {
+          display: table-cell;
+          color: #FFF;
+          vertical-align: middle;
+          text-align: center;
+        }
+
+        &:hover, :active, :visited {
+          text-decoration: none;
+        }
+      }
+
+    }
+
+    .toolbar-div {
+      position: fixed;
+      padding-top: 5px;
+      top: 70px;
+      width: 100%;
+      height: 80px;
+      background: #e6e6e6;
+      @include box-shadow(0 0 0.5cm rgba(0, 0, 0, 0.5));
+      z-index: 999;
+
+      .ckeditor-toolbar {
+        width: 21cm;
+        margin: auto;
+      }
+    }
+
+    .editor-content {
+      position: fixed;
+      top: 150px;
+      width: 100%;
+      height: 100%;
+      background: #d9d9d9;
+      padding-top: 20px;
+      z-index: 998;
+      overflow: auto;
+      padding-bottom: 10px;
+    }
+
+  }
+
+}
+
+.notifications-type-layout-open.notifications-type-layout {
+  opacity: 1;
+  visibility: visible;
+  @include transition(opacity 0.5s);
+
+  .notifications-type-layout-inner {
+    @include translate3d(0, 0, 0);
+  }
+
+  .cke_top, .cke_inner, .cke_chrome {
+    border: 0;
+    @include box-shadow(none);
+    background: transparent;
+  }
+}
+
+.ui-sortable-placeholder-notification-type {
+  background: #259ecb !important;
+}
+
+// A4
+
+.ckeditor-editable-content {
+  height: 27cm;
+  overflow: hidden;
+  border: 0 !important;
+}
+
+.cke_focus {
+  -webkit-appearance: none;
+  outline: 0 !important;
+}
+
+.cke_contents {
+  border: 0 !important;
+}
+
+.a4-page {
+  background: #ffffff;
+  width: 8.3in;
+  min-height: 11.7in;
+  display: block;
+  font-size: 13px;
+  margin: 0 auto .5cm auto;
+  @include box-shadow(0 0 0.5cm rgba(0, 0, 0, 0.5));
+  padding: 50px;
+  .cke_top, .cke_inner, .cke_chrome {
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+}

@@ -1,0 +1,35 @@
+#reports-welcome {
+  width: 100%;
+  text-align: center;
+  height: 200px;
+  position: absolute;
+  top: 50%;
+  /* To account for the side bar */
+  margin-left: -40px;
+
+  h2 {
+    font-size: 40px;
+    font-weight: bolder;
+    color: #666;
+  }
+
+  p {
+    font-size: 25px;
+    margin-top: 10px;
+  }
+
+  button {
+    width: 300px;
+    color: #fff ;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+}
+
+#reports-bg {
+  font-size: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -250px;
+  color: #F4F4F4;
+}

@@ -1,0 +1,536 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Cache-control" content="no-cache">
+  <meta http-equiv="Expires" content="-1">
+  <title>Sistema ZUP</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+  <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicon.ico' />
+  <!-- build:css assets/styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+  <link rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap-submenu/dist/css/bootstrap-submenu.css" />
+  <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
+  <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
+  <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css" />
+  <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
+  <link rel="stylesheet" href="bower_components/select2/select2.css" />
+  <link rel="stylesheet" href="bower_components/angular-print/angularPrint.css" />
+  <link rel="stylesheet" href="bower_components/sass-bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+  <link rel="stylesheet" href="bower_components/nouislider/distribute/nouislider.min.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,app}) assets/styles/main.css -->
+  <link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
+  <link rel="stylesheet" href="assets/styles/login.css">
+  <link rel="stylesheet" href="assets/styles/main.css">
+
+  <link rel="stylesheet" href="assets/styles/reports.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-show.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-edit.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-categories-edit.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-notifications.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-perimeters.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-categories-notifications.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-select.css">
+  <link rel="stylesheet" href="assets/styles/chat-rooms/chat-rooms.css">
+  <link rel="stylesheet" href="assets/styles/zup-chat/zup-chat.css">
+
+  <link rel="stylesheet" href="assets/styles/advanced-filters/advanced-filters-modals.css">
+
+  <link rel="stylesheet" href="assets/styles/config/config.css">
+
+  <link rel="stylesheet" href="assets/styles/flows/flows-show.css">
+  <link rel="stylesheet" href="assets/styles/flows/flows-index.css">
+  <link rel="stylesheet" href="assets/styles/flows/step-edit.css">
+
+  <link rel="stylesheet" href="assets/styles/items/items-show.css">
+  <link rel="stylesheet" href="assets/styles/items/items-edit.css">
+  <link rel="stylesheet" href="assets/styles/items/items-categories-edit.css">
+  <link rel="stylesheet" href="assets/styles/items/items-select.css">
+
+  <link rel="stylesheet" href="assets/styles/groups/groups-edit.css">
+  <link rel="stylesheet" href="assets/styles/groups/groups.css">
+  <link rel="stylesheet" href="assets/styles/groups/groups-namespaces.css">
+
+  <link rel="stylesheet" href="assets/styles/gallery.css">
+  <link rel="stylesheet" href="assets/styles/users.css">
+  <link rel="stylesheet" href="assets/styles/multiple-select-list.css">
+  <link rel="stylesheet" href="assets/styles/ui-select.css">
+  <link rel="stylesheet" href="assets/styles/ui-slider.css">
+  <link rel="stylesheet" href="assets/styles/animate.css">
+
+  <link rel="stylesheet" href="assets/styles/business_reports/edit-chart.css">
+  <link rel="stylesheet" href="assets/styles/business_reports/common.css">
+  <link rel="stylesheet" href="assets/styles/business_reports/index.css">
+  <link rel="stylesheet" href="assets/styles/business_reports/explore.css">
+  <!-- endbuild -->
+  <!-- build:css({.tmp,app}) assets/styles/theme.css -->
+  <link rel="stylesheet" href="assets/styles/cubesviewer.css">
+  <link rel="stylesheet" href="assets/styles/theme.css">
+  <!-- endbuild -->
+</head>
+
+<body ng-app="zupPainelApp" detect-scroll-top class="theme {{stateClass}}" ng-class="{'vertical-scroll': uiHasScroll}">
+<!--[if lt IE 10]>
+  <p class="browsehappy">Você está usando um navegador <strong>antigo</strong>. Por favor <a href="http://browsehappy.com/">atualize seu navegador</a> para ter uma experiência agradável.</p>
+<![endif]-->
+
+<div ui-view class="pages-animation"></div>
+
+<div class="resolving-route with-loading" ng-class="{'build-screen': hideInitialLoading}" ng-show="resolvingRoute">
+  <span class="small-loading"></span>
+</div>
+
+<div class="resolving-route with-loading" ng-class="{'build-screen': hideInitialLoading}" ng-show="resolvingRequest">
+  <img src="assets/images/loading.gif">
+</div>
+
+<div class="initial-loading-page pages-loading" ng-hide="hideInitialLoading">
+  <div class="center">
+    <div class="logo">
+      <div class="img"></div>
+    </div>
+    <div class="initial-loading"></div>
+  </div>
+</div>
+
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+
+<!-- Sentry Configuration -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,geometry&language=pt-br"></script>
+
+<!-- build:js assets/scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+<script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
+<script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+<script src="bower_components/bootstrap-submenu/dist/js/bootstrap-submenu.js"></script>
+<script src="bower_components/angular-ui-grid/ui-grid.js"></script>
+<script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js"></script>
+<script src="bower_components/angular-bootstrap-slider/slider.js"></script>
+<script src="bower_components/flotr2/flotr2.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/nvd3/build/nv.d3.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-ui-select/dist/select.js"></script>
+<script src="bower_components/select2/select2.js"></script>
+<script src="bower_components/select2/select2_locale_pt-BR.js"></script>
+<script src="bower_components/angular-ui-select2/src/select2.js"></script>
+<script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+<script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+<script src="bower_components/angular-ui-sortable/sortable.js"></script>
+<script src="bower_components/hamsterjs/hamster.js"></script>
+<script src="bower_components/angular-mousewheel/mousewheel.js"></script>
+<script src="bower_components/angular-pan-zoom/release/panzoom.min.js"></script>
+<script src="bower_components/raven-js/dist/raven.js"></script>
+<script src="bower_components/angular-raven/angular-raven.js"></script>
+<script src="bower_components/angular-elastic/elastic.js"></script>
+<script src="bower_components/angular-scroll/angular-scroll.js"></script>
+<script src="bower_components/angular-toArrayFilter/toArrayFilter.js"></script>
+<script src="bower_components/angular-promise-buttons/dist/angular-promise-buttons.js"></script>
+<script src="bower_components/angular-load/angular-load.js"></script>
+<script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
+<script src="bower_components/angular-print/angularPrint.js"></script>
+<script src="bower_components/angular-ckeditor/angular-ckeditor.js"></script>
+<script src="bower_components/ui-autocomplete/autocomplete.js"></script>
+<script src="bower_components/lodash/dist/lodash.compat.js"></script>
+<script src="bower_components/restangular/dist/restangular.js"></script>
+<script src="bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+<script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
+<script src="bower_components/ngstorage/ngStorage.js"></script>
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/cpf_cnpj/build/cpf_cnpj.js"></script>
+<script src="bower_components/ng-cpf-cnpj/lib/ngCpfCnpj.js"></script>
+<script src="bower_components/nouislider/distribute/nouislider.js"></script>
+<script src="bower_components/angular-moment/angular-moment.js"></script>
+<script src="bower_components/angular-ellipsis/src/angular-ellipsis.js"></script>
+<script src="bower_components/angular-bind-html-compile/angular-bind-html-compile.js"></script>
+<script src="bower_components/lrInfiniteScroll/lrInfiniteScroll.js"></script>
+<script src="bower_components/ment.io/dist/mentio.js"></script>
+<script src="bower_components/angular-rt-popup/dist/angular-rt-popup.js"></script>
+<script src="bower_components/angular-translate/angular-translate.js"></script>
+<!-- endbower -->
+<script src="bower_components/moment/locale/pt-br.js"></script>
+<script src="bower_components/smartJQueryZoom/src/e-smart-zoom-jquery.js"></script>
+<script src="bower_components/marked/lib/marked.js"></script>
+<script src="bower_components/angular-md/dist/angular-md.js"></script>
+<script src="bower_components/js-rich-marker/src/richmarker-compiled.js"></script>
+<!-- endbuild -->
+
+<script>
+  Raven.config('SENTRY_DSN', {}).install();
+</script>
+
+<script type="text/javascript">
+  function load() {
+    gapi.client.setApiKey('GOOGLE_API_KEY');
+    gapi.client.load('urlshortener', 'v1');
+  }
+</script>
+
+<script src="https://apis.google.com/js/client.js?onload=load"></script>
+
+<script src="config/main.constants.js"></script>
+
+<!-- build:js({.tmp,app}) assets/scripts/scripts.js -->
+<script src="polyfill.js"></script>
+<script src="main.js"></script>
+
+<script src="config/pt-br.locale.js"></script>
+<script src="config/main.config.js"></script>
+<script src="config/cubes.js"></script>
+
+<script src="services/api_translations_loader.js"></script>
+<script src="services/return_fields.js"></script>
+<script src="services/auth/auth.js"></script>
+<script src="services/user/user.js"></script>
+<script src="services/users/users.js"></script>
+<script src="services/advanced-filters/advanced-filters.js"></script>
+<script src="services/full-response-restangular/full-response-restangular.js"></script>
+<script src="services/config/config.js"></script>
+<script src="services/error/error.js"></script>
+<script src="services/reports/reports-categories.js"></script>
+<script src="services/reports/reports-items.js"></script>
+<script src="services/reports/reports-notifications.js"></script>
+<script src="services/reports/reports-perimeters.js"></script>
+<script src="services/reports/reports-feature-flags.js"></script>
+<script src="services/inventories/inventories-categories.js"></script>
+<script src="services/inventories/inventories-items.js"></script>
+<script src="services/business-reports/business-reports.js"></script>
+<script src="services/google-map/google-map.js"></script>
+<script src="services/authorization/authorization.js"></script>
+<script src="services/services/services.js"></script>
+<script src="services/flows/flows.js"></script>
+<script src="services/flows/steps.js"></script>
+<script src="services/cases/cases.js"></script>
+<script src="services/namespaces/namespaces.js"></script>
+<script src="services/chat/chat-service.js"></script>
+<script src="services/notifications/notification.js"></script>
+
+<script src="routes/user/user.route.js"></script>
+<script src="routes/user/login/user-login.route.js"></script>
+<script src="routes/user/login/user-login.controller.js"></script>
+<script src="routes/user/logout/user-logout.route.js"></script>
+<script src="routes/user/logout/user-logout.controller.js"></script>
+<script src="routes/user/unauthorized/user-unauthorized.route.js"></script>
+<script src="routes/user/unauthorized/user-unauthorized.controller.js"></script>
+<script src="routes/user/recover-password/user-recover-password.route.js"></script>
+<script src="routes/user/recover-password/user-recover-password.controller.js"></script>
+
+<script src="routes/index.route.js"></script>
+<script src="routes/index.controller.js"></script>
+
+<script src="routes/chat-rooms/chat-rooms.route.js"></script>
+<script src="routes/chat-rooms/index/chat-rooms-index.route.js"></script>
+<script src="routes/chat-rooms/index/chat-rooms-index.controller.js"></script>
+<script src="routes/chat-rooms/show/chat-rooms-show.route.js"></script>
+<script src="routes/chat-rooms/show/chat-rooms-show.controller.js"></script>
+
+<script src="routes/reports/reports.route.js"></script>
+<script src="routes/reports/index/reports-index.route.js"></script>
+<script src="routes/reports/index/reports-index.controller.js"></script>
+<script src="routes/reports/index/list/reports-index-list.route.js"></script>
+<script src="routes/reports/index/list/reports-index-list.controller.js"></script>
+<script src="routes/reports/index/map/reports-index-map.route.js"></script>
+<script src="routes/reports/index/map/reports-index-map.controller.js"></script>
+<script src="routes/reports/index/notifications/reports-index-notifications.route.js"></script>
+<script src="routes/reports/index/notifications/reports-index-notifications.controller.js"></script>
+<script src="routes/reports/show/reports-show.route.js"></script>
+<script src="routes/reports/show/reports-show.controller.js"></script>
+<script src="routes/reports/show/print/reports-show-print.route.js"></script>
+<script src="routes/reports/show/print/reports-show-print.controller.js"></script>
+<script src="routes/reports/add/reports-add.route.js"></script>
+<script src="routes/reports/add/reports-add.controller.js"></script>
+<script src="routes/reports/categories/index/reports-categories-index.route.js"></script>
+<script src="routes/reports/categories/index/reports-categories-index.controller.js"></script>
+<script src="routes/reports/categories/edit/reports-categories-edit.route.js"></script>
+<script src="routes/reports/categories/edit/reports-categories-edit.controller.js"></script>
+<script src="routes/reports/perimeters/index/reports-perimeters-index.controller.js"></script>
+<script src="routes/reports/perimeters/index/reports-perimeters-index.route.js"></script>
+
+<script src="routes/items/items.route.js"></script>
+<script src="routes/items/index/items-index.route.js"></script>
+<script src="routes/items/index/items-index.controller.js"></script>
+<script src="routes/items/index/map/items-index-map.route.js"></script>
+<script src="routes/items/show/items-show.route.js"></script>
+<script src="routes/items/show/items-show.controller.js"></script>
+<script src="routes/items/edit/items-edit.route.js"></script>
+<script src="routes/items/edit/items-edit.controller.js"></script>
+<script src="routes/items/select-category/items-select-category.controller.js"></script>
+<script src="routes/items/select-category/items-select-category.route.js"></script>
+<script src="routes/items/categories/index/items-categories-index.route.js"></script>
+<script src="routes/items/categories/index/items-categories-index.controller.js"></script>
+<script src="routes/items/categories/edit/items-categories-edit.route.js"></script>
+<script src="routes/items/categories/edit/items-categories-edit.controller.js"></script>
+
+<script src="routes/users/users.route.js"></script>
+<script src="routes/users/index/users-index.route.js"></script>
+<script src="routes/users/index/users-index.controller.js"></script>
+<script src="routes/users/show/users-show.route.js"></script>
+<script src="routes/users/show/users-show.controller.js"></script>
+<script src="routes/users/edit/users-edit.route.js"></script>
+<script src="routes/users/edit/users-edit.controller.js"></script>
+
+<script src="routes/groups/groups.route.js"></script>
+<script src="routes/groups/index/groups-index.route.js"></script>
+<script src="routes/groups/index/groups-index.controller.js"></script>
+<script src="routes/groups/index/components/namespaces.controller.js"></script>
+<script src="routes/groups/show/groups-show.route.js"></script>
+<script src="routes/groups/show/groups-show.controller.js"></script>
+<script src="routes/groups/edit/groups-edit.route.js"></script>
+<script src="routes/groups/edit/groups-edit.controller.js"></script>
+
+<script src="routes/config/config.route.js"></script>
+<script src="routes/config/config.controller.js"></script>
+
+<script src="routes/help/help.route.js"></script>
+<script src="routes/help/help.controller.js"></script>
+
+<script src="routes/flows/flows.route.js"></script>
+<script src="routes/flows/index/flows-index.route.js"></script>
+<script src="routes/flows/index/flows-index.controller.js"></script>
+<script src="routes/flows/show/flows-show.route.js"></script>
+<script src="routes/flows/show/flows-show.controller.js"></script>
+<script src="routes/flows/show/steps-edit/flows-show-steps-edit.route.js"></script>
+<script src="routes/flows/show/steps-edit/flows-show-steps-edit.controller.js"></script>
+
+<script src="routes/cases/cases.route.js"></script>
+<script src="routes/cases/index/cases-index.route.js"></script>
+<script src="routes/cases/index/cases-index.controller.js"></script>
+<script src="routes/cases/edit/cases-edit.route.js"></script>
+<script src="routes/cases/edit/cases-edit.controller.js"></script>
+
+<script src="routes/cases/edit/components/case/case.directive.js"></script>
+<script src="routes/cases/edit/components/history/history.directive.js"></script>
+<script src="routes/cases/edit/components/step/step.directive.js"></script>
+<script src="routes/cases/edit/components/step-field/validator.directive.js"></script>
+<script src="routes/cases/edit/components/step-field/step-field.directive.js"></script>
+<script src="routes/cases/edit/components/steps/steps.directive.js"></script>
+<script src="routes/cases/edit/components/related-reports/related-reports.directive.js"></script>
+
+<script src="routes/business-reports/business-reports.route.js"></script>
+<script src="routes/business-reports/index/business-reports-index.route.js"></script>
+<script src="routes/business-reports/index/business-reports-index.controller.js"></script>
+<script src="routes/business-reports/index/components/header/business-reports-index-header.directive.js"></script>
+<script src="routes/business-reports/index/components/list/business-reports-index-list.directive.js"></script>
+<script src="routes/business-reports/edit/business-reports-edit.route.js"></script>
+<script src="routes/business-reports/edit/business-reports-edit.controller.js"></script>
+<script src="routes/business-reports/edit/components/header/business-reports-edit-header.directive.js"></script>
+<script src="routes/business-reports/edit/components/form/business-reports-edit-form.directive.js"></script>
+<script src="routes/business-reports/edit/components/chart/business-reports-edit-chart.directive.js"></script>
+<script src="routes/business-reports/edit/components/charts/business-reports-edit-charts.directive.js"></script>
+<script src="routes/business-reports/explore/business-reports-explore.route.js"></script>
+<script src="routes/business-reports/explore/business-reports-explore.controller.js"></script>
+<script src="routes/business-reports/explore/components/header/business-reports-explore-header.directive.js"></script>
+
+<script src="routes/services/services.route.js"></script>
+<script src="routes/services/index/services-index.route.js"></script>
+<script src="routes/services/index/services-index.controller.js"></script>
+<script src="routes/services/edit/services-edit.route.js"></script>
+<script src="routes/services/edit/services-edit.controller.js"></script>
+<script src="routes/services/show/services-show.route.js"></script>
+<script src="routes/services/show/services-show.controller.js"></script>
+<script src="routes/services/permissions/services-permissions.route.js"></script>
+<script src="routes/reports/categories/edit/components/custom-fields-editor/custom-fields-editor.directive.js"></script>
+
+<script src="components/groups-selector-inline/groups-selector-inline.directive.js"></script>
+<script src="components/users-selector-inline/users-selector-inline.directive.js"></script>
+<script src="components/namespace-selector/namespace-selector.directive.js"></script>
+<script src="components/equals/equals.directive.js"></script>
+<script src="components/next-field-on-enter/next-field-on-enter.directive.js"></script>
+<script src="components/nav-item/nav-item.directive.js"></script>
+<script src="components/map/map.directive.js"></script>
+<script src="components/period-selector/period-selector.js"></script>
+<script src="components/group-selector/group-selector.js"></script>
+<script src="components/inline-edit/ng-inline-edit.js"></script>
+<script src="components/style-map/style-map.directive.js"></script>
+<script src="components/style-results-table/style-results-table.directive.js"></script>
+<script src="components/on-blur/on-blur.directive.js"></script>
+<script src="components/on-focus/on-focus.directive.js"></script>
+<script src="components/on-enter/on-enter.directive.js"></script>
+<script src="components/focus-on-event/focus-on-event.directive.js"></script>
+<script src="components/focus-if/focus-if.directive.js"></script>
+<script src="components/add-area-circle-form/add-area-circle-form.directive.js"></script>
+<script src="components/area-map/area-map.directive.js"></script>
+<script src="components/fields-filter-item/fields-filter-item.directive.js"></script>
+<script src="components/map-show-item/map-show-item.directive.js"></script>
+<script src="components/map-show-report/map-show-report.directive.js"></script>
+<script src="components/map-view-streetview/map-view-streetview.directive.js"></script>
+<script src="components/select-lat-lng-map/select-lat-lng-map.directive.js"></script>
+<script src="components/search-lat-lng-map/search-lat-lng-map.directive.js"></script>
+<script src="components/ng-thumb/ng-thumb.directive.js"></script>
+<script src="components/inputs-sidebar/inputs-sidebar.directive.js"></script>
+<script src="components/inventory-draggable-input/inventory-draggable-input.directive.js"></script>
+<script src="components/inventory-droppable-inputs-area/inventory-droppable-inputs-area.directive.js"></script>
+<script src="components/inventory-edit-label/inventory-edit-label.directive.js"></script>
+<script src="components/inventory-edit-section/inventory-edit-section.directive.js"></script>
+<script src="components/inventory-create-value/inventory-create-value.directive.js"></script>
+<script src="components/inventory-popover/inventory-popover.directive.js"></script>
+<script src="components/inventory-popover-link/inventory-popover-link.directive.js"></script>
+<script src="components/inventory-trigger-condition/inventory-trigger-condition.directive.js"></script>
+<script src="components/inventory-trigger/inventory-trigger.directive.js"></script>
+<script src="components/inventory-sortable-sections/inventory-sortable-sections.directive.js"></script>
+<script src="components/inventory-single-value/inventory-single-value.directive.js"></script>
+<script src="components/gallery/gallery.directive.js"></script>
+<script src="components/feature-flag/feature-flag.directive.js"></script>
+<script src="components/generic-input/generic-input.directive.js"></script>
+<script src="components/keyboard-poster/keyboard-poster.directive.js"></script>
+<script src="components/detect-scroll-top/detect-scroll-top.directive.js"></script>
+<script src="components/map-new-report/map-new-report.directive.js"></script>
+<script src="components/report-status/report-status.directive.js"></script>
+<script src="components/report-search-map/report-search-map.directive.js"></script>
+<script src="components/gallery-image-on-load/gallery-image-on-load.directive.js"></script>
+<script src="components/copy-text/copy-text.directive.js"></script>
+<script src="components/flows/create-value/flows-create-value.directive.js"></script>
+<script src="components/flows/droppable-inputs-area/flows-droppable-inputs-area.directive.js"></script>
+<script src="components/flows/single-value/flows-single-value.directive.js"></script>
+<script src="components/flows/step-field/flows-step-field.directive.js"></script>
+<script src="components/flows/steps-order/flows-steps-order.directive.js"></script>
+<script src="components/flows/trigger/flows-trigger.directive.js"></script>
+<script src="components/flows/draggable-input/flows-draggable-input.directive.js"></script>
+<script src="components/slide/slide.animation.js"></script>
+<script src="components/zup-transclude/zup-transclude.directive.js"></script>
+<script src="components/multiple-select-list/multiple-select-list.directive.js"></script>
+<script src="components/select-list/select-list.directive.js"></script>
+<script src="components/form-input-validator/integer/form-input-validator-integer.directive.js"></script>
+<script src="components/form-input-validator/great-than/form-input-validator-great-than.directive.js"></script>
+<script src="components/form-input-slider/form-input-slider.directive.js"></script>
+<script src="components/form-input-slider-range/form-input-slider-range.directive.js"></script>
+<script src="components/item-selector/item-selector.directive.js"></script>
+<script src="components/uploader/uploader.directive.js"></script>
+<script src="components/uploader/dropzone/uploader-dropzone.directive.js"></script>
+<script src="components/notifications-center/notifications-center.directive.js"></script>
+
+<!-- Cubesviewer -->
+<script src="components/cubesviewer/masonry.pkgd.min.js"></script>
+<script src="components/cubesviewer/angular-bootstrap-submenu/angular-bootstrap-submenu.js"></script>
+<script src="components/cubesviewer/cubes/cubes.js"></script>
+<script src="components/cubesviewer/cubes/cubes-cvextensions.js"></script>
+<script src="components/cubesviewer/cubes/cubes-service.js"></script>
+<script src="components/cubesviewer/cubes/cache.js"></script>
+<script src="components/cubesviewer/core/cubesviewer.js"></script>
+<script src="components/cubesviewer/views/views.js"></script>
+<script src="components/cubesviewer/dialog/dialog.js"></script>
+<script src="components/cubesviewer/views/cube/cube.js"></script>
+<script src="components/cubesviewer/views/cube/explore/explore.js"></script>
+<script src="components/cubesviewer/views/cube/filter/dimension.js"></script>
+<script src="components/cubesviewer/views/cube/filter/quantity.js"></script>
+<script src="components/cubesviewer/views/cube/filter/datefilter.js"></script>
+<script src="components/cubesviewer/views/cube/facts/facts.js"></script>
+<script src="components/cubesviewer/views/cube/series/series.js"></script>
+<script src="components/cubesviewer/views/cube/series/operations.js"></script>
+<script src="components/cubesviewer/views/cube/chart/chart.js"></script>
+<script src="components/cubesviewer/views/cube/chart/chart-bars-vertical.js"></script>
+<script src="components/cubesviewer/views/cube/chart/chart-bars-horizontal.js"></script>
+<script src="components/cubesviewer/views/cube/chart/chart-lines.js"></script>
+<script src="components/cubesviewer/views/cube/chart/chart-pie.js"></script>
+<script src="components/cubesviewer/views/cube/chart/chart-radar.js"></script>
+<script src="components/cubesviewer/views/cube/chart/chart-sunburst.js"></script>
+<script src="components/cubesviewer/views/cube/export.js"></script>
+<script src="components/cubesviewer/views/undo.js"></script>
+<script src="components/cubesviewer/studio/studio.js"></script>
+<script src="components/cubesviewer/studio/serialize.js"></script>
+<script src="components/cubesviewer/cubesviewer.templates.js"></script>
+
+<script src="modals/chat-rooms/edit/chat-rooms-edit.controller.js"></script>
+<script src="modals/flows/steps/fields/two-step-selector/two-step-selector.directive.js"></script>
+<script src="modals/business-reports/destroy/business-reports-destroy.controller.js"></script>
+<script src="modals/business-reports/edit-chart/business-reports-edit-chart.controller.js"></script>
+<script src="modals/reports/case-created/case-created.controller.js"></script>
+<script src="modals/reports/destroy/reports-destroy.controller.js"></script>
+<script src="modals/reports/edit-status/reports-edit-status.controller.js"></script>
+<script src="modals/reports/edit-category/reports-edit-category.controller.js"></script>
+<script src="modals/reports/select-address/reports-select-address.controller.js"></script>
+<script src="modals/reports/forward/reports-forward.controller.js"></script>
+<script src="modals/reports/notifications/reports-notifications-modal.controller.js"></script>
+<script src="modals/reports/edit-reference/reports-edit-reference.controller.js"></script>
+<script src="modals/reports/edit-custom-field/reports-edit-custom-field.controller.js"></script>
+<script src="modals/reports/print/reports-print.controller.js"></script>
+<script src="modals/advanced-filters/area/advanced-filters-area.controller.js"></script>
+<script src="modals/advanced-filters/author/advanced-filters-author.controller.js"></script>
+<script src="modals/advanced-filters/reporter/advanced-filters-reporter.controller.js"></script>
+<script src="modals/advanced-filters/category/advanced-filters-category.controller.js"></script>
+<script src="modals/advanced-filters/group/advanced-filters-group.controller.js"></script>
+<script src="modals/advanced-filters/shapefile/advanced-filters-shapefile.controller.js"></script>
+<script src="modals/advanced-filters/fields/advanced-filters-fields.controller.js"></script>
+<script src="modals/advanced-filters/query/advanced-filters-query.controller.js"></script>
+<script src="modals/advanced-filters/share/advanced-filters-share.controller.js"></script>
+<script src="modals/advanced-filters/status/advanced-filters-status.controller.js"></script>
+<script src="modals/advanced-filters/notification/minimum-number/advanced-filters-notification-minimum-number.controller.js"></script>
+<script src="modals/advanced-filters/notification/deadline/advanced-filters-notification-deadline.controller.js"></script>
+<script src="modals/advanced-filters/notification/overdue/advanced-filters-notification-overdue.controller.js"></script>
+<script src="modals/advanced-filters/notification/since-last/advanced-filters-notification-since-last.controller.js"></script>
+<script src="modals/reports/categories/manage-statuses/reports-categories-manage-statuses.controller.js"></script>
+<script src="modals/reports/categories/destroy/reports-categories-destroy.controller.js"></script>
+<script src="modals/reports/categories/notifications/reports-categories-notifications-layout.controller.js"></script>
+<script src="modals/items/destroy/items-destroy.controller.js"></script>
+<script src="modals/items/restore/items-restore.controller.js"></script>
+<script src="modals/items/select-address/items-select-address.controller.js"></script>
+<script src="modals/items/field-history/items-field-history.controller.js"></script>
+<script src="modals/items/categories/destroy/items-categories-destroy.controller.js"></script>
+<script src="modals/items/categories/edit-options/items-categories-edit-options.controller.js"></script>
+<script src="modals/items/categories/edit-field-values/items-categories-edit-field-values.controller.js"></script>
+<script src="modals/items/categories/new-status/items-categories-new-status.controller.js"></script>
+<script src="modals/items/categories/edit-status/items-categories-edit-status.controller.js"></script>
+<script src="modals/items/select/items-select.controller.js"></script>
+<script src="modals/users/disable/users-disable.controller.js"></script>
+<script src="modals/gallery/gallery.controller.js"></script>
+<script src="modals/reports/select-user/reports-select-user.controller.js"></script>
+<script src="modals/reports/create-user/reports-create-user.controller.js"></script>
+<script src="modals/reports/edit-description/reports-edit-description.controller.js"></script>
+<script src="modals/reports/perimeters/reports-perimeters-modal.controller.js"></script>
+<script src="modals/reports/select/reports-select.controller.js"></script>
+<script src="modals/error/error.controller.js"></script>
+<script src="modals/flows/add/flows-add.controller.js"></script>
+<script src="modals/flows/edit/flows-edit.controller.js"></script>
+<script src="modals/flows/destroy/flows-destroy.controller.js"></script>
+<script src="modals/flows/steps/add/flows-steps-add.controller.js"></script>
+<script src="modals/flows/steps/destroy/flows-steps-destroy.controller.js"></script>
+<script src="modals/flows/steps/edit/flows-steps-edit.controller.js"></script>
+<script src="modals/cases/inactive/cases-inactive.controller.js"></script>
+<script src="modals/cases/select-conductor/cases-select-conductor.controller.js"></script>
+<script src="modals/cases/finish/cases-finish.controller.js"></script>
+<script src="modals/groups/edit/groups-edit.controller.js"></script>
+<script src="modals/groups/add-users/groups-add-users.controller.js"></script>
+<script src="modals/groups/remove-user/groups-remove-user.controller.js"></script>
+<script src="modals/user/password-recovery/user-password-recovery.controller.js"></script>
+<script src="modals/services/disable/services-disable.controller.js"></script>
+
+<script src="directives/display-notification/display-notification.directive.js"></script>
+<script src="directives/zup-print/zup-print.directive.js"></script>
+<script src="directives/confirm-dialog/confirm-dialog.directive.js"></script>
+<script src="directives/zup-chat/zup-chat.directive.js"></script>
+
+<script src="helpers/format-errors/format-errors.filter.js"></script>
+<script src="helpers/replace-dot-with-comma/replace-dot-with-comma.filter.js"></script>
+<script src="helpers/translate-errors/translate-errors.filter.js"></script>
+<script src="helpers/diacritics-insensitive-filter/diacritics-insensitive-filter.filter.js"></script>
+<script src="helpers/get-google-address-components/get-google-address-components.filter.js"></script>
+
+<!-- endbuild -->
+</body>
+</html>

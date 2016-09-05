@@ -1,0 +1,64 @@
+#login {
+  padding-top: 75px;
+
+  .login-container {
+    width: 400px;
+    padding: 60px;
+    border-radius: 5px;
+    margin: 0 auto;
+    background-color: #333333;
+
+    // shadow effect
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .logo {
+    text-align: center;
+
+    p {
+      color: #797979;
+      margin-top: 25px;
+    }
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid #494949;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+
+  form {
+    label {
+      color: #FFF;
+    }
+
+    input.form-control {
+      height: 45px;
+      box-shadow: none;
+      border: 0;
+    }
+
+    button {
+      padding: 10px 12px;
+      background-color: #259ECB;
+      border: 0;
+      margin-top: 20px;
+      font-weight: normal;
+    }
+  }
+
+  a.forgot_password {
+    display: block;
+    color: #797979;
+    text-align: center;
+    margin: 15px 0 20px 0;
+  }
+
+  .loginError {
+    color: #FFF;
+    margin: 10px 0 30px 0;
+  }
+}

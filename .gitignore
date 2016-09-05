@@ -1,0 +1,25 @@
+/zup-painel.iml
+node_modules
+.tmp
+.sass-cache
+app/bower_components
+telas
+.idea
+.directory
+dist/
+app/config/main.constants.js
+Procfile_dev
+.env
+.DS_Store
+*.log
+
+
+#VSCode config files
+.settings/
+tsd.json
+jsconfig.json
+typings/
+
+/e2e-tests/tsd.json
+/e2e-tests/jsconfig.json
+/e2e-tests/typings/

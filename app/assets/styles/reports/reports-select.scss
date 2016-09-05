@@ -1,0 +1,16 @@
+.reportsSelectModal {
+  .modal-body {
+    padding: 0;
+    height: 59vh;
+    overflow-y: auto;
+  }
+
+  .modal-dialog {
+    width: 80vw;
+    max-width: 1000px;
+  }
+
+  .actions {
+    text-align: right;
+  }
+}
