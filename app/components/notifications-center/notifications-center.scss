@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 .notifications-center {
   .notifications-toggle {
     padding: 15px 15px 0;
@@ -15,8 +17,14 @@
       top: 0;
       right: -5px;
       background-color: #259ECB;
+      font-family: "Open Sans", sans-serif;
     }
   }
+}
+
+.notifications-container {
+  width: 100%;
+  height: 100%;
 }
 
 .notifications-popover {
@@ -72,4 +80,30 @@
     color: #259ECB;
     text-align: right;
   }
+}
+
+
+@include keyframes(flash-bg) {
+  0% {
+    background-color: #fff;
+  }
+  15% {
+    background-color: #def2ff;
+  }
+  30% {
+    background-color: #72aecb;
+  }
+  50% {
+    background-color: #dcf1ff;
+  }
+  75% {
+    background-color: #72aecb;
+  }
+  100% {
+    background-color: #fff;
+  }
+}
+
+.flash-bg {
+  @include animation(flash-bg 900ms 1 ease-in-out);
 }

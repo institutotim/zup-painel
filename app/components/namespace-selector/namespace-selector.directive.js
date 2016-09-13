@@ -30,7 +30,7 @@ angular
       $scope.close();
       var currentPath = $state.href($state.current.name, $state.params);
       var listingURLForCurrentModule = currentPath.match(/([^\d]+)/)[1];
-      if(listingURLForCurrentModule[0] != '/') {
+      if(!window.location.pathname && listingURLForCurrentModule[0] != '/') {
         listingURLForCurrentModule = '/' + listingURLForCurrentModule;
       }
 
@@ -38,7 +38,7 @@ angular
         listingURLForCurrentModule = listingURLForCurrentModule.substr(0, listingURLForCurrentModule.length - 1)
       }
 
-      window.location = listingURLForCurrentModule;
+      window.location = window.location.pathname + listingURLForCurrentModule;
 
       // In case the URL stays the same the browser won't reload the page
       $state.transitionTo($state.current, $state.params, {

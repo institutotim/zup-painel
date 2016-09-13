@@ -27,7 +27,7 @@ angular
         }
         else {
           $scope.showMessage('ok', 'O grupo foi criado com sucesso.', 'success', true);
-          $state.go('groups.show', {id: response.data.id});
+          $state.go('groups.show', {id: response.data.group.id});
         }
 
         $modalInstance.close();

@@ -19,13 +19,13 @@
 
   <!-- permissions: manage_flows -->
   <li nav-item
-      ng-show="hasPermission('manage_flows')">
+      ng-show="flowsEnabled && hasPermission('manage_flows')">
     <a ng-href="#/flows"><span class="glyphicon glyphicon-ok-circle"></span>
 
       <p>Fluxos</p></a></li>
 
   <li nav-item
-      ng-show="(hasPermission('flow_can_view_all_steps') || hasPermission('flow_can_delete_all_cases') || hasPermission('flow_can_delete_own_cases') || hasPermission('flow_can_execute_all_steps') || hasPermission('can_execute_step') || hasPermission('can_view_step')) || hasPermission('manage_cases') || hasPermission('cases_with_reports_view')">
+      ng-show="flowsEnabled && ((hasPermission('flow_can_view_all_steps') || hasPermission('flow_can_delete_all_cases') || hasPermission('flow_can_delete_own_cases') || hasPermission('flow_can_execute_all_steps') || hasPermission('can_execute_step') || hasPermission('can_view_step')) || hasPermission('manage_cases') || hasPermission('cases_with_reports_view'))">
     <a ng-href="#/cases"><span class="glyphicon glyphicon-file"></span>
 
       <p>Casos</p></a></li>

@@ -583,6 +583,10 @@ angular
     $scope.$watchCollection('category.solver_groups_ids', function (newValue, oldValue) {
       if (!_.isEqual(newValue, oldValue)) {
         $scope.category.solver_groups = getSolverGroups($scope.groups, newValue);
+        if(_.isEmpty(newValue)) {
+          $scope.category.default_solver_group_id = null;
+          $scope.category.default_solver_group = null;
+        }
       }
     });
 

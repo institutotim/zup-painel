@@ -8,7 +8,7 @@ angular
   .directive('notification', NotificationComponent);
 
   function NotificationsCenterComponent() {
-    ComponentController.$inject = ['$rootScope', '$state', 'Popup', 'NotificationService'];
+    ComponentController.$inject = ['$rootScope', '$state', 'Popup', 'NotificationService', '$interval', '$timeout'];
 
     return {
       restrict: 'E',
@@ -18,11 +18,12 @@ angular
       controllerAs: 'component'
     };
 
-    function ComponentController($rootScope, $state, Popup, NotificationService) {
+    function ComponentController($rootScope, $state, Popup, NotificationService, $interval, $timeout) {
       var vm = this;
 
       vm.notifications = [];
       vm.loading = false;
+      vm.lastHighlightedNotificationCount = 0;
       vm.onClickNotification  = onClickNotification;
       vm.onDeleteNotification = onDeleteNotification;
       vm.onShownNotifications = onShownNotifications;
@@ -34,6 +35,13 @@ angular
       function initialize() {
         _getNotifications();
       }
+
+      // We don't destroy this because its always present in the application
+      $interval(function(){
+        if(!vm.loading) {
+          _getNotifications();
+        }
+      }, 5000);
 
       function onShownNotifications() {
         if (vm.unreadCount == 0) return;
@@ -56,19 +64,21 @@ angular
 
       function onClickNotification(notification) {
         var states = {
-          'chat_message': {
-            attr: 'chattable',
-            states: {
-              'chat_room': 'chat-rooms.show',
-              'case': 'cases.edit'
-            }
-          },
+          'chat_room': 'chat-rooms.show',
           'case': 'cases.edit'
         };
 
         var state = _getState(states, 'notificable', notification);
 
         $state.go(state.name, { id: state.id });
+      }
+
+      function highlightNotificationBar() {
+        vm.highlightNotificationBar = true;
+
+        $timeout(function(){
+          vm.highlightNotificationBar = false;
+        }, 1000);
       }
 
       function _getNotifications() {
@@ -78,6 +88,10 @@ angular
             vm.loading = false;
             vm.notifications = data.notifications;
             vm.unreadCount = data.unread_count || 0;
+            if(vm.unreadCount > vm.lastHighlightedNotificationCount) {
+              vm.lastHighlightedNotificationCount = vm.unreadCount;
+              highlightNotificationBar();
+            }
           }
         );
       }

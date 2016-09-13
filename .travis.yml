@@ -1,0 +1,9 @@
+sudo: required
+
+language: generic
+
+services:
+  - docker
+
+script:
+  - ./build_and_test.sh --deploy

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-[ "$CI_BUILD_ID" = "" ] && CI_BUILD_ID=$(( ( RANDOM % 100000 )  + 1 ))
-[ "$CI_BUILD_REF_NAME" = "" ] && CI_BUILD_REF_NAME=$(git symbolic-ref --short -q HEAD)
-[ "$CI_BUILD_REF_NAME" = "master" ] && CI_BUILD_REF_NAME="latest"
+CI_BUILD_REF=$TRAVIS_BUILD_ID
+CI_BUILD_REF_NAME=$TRAVIS_BRANCH
 POSTGRES_PASSWORD="zup"
 POSTGRES_USER="zup"
 POSTGRES_DB="zup"
@@ -57,8 +56,8 @@ setup_api() {
     docker run --privileged -d --name $REDIS_NAME redis:2.8
 
     # Download image, loads schema and start the API
-    docker pull ntxcode/zup-api:$API_BRANCH || (docker pull ntxcode/zup-api:latest && API_BRANCH="latest")
-    docker run --rm --link $REDIS_NAME:redis --link $POSTGRES_NAME:postgres -a stdout -a stderr --env-file api.env ntxcode/zup-api:$API_BRANCH cat db/structure.sql > structure.sql
+    docker pull institutotim/zup-api:$API_BRANCH || docker pull institutotim/zup-api:master && API_BRANCH="master"
+    docker run --rm --link $REDIS_NAME:redis --link $POSTGRES_NAME:postgres -a stdout -a stderr --env-file api.env institutotim/zup-api:$API_BRANCH cat db/structure.sql > structure.sql
     docker cp structure.sql $POSTGRES_NAME:/tmp
     TIMEOUT=5
     until docker exec $POSTGRES_NAME psql -U $POSTGRES_USER -d $POSTGRES_DB -c "select 1" > /dev/null 2>&1 || [ $TIMEOUT -eq 0 ]; do
@@ -66,9 +65,9 @@ setup_api() {
       sleep 15
     done
     docker exec $POSTGRES_NAME psql -f /tmp/structure.sql -U $POSTGRES_USER $POSTGRES_DB
-    docker run --rm --link $REDIS_NAME:redis --link $POSTGRES_NAME:postgres -a stdout -a stderr --env-file api.env ntxcode/zup-api:$API_BRANCH /bin/bash -c "bundle exec rake db:seed WITH_FAKE_DATA=true"
-    docker run -d --link $REDIS_NAME:redis --link $POSTGRES_NAME:postgres --env-file api.env --name $API_NAME ntxcode/zup-api:$API_BRANCH
-    docker run --rm -a stdout -a stderr --link $API_NAME:api ntxcode/zup-api:$API_BRANCH /bin/bash -c "while ! curl --silent --fail http://api/feature_flags; do sleep 1 && echo -n .; done;"
+    docker run --rm --link $REDIS_NAME:redis --link $POSTGRES_NAME:postgres -a stdout -a stderr --env-file api.env institutotim/zup-api:$API_BRANCH /bin/bash -c "bundle exec rake db:seed WITH_FAKE_DATA=true"
+    docker run -d --link $REDIS_NAME:redis --link $POSTGRES_NAME:postgres --env-file api.env --name $API_NAME institutotim/zup-api:$API_BRANCH
+    docker run --rm -a stdout -a stderr --link $API_NAME:api institutotim/zup-api:$API_BRANCH /bin/bash -c "while ! curl --silent --fail http://api/feature_flags; do sleep 1 && echo -n .; done;"
 }
 
 setup_api &
@@ -96,18 +95,26 @@ wait $API_PID
 docker run -v /dev/shm:/dev/shm -a stdout -a stderr --link $API_NAME:api --name $BUILDER_NAME $BUILDER_NAME
 
 deploy() {
-  rm -rf zup-web || true
-  git clone --depth 1 --branch $CI_BUILD_REF_NAME $ZUP_WEB_REPO_ACCESS || git clone --depth 1 --branch latest $ZUP_WEB_REPO_ACCESS
-  cd zup-web
-  [[ $(git symbolic-ref --short -q HEAD) = $CI_BUILD_REF_NAME ]] || git checkout -b $CI_BUILD_REF_NAME
-  rm -rf zup-painel
-  docker cp $BUILDER_NAME:/tmp/zup-painel/dist ./zup-painel
-  git config --global user.name 'CI'
-  git config --global user.email 'ci@zeladoriaurbana.com.br'
-  git add --all zup-painel
-  git commit --allow-empty -m "Build $CI_BUILD_ID"
-  git push origin $CI_BUILD_REF_NAME --force
-  cd ..
+  if [ "$CI_BUILD_REF_NAME" = "unicef" ]; then
+    rm -rf zup-web || true
+    mkdir -p ~/.ssh
+    SSH_DEPLOY_KEY=~/.ssh/id_rsa
+    openssl aes-256-cbc -K $encrypted_407d56f21fee_key -iv $encrypted_407d56f21fee_iv -in .travis/deploy_key.enc -out $SSH_DEPLOY_KEY -d
+    chmod 600 $SSH_DEPLOY_KEY
+    eval `ssh-agent -s`
+    ssh-add $SSH_DEPLOY_KEY
+    git clone --depth 1 --branch $CI_BUILD_REF_NAME $ZUP_WEB_REPO_ACCESS || git clone --depth 1 --branch master $ZUP_WEB_REPO_ACCESS
+    cd zup-web
+    [[ $(git symbolic-ref --short -q HEAD) = $CI_BUILD_REF_NAME ]] || git checkout -b $CI_BUILD_REF_NAME
+    rm -rf zup-painel
+    docker cp $BUILDER_NAME:/tmp/zup-painel/dist ./zup-painel
+    git config --global user.name 'CI'
+    git config --global user.email 'ci@zeladoriaurbana.com.br'
+    git add --all zup-painel
+    git commit --allow-empty -m "Painel build $CI_BUILD_ID"
+    git push origin $CI_BUILD_REF_NAME --force
+    cd ..
+  fi
 }
 
 [[ "$1" = "--deploy" ]] && deploy
