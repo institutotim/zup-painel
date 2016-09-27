@@ -29,7 +29,9 @@ Depois de clonar o repositório, rode os comandos:
     cd zup-painel
     nvm install
     npm install -g bower
+    bundle install
     npm run setup
+    
 
 Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
 
