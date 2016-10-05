@@ -2,7 +2,7 @@
   <div class="case-header edit-case clearfix">
     <h2>{{ step.flow_step.title }}</h2>
 
-    <p>{{ 'CASE_RESPONSIBLE' | translate | lowercase }}: <span>{{ step.conductor.name }}</span> <a ng-click="changeConductor()" ng-if="canExecute(step)">(Alterar)</a></p>
+    <p>{{ 'CASE_RESPONSIBLE' | translate | lowercase }}: <span>{{ step.conductor.name }}</span> <a ng-click="changeConductor()" ng-if="canChangeResponsible(step)">(Alterar)</a></p>
   </div>
 
   <div class="case-sub-header" ng-if="futureStep">

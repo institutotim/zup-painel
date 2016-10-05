@@ -16,6 +16,14 @@ angular
       controller: function ($scope, $rootScope, InventoriesItemsService, CasesService) {
         $scope.user = $rootScope.me;
 
+        $scope.canChangeResponsible = function(step) {
+          if($rootScope.hasPermission('flow_can_change_cases_responsible', step.flow_step.flow_id)) {
+            return true;
+          }
+
+          return $scope.canExecute(step);
+        }
+
         $scope.canExecute = function (step) {
           if (step.responsible_group) {
             return $scope.canExecuteStepByPermission(step);
