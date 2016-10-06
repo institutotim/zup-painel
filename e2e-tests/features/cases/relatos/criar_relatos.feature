@@ -35,7 +35,6 @@ Funcionalidade: Permitir que um usuário previamente cadastrado possa criar um r
     Dado escolho a categoria "coleta de entulho"
     E preencho o endereço com "Rua Julieta vila jordanopolis, 167"
     E descrevo a situação com texto: "grande quantidade de lixo acumulado na rua"
-    E seleciono o usuário "Garnet Price" como solicitante
     Quando clico no botão criar relato
     Então o sistema deve retornar uma mensagem de sucesso
     E devo visualizar o texto "Coleta de Entulho"
@@ -52,13 +51,3 @@ Funcionalidade: Permitir que um usuário previamente cadastrado possa criar um r
   @notimplemented
   #TODO: É necessario faze roolback dessa opereção no final do cenário,
   # pois não é permitido a inclusão de usuários com as mesmas informações
-
-  Cenário: Criar um relato e cadastrar um novo solicitante
-    Dado que preencho os campos obrigatórios do relato
-    E clico no botão + Cadastro novo usuário
-    E preencho os campos obrigatórios do usuário "José da Silva"
-    Quando clico no botão criar usuário
-    Então o sistema retorna a tela de criação do relato e exibe o nome do solicitante vinculado ao relato
-    E clico no botão criar relato
-    Quando for redirecionado para a exibição dos dados do relato
-    Então devo visualizar o texto "José da Silva"
