@@ -6,10 +6,13 @@ angular
     'OnFocusComponentModule',
     'OnBlurComponentModule',
     'AdvancedFiltersServiceModule',
-    'ReportsItemsServiceModule'
+    'ReportsItemsServiceModule',
+    'ConfigServiceModule',
+    'ngSanitize',
+    'ngCsv'
   ])
 
-  .controller('ReportsIndexController', function ($rootScope, $scope, Restangular, $modal, $q, AdvancedFilters, $location, $window, $cookies, ReportsItemsService, $state, $log, $translate) {
+  .controller('ReportsIndexController', function ($rootScope, $scope, Restangular, $modal, $q, AdvancedFilters, $location, $window, $cookies, ReportsItemsService, $state, $log, $translate, ConfigService) {
 
     $log.debug('ReportsIndexController created.');
 
@@ -395,5 +398,68 @@ angular
 
     var $handleDestroy = $scope.$on('$destroy', function () {
       $log.debug('ReportsIndexController destroyed.');
+    });
+
+    var getData = $scope.getData = function () {
+      ConfigService.getReportsColumns().then(function (reportsColumns) {
+        $scope.activeColumns = _.filter(reportsColumns, function (c) {
+          return c.active;
+        });
+
+        $scope.activeColumnsLabel = $scope.activeColumns.map(function(column) { return column.label });
+        $scope.activeColumnsLabel.unshift('Status');
+      });
+
+      var fetchOptions = $scope.generateReportsFetchingOptions();
+
+      ReportsItemsService.fetchAll(fetchOptions).then(function(reports) {
+        $scope.getReports = $.map(reports, function(report) {
+          var data = { 0: report.status.title };
+
+          $.each($scope.activeColumns, function(i, column) {
+            switch(column.type) {
+              case 'protocol':
+                data[i+1] = report.protocol;
+                break;
+              case 'priority':
+                data[i+1] = report.category.priority_pretty || 'N/A';
+                break;
+              case 'address':
+                data[i+1] = report.address;
+                break;
+              case 'user':
+                data[i+1] = report.user.name;
+                break;
+              case 'reporter':
+                data[i+1] = report.reporter.name;
+                break;
+              case 'category':
+                data[i+1] = report.category.title;
+                break;
+              case 'assignment':
+                if(report.assigned_group && report.assigned_user) {
+                  data[i+1] = report.assigned_user.name.split(' ')[0] + ' (' + report.assigned_group.name + ' )';
+                } else if(report.assigned_group && !report.assigned_user) {
+                  data[i+1] = report.assigned_group.name;
+                } else {
+                  data[i+1] = 'Não atribuído';
+                }
+
+                break;
+              case 'created_at':
+                data[i+1] = moment(report.created_at).format('DD/MM/YY HH:mm');
+                break;
+            }
+          });
+
+          return data;
+        });
+      });
+    };
+
+    getData();
+
+    $scope.$on('loadFilters', function (event, reloading) {
+      getData();
     });
   });
