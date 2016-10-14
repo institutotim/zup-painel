@@ -410,9 +410,9 @@ angular
         $scope.activeColumnsLabel.unshift('Status');
       });
 
-      var fetchOptions = $scope.generateReportsFetchingOptions();
+      var options = $scope.generateReportsFetchingOptions();
 
-      ReportsItemsService.fetchAll(fetchOptions).then(function(reports) {
+      ReportsItemsService.fetchAll(options).then(function(reports) {
         $scope.getReports = $.map(reports, function(report) {
           var data = { 0: report.status.title };
 
@@ -448,6 +448,9 @@ angular
                 break;
               case 'created_at':
                 data[i+1] = moment(report.created_at).format('DD/MM/YY HH:mm');
+                break;
+              case 'custom_field':
+                data[i+1] = report.custom_fields[column.id] || 'Não informado';
                 break;
             }
           });
