@@ -350,6 +350,12 @@ angular
           },
 
           {
+            slug: 'flow_can_change_cases_responsible',
+            name: 'Alterar responsável de todos os casos',
+            needsObject: true
+          },
+
+          {
             slug: 'can_view_step',
             name: 'Visualizar etapa',
             needsObject: true

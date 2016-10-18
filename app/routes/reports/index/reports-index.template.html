@@ -19,6 +19,8 @@
 
       <a href="" ng-click="share()" class="btn btn-info btn-custom"><i class="glyphicon glyphicon-link"></i></a>
 
+      <a href="" ng-csv="getReports" csv-header="activeColumnsLabel" field-separator=";" filename="reports.csv" class="btn btn-info btn-custom"><i class="glyphicon glyphicon-download-alt"></i></a>
+
       <p class="total pages-animation" ng-hide="loadingContent">{{ total }} {{ 'REPORTS' | translate | lowercase }} encontrados</p>
     </div>
 

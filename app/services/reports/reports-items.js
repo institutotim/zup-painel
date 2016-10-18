@@ -44,7 +44,7 @@ angular
       var defaults = {
         display_type: 'full',
         return_fields: ReturnFieldsService.convertToString([
-          "id", "protocol", "address", "category_id", "status_id", "created_at", "overdue", "overdue_at",
+          "id", "protocol", "address", "category_id", "status_id", "created_at", "overdue", "overdue_at", "custom_fields",
           {
             "category": [
               "title", "priority_pretty"
