@@ -20,7 +20,6 @@ angular
     };
 
     $scope.categories = categories;
-    $scope.createAnother = false;
 
     $scope.inventoryCategories = inventoriesCategoriesResponse.data;
 
