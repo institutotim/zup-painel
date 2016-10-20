@@ -412,7 +412,7 @@ angular
 
       var options = $scope.generateReportsFetchingOptions();
 
-      ReportsItemsService.fetchAll(options).then(function(reports) {
+      ReportsItemsService.fetchCSV(options).then(function(reports) {
         $scope.getReports = $.map(reports, function(report) {
           var data = { 0: report.status.title };
 
