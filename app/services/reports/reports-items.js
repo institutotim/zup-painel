@@ -124,11 +124,13 @@ angular
     };
 
     self.fetchCSV = function (options) {
-      return self.fetch(options, {})
+      angular.merge(options, { 'disable_paginate': 'true' });
+
+      return self.fetch(options, {});
     }
 
     self.fetchAll = function (options) {
-      return self.fetch(options, self.reports)
+      return self.fetch(options, self.reports);
     }
 
     /**
