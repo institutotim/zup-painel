@@ -3,7 +3,6 @@ angular
     'ReportsIndexControllerModule',
     'ReportsIndexListModule',
     'ReportsIndexMapModule',
-    'ReportsIndexNotificationsModule',
     'MapComponentModule',
     'StyleResultsTableComponentModule'
   ])
