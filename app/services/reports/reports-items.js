@@ -96,7 +96,9 @@ angular
           reports[report.id] = report;
         });
 
-        self.total = parseInt(response.headers().total, 10);
+        if(options.total) {
+          self.total = parseInt(response.headers().total, 10);
+        }
 
         // If there isn't any category on cache, we wait on them before presenting items
         if (_.size(ReportsCategoriesService.categories) < 1)
@@ -124,12 +126,14 @@ angular
     };
 
     self.fetchCSV = function (options) {
-      angular.merge(options, { 'disable_paginate': 'true' });
+      angular.merge(options, { 'disable_paginate': 'true', 'total': false });
 
       return self.fetch(options, {});
     }
 
     self.fetchAll = function (options) {
+      angular.merge(options, { 'total': true });
+
       return self.fetch(options, self.reports);
     }
 
