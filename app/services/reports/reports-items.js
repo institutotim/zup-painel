@@ -36,7 +36,7 @@ angular
      * @param {Object} options - API options for the search report endpoint
      * @returns {Object} promise called for successful responses alone
      */
-    self.fetchAll = function (options) {
+    self.fetch = function (options, reports) {
       options = options || {};
 
       var url = FullResponseRestangular.one('search').all('reports').all('items'); // jshint ignore:line
@@ -88,40 +88,54 @@ angular
       promise.then(function (response) {
         _.each(response.data.reports, function (report)
         {
-          if (typeof self.reports[report.id] === 'undefined')
+          if (typeof reports[report.id] === 'undefined')
           {
             report.order = reportsOrder++;
           }
 
-          self.reports[report.id] = report;
+          reports[report.id] = report;
         });
 
-        self.total = parseInt(response.headers().total, 10);
+        if(options.total) {
+          self.total = parseInt(response.headers().total, 10);
+        }
 
         // If there isn't any category on cache, we wait on them before presenting items
         if (_.size(ReportsCategoriesService.categories) < 1)
         {
           categoryFetchPromise.then(function () {
-            hookCategoryFieldsOnReports();
+            setCategoryOnItems(reports);
 
-            $rootScope.$broadcast('reportsItemsFetched', self.reports);
+            $rootScope.$broadcast('reportsItemsFetched', reports);
 
-            deferred.resolve(self.reports);
+            deferred.resolve(reports);
           });
         }
         else
         {
           // TODO This may cause problems for items of categories that are not yet present
-          hookCategoryFieldsOnReports();
+          setCategoryOnItems(reports);
 
-          $rootScope.$broadcast('reportsItemsFetched', self.reports);
+          $rootScope.$broadcast('reportsItemsFetched', reports);
 
-          deferred.resolve(self.reports);
+          deferred.resolve(reports);
         }
       });
 
       return deferred.promise;
     };
+
+    self.fetchCSV = function (options) {
+      angular.merge(options, { 'disable_paginate': 'true', 'total': false });
+
+      return self.fetch(options, {});
+    }
+
+    self.fetchAll = function (options) {
+      angular.merge(options, { 'total': true });
+
+      return self.fetch(options, self.reports);
+    }
 
     /**
      * Fetches reports items and clusters for a given position. Unordered.
