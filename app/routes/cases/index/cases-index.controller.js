@@ -228,13 +228,6 @@ angular
       return column === sort.column && 'sort-' + sort.descending;
     };
 
-    // create case
-    $scope.createCase = function(flow) {
-      return CasesService.create({initial_flow_id: flow.id, step_id: flow.steps[0].id}).then(function(response) {
-        $location.path('/cases/' + response.case.id);
-      });
-    };
-
     $scope.inactiveCase = function(kase) {
       CasesInactiveModalService
         .open(kase)
