@@ -414,43 +414,45 @@ angular
 
       ReportsItemsService.fetchCSV(options).then(function(reports) {
         $scope.getReports = $.map(reports, function(report) {
-          var data = { 0: report.status.title };
+          var data = { "Status" : report.status.title };
 
           $.each($scope.activeColumns, function(i, column) {
             switch(column.type) {
               case 'protocol':
-                data[i+1] = report.protocol;
+                data[column.label] = report.protocol;
                 break;
               case 'priority':
-                data[i+1] = report.category.priority_pretty || 'N/A';
+                data[column.label] = report.category.priority_pretty || 'N/A';
                 break;
               case 'address':
-                data[i+1] = report.address;
+                data[column.label] = report.address;
                 break;
               case 'user':
-                data[i+1] = report.user.name;
+                data[column.label] = report.user.name;
                 break;
               case 'reporter':
-                data[i+1] = report.reporter.name;
+                data[column.label] = report.reporter.name;
                 break;
               case 'category':
-                data[i+1] = report.category.title;
+                data[column.label] = report.category.title;
                 break;
               case 'assignment':
                 if(report.assigned_group && report.assigned_user) {
-                  data[i+1] = report.assigned_user.name.split(' ')[0] + ' (' + report.assigned_group.name + ' )';
+                  data[column.label] = report.assigned_user.name.split(' ')[0] + ' (' + report.assigned_group.name + ' )';
                 } else if(report.assigned_group && !report.assigned_user) {
-                  data[i+1] = report.assigned_group.name;
+                  data[column.label] = report.assigned_group.name;
+                } else if(!report.assigned_group && report.assigned_user) {
+                  data[column.label] = report.assigned_user.name
                 } else {
-                  data[i+1] = 'Não atribuído';
+                  data[column.label] = 'Não atribuído';
                 }
 
                 break;
               case 'created_at':
-                data[i+1] = moment(report.created_at).format('DD/MM/YY HH:mm');
+                data[column.label] = moment(report.created_at).format('DD/MM/YY HH:mm');
                 break;
               case 'custom_field':
-                data[i+1] = report.custom_fields[column.id] || 'Não informado';
+                data[column.label] = report.custom_fields[column.id] || 'Não informado';
                 break;
             }
           });
@@ -458,6 +460,10 @@ angular
           return data;
         });
       });
+    };
+
+    $scope.exportData = function() {
+      alasql('SELECT * INTO XLSX("report.xlsx",{headers:true}) FROM ?',[$scope.getReports]);
     };
 
     getData();
