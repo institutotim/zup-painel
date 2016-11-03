@@ -27,7 +27,6 @@ angular
     // Basic filters
     var resetFilters = function () {
       $scope.selectedCategories = [];
-      $scope.selectedShapefiles = [];
       $scope.selectedStatuses = [];
       $scope.selectedUsers = [];
       $scope.selectedReporters = [];
@@ -35,13 +34,8 @@ angular
       $scope.beginDate = null;
       $scope.endDate = null;
       $scope.searchText = null;
-      $scope.overdueOnly = null;
       $scope.assignedToMyGroup = null;
       $scope.assignedToMe = null;
-      $scope.minimumNotificationNumber = null;
-      $scope.daysSinceLastNotification = null;
-      $scope.daysForLastNotificationDeadline = null;
-      $scope.daysForOverdueNotification = null;
 
       // map options
       $scope.position = null;
@@ -60,14 +54,8 @@ angular
         {name: translations.REPORTS_FILTERS_REPORT_USER, action: 'reporter'},
         {name: 'Por período...', action: 'date'},
         {name: 'Por perímetros...', action: 'area'},
-        {name: 'Por perímetro de encaminhamento...', action: 'shapefile'},
-        {name: translations.REPORTS_FILTERS_ONLY_DELAYED_REPORTS, action: 'overdueOnly'},
         {name: 'Associados ao meu grupo...', action: 'assignedToMyGroup'},
-        {name: 'Associados à mim...', action: 'assignedToMe'},
-        {name: 'Quantidade de notificações emitidas...', action: 'minimumNotificationNumber'},
-        {name: 'Dias desde a última notificação emitida...', action: 'daysSinceLastNotification'},
-        {name: 'Dias para o vencimento da última notificação emitida...', action: 'daysForLastNotificationDeadline'},
-        {name: 'Dias em atraso para notificações vencidas...',action: 'daysForOverdueNotification'}
+        {name: 'Associados à mim...', action: 'assignedToMe'}
       ];
     });
 
@@ -118,10 +106,6 @@ angular
           pushUnique($scope.selectedCategories, filter.value);
         }
 
-        if (filter.type === 'shapefiles') {
-          pushUnique($scope.selectedShapefiles, filter.value);
-        }
-
         if (filter.type === 'statuses') {
           pushUnique($scope.selectedStatuses, filter.value);
         }
@@ -150,32 +134,12 @@ angular
           pushUnique($scope.selectedAreas, filter.value);
         }
 
-        if (filter.type === 'overdueOnly') {
-          $scope.overdueOnly = true;
-        }
-
         if (filter.type === 'assignedToMyGroup') {
           $scope.assignedToMyGroup = true;
         }
 
         if (filter.type === 'assignedToMe') {
           $scope.assignedToMe = true;
-        }
-
-        if (filter.type === 'minimumNotificationNumber') {
-          $scope.minimumNotificationNumber = filter.value;
-        }
-
-        if (filter.type === 'daysSinceLastNotification') {
-          $scope.daysSinceLastNotification = filter.value;
-        }
-
-        if (filter.type === 'daysForLastNotificationDeadline') {
-          $scope.daysForLastNotificationDeadline = filter.value;
-        }
-
-        if (filter.type === 'daysForOverdueNotification') {
-          $scope.daysForOverdueNotification = filter.value;
         }
       }
 
@@ -194,11 +158,6 @@ angular
       // check if we have categories selected
       if ($scope.selectedCategories.length !== 0) {
         options.reports_categories_ids = $scope.selectedCategories.join(); // jshint ignore:line
-      }
-
-      // check if we have categories selected
-      if ($scope.selectedShapefiles.length !== 0) {
-        options.reports_perimeters_ids = $scope.selectedShapefiles.join(); // jshint ignore:line
       }
 
       // check if we have statuses selected
@@ -246,35 +205,12 @@ angular
         }
       }
 
-      if ($scope.overdueOnly !== null) {
-        options.overdue = $scope.overdueOnly;
-      }
-
       if ($scope.assignedToMyGroup !== null) {
         options.assigned_to_my_group = $scope.assignedToMyGroup;
       }
 
       if ($scope.assignedToMe !== null) {
         options.assigned_to_me = $scope.assignedToMe;
-      }
-
-      if ($scope.minimumNotificationNumber !== null) {
-        options.minimum_notification_number = $scope.minimumNotificationNumber;
-      }
-
-      if ($scope.daysSinceLastNotification !== null) {
-        options['days_since_last_notification[begin]'] = $scope.daysSinceLastNotification.begin;
-        options['days_since_last_notification[end]'] = $scope.daysSinceLastNotification.end;
-      }
-
-      if ($scope.daysForLastNotificationDeadline !== null) {
-        options['days_for_last_notification_deadline[begin]'] = $scope.daysForLastNotificationDeadline.begin;
-        options['days_for_last_notification_deadline[end]'] = $scope.daysForLastNotificationDeadline.end;
-      }
-
-      if ($scope.daysForOverdueNotification !== null) {
-        options['days_for_overdue_notification[begin]'] = $scope.daysForOverdueNotification.begin;
-        options['days_for_overdue_notification[end]'] = $scope.daysForOverdueNotification.end;
       }
 
       return options;
@@ -302,10 +238,6 @@ angular
         AdvancedFilters.category($scope.activeAdvancedFilters, 'reports');
       }
 
-      if (status === 'shapefile') {
-        AdvancedFilters.shapefile($scope.activeAdvancedFilters);
-      }
-
       if (status === 'status') {
         AdvancedFilters.status($scope.activeAdvancedFilters, 'reports');
       }
@@ -330,16 +262,6 @@ angular
         AdvancedFilters.area($scope.activeAdvancedFilters);
       }
 
-      if (status === 'overdueOnly') {
-        $translate('REPORTS_FILTERS_ADVANCED_FILTERS_ONLY_DELAYED_REPORTS').then(function(translation) {
-          $scope.activeAdvancedFilters.push({
-            title: 'Atraso',
-            type: 'overdueOnly',
-            desc: translation
-          });
-        });
-      }
-
       if (status === 'assignedToMyGroup') {
         $translate('REPORTS_FILTERS_REPORTS_ASSOCIATED').then(function(translation){
           $scope.activeAdvancedFilters.push({
@@ -358,22 +280,6 @@ angular
             desc: 'À mim'
           });
         });
-      }
-
-      if (status === 'minimumNotificationNumber') {
-        AdvancedFilters.notificationMinimumNumber($scope.activeAdvancedFilters);
-      }
-
-      if (status === 'daysSinceLastNotification') {
-        AdvancedFilters.notificationSinceLast($scope.activeAdvancedFilters);
-      }
-
-      if (status === 'daysForLastNotificationDeadline') {
-        AdvancedFilters.notificationDeadline($scope.activeAdvancedFilters);
-      }
-
-      if (status === 'daysForOverdueNotification') {
-        AdvancedFilters.notificationOverdue($scope.activeAdvancedFilters);
       }
     };
 
