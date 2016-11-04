@@ -10,9 +10,6 @@
       <a href="" ng-click="currentTab = 'progress'" ng-class="{'active': currentTab == 'progress'}">
         <span class="glyphicon glyphicon-pencil"></span> <p>Casos em andamento</p>
       </a>
-      <a href="" ng-click="currentTab = 'start'" ng-class="{'active': currentTab == 'start'}">
-        <span class="glyphicon glyphicon-file"></span> <p>Iniciar novo caso</p>
-      </a>
       <a href="" ng-click="currentTab = 'finished'" ng-class="{'active': currentTab == 'finished'}">
         <span class="glyphicon glyphicon-ok"></span> <p>Casos concluídos</p>
       </a>
@@ -136,38 +133,6 @@
     </div>
 
     <div class="loadingScrolling" ng-show="loadingPagination && !loadingContent"></div>
-  </div>
-
-  <!-- start case tab -->
-  <div ng-show="currentTab == 'start'">
-    <div class="simple_search">
-      <div class="col-xs-9 search_column1">
-        <span class="glyphicon glyphicon-search search_icon"></span>
-        <input type="text" placeholder="Buscar" style="width: 80%;" />
-      </div>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <table class="table custom_table" style="margin-top: 44px;">
-      <thead>
-        <tr>
-          <td>
-            <span>Nome do fluxo inicial</span><span class="arrow"></span>
-          </td>
-          <td width="80"></td>
-        </tr>
-      </thead>
-
-      <tr ng-repeat="flow in flows">
-        <td>{{ flow.title }}</td>
-        <td style="text-align: right;"><button href="" class="btn btn-info btn-custom" ng-click="createCase(flow)" promise-btn>Criar novo caso</button></td>
-      </tr>
-    </table>
-
-    <div ng-show="flows.length == 0 && !loadingContent" class="nice-and-centered">
-      <p>Nenhum fluxo inicial cadastrado até o momento.</p>
-    </div>
   </div>
 
   <!-- finished cases tab -->

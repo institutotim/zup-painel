@@ -20,7 +20,6 @@ angular
     };
 
     $scope.categories = categories;
-    $scope.createAnother = false;
 
     $scope.inventoryCategories = inventoriesCategoriesResponse.data;
 
@@ -187,22 +186,7 @@ angular
         newReportPromise.then(function (response) {
           $scope.showMessage('ok', 'O relato foi criado com sucesso.', 'success', true);
 
-          if ($scope.createAnother) {
-            $scope.lat = null;
-            $scope.lng = null;
-            $scope.itemId = null;
-            $scope.description = null;
-            $scope.formattedAddress = null;
-            $scope.reference = null;
-            $scope.user = null;
-            $scope.address = {};
-
-            $scope.uploader.clearQueue();
-
-            $rootScope.resolvingRequest = false;
-          } else {
-            $state.go('reports.show', {id: response.data.id});
-          }
+          $state.go('reports.show', {id: response.data.id});
         });
 
       });

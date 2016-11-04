@@ -4,7 +4,7 @@
 
 FROM selenium/standalone-chrome:2.47.1
 
-ENV NODE_VERSION 0.12.4
+ENV NODE_VERSION 0.12.17
 
 USER root
 

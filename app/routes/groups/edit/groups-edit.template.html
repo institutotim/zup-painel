@@ -7,6 +7,8 @@
       <li><a ng-href="#/{{ isService ? 'services' : 'groups' }}/{{ resource.id }}">{{ resource.name }}</a></li>
       <li>Editar permissões</li>
     </ul>
+
+    <a href="" ng-click="removeCollectionPermissions(permissions)" class="btn btn-info btn-custom">Apagar todas as permissões</a>
   </div>
 
   <div class="content groups-permissions">

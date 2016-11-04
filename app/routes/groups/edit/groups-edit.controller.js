@@ -676,6 +676,18 @@ angular
       });
     };
 
+    $scope.removeCollectionPermissions = function(permissionsCollection) {
+      $.each(permissionsCollection, function(i, permission) {
+        if(typeof permission.permission_names === 'string') {
+          $scope.removePermission(permission, permission.permission_names);
+        } else {
+          $.each(permission.permission_names, function(key, name) {
+            $scope.removePermission(permission, name);
+          });
+        }
+      });
+    }
+
     var findIndex = function (collection, predicate) {
       var index = -1;
 
