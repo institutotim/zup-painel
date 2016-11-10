@@ -30,6 +30,9 @@ angular
           ],
           "resolution_state": [
             "title", "id"
+          ],
+          "custom_fields": [
+            "title", "value"
           ]
         }
       ]);
