@@ -109,6 +109,7 @@ angular
               ENV, $window, amMoment) {
     amMoment.changeLocale('pt-br');
     $rootScope.systemVersion = ENV.version;
+    $rootScope.zendeskUrl = ENV.zendeskUrl;
 
     $templateCache.put("template/modal/backdrop.html",
       "<div class=\"modal-backdrop fade {{ backdropClass }}\"\n" +
