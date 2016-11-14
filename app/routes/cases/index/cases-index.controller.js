@@ -7,7 +7,7 @@ angular
       'CasesInactiveModalModule'
     ])
 
-  .controller('CasesIndexController', function ($scope, CasesService, FlowsService, CasesInactiveModalService, $q, $location, $timeout) {
+  .controller('CasesIndexController', function ($state, $scope, $rootScope, CasesService, FlowsService, CasesInactiveModalService, $q, $location, $timeout) {
     $scope.currentTab = 'my-cases';
 
     var page = 1, perPage = 30, total, lastPage;
@@ -248,6 +248,15 @@ angular
 
         $scope.showMessage('ok', 'O caso foi restaurado com sucesso.', 'success', false);
       });
+    };
+
+    $scope.openCase = function(kase, event) {
+      if(!$rootScope.loading
+        && event.target.parentNode.tagName.toLowerCase() != 'a'
+        && event.target.tagName.toLowerCase() != 'a'
+      ) {
+        $state.go('cases.edit', { id: kase.id });
+      }
     };
 
     initialize();
