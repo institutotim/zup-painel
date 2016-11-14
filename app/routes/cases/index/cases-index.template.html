@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <table class="table custom_table" infinite-scroll="paginate()" infinite-scroll-distance="2" infinite-scroll-disabled="loading || loadingPagination === null">
+    <table class="table custom_table items-listing-table" infinite-scroll="paginate()" infinite-scroll-distance="2" infinite-scroll-disabled="loading || loadingPagination === null">
       <thead>
         <tr>
           <td>Nome</td>
@@ -37,7 +37,7 @@
         </tr>
       </thead>
 
-      <tr ng-repeat="case in cases">
+      <tr ng-repeat="case in cases" ng-click="openCase(case, $event)">
         <td><a ng-href="#/cases/{{ case.id }}">Caso #{{ case.id }}</a></td>
         <td ng-repeat="(_, value) in case.custom_fields">{{value}}</td>
         <td>{{ case.updated_at | date:'dd/MM/yy HH:mm'}}</td>
@@ -99,7 +99,7 @@
       <div class="clearfix"></div>
     </div>
 
-    <table class="table custom_table reports" infinite-scroll="paginate()" infinite-scroll-distance="2" infinite-scroll-disabled="loading || loadingPagination === null">
+    <table class="table custom_table reports items-listing-table" infinite-scroll="paginate()" infinite-scroll-distance="2" infinite-scroll-disabled="loading || loadingPagination === null">
       <thead>
         <tr>
           <td>Nome</td>
@@ -111,7 +111,7 @@
         </tr>
       </thead>
 
-      <tr ng-repeat="case in cases">
+      <tr ng-repeat="case in cases" ng-click="openCase(case, $event)">
         <td><a ng-href="#/cases/{{ case.id }}">Caso #{{ case.id }}</a></td>
         <td ng-repeat="(_, value) in case.custom_fields">{{value}}</td>
         <td>{{ case.updated_at | date:'dd/MM/yy HH:mm'}}</td>
