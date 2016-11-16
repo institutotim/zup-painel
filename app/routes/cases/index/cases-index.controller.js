@@ -110,6 +110,7 @@ angular
       promise.then(function(responses) {
         $scope.flows = responses[1];
         $scope.cases = responses[0].cases;
+        $scope.cases_keys = Object.keys($scope.cases[0].custom_fields);
 
         total = parseInt(responses[0].headers().total);
         lastPage = Math.ceil(total / perPage);
