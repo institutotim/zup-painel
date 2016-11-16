@@ -29,7 +29,7 @@
       <thead>
         <tr>
           <td>Nome</td>
-          <td ng-repeat="(key, _) in cases[0].custom_fields">{{key}}</td>
+          <td ng-repeat="key in cases_keys">{{ key }}</td>
           <td ng-click="changeSorting('update_at')" ng-class="selectedCls('update_at')" class="sort-table">Atualizado em <span class="arrow"></span></td>
           <td ng-click="changeSorting('reponsible_user')" ng-class="selectedCls('reponsible_user')" class="sort-table">Último {{ 'CASE_RESPONSIBLE' | translate }} <span class="arrow"></span></td>
           <td>Etapas finalizadas</td>
@@ -39,7 +39,7 @@
 
       <tr ng-repeat="case in cases" ng-click="openCase(case, $event)">
         <td><a ng-href="#/cases/{{ case.id }}">Caso #{{ case.id }}</a></td>
-        <td ng-repeat="(_, value) in case.custom_fields">{{value}}</td>
+        <td ng-repeat="key in cases_keys">{{ case.custom_fields[key] }}</td>
         <td>{{ case.updated_at | date:'dd/MM/yy HH:mm'}}</td>
         <td ng-if="case.get_responsible_user">
           <a href="#/users/{{ case.get_responsible_user.id }}">
@@ -103,7 +103,7 @@
       <thead>
         <tr>
           <td>Nome</td>
-          <td ng-repeat="(key, _) in cases[0].custom_fields">{{key}}</td>
+          <td ng-repeat="key in cases_keys">{{key}}</td>
           <td ng-click="changeSorting('update_at')" ng-class="selectedCls('update_at')" class="sort-table">Atualizado em <span class="arrow"></span></td>
           <td ng-click="changeSorting('reponsible_user')" ng-class="selectedCls('reponsible_user')" class="sort-table">Último {{ 'CASE_RESPONSIBLE' | translate }} <span class="arrow"></span></td>
           <td>Etapas finalizadas</td>
@@ -113,7 +113,7 @@
 
       <tr ng-repeat="case in cases" ng-click="openCase(case, $event)">
         <td><a ng-href="#/cases/{{ case.id }}">Caso #{{ case.id }}</a></td>
-        <td ng-repeat="(_, value) in case.custom_fields">{{value}}</td>
+        <td ng-repeat="key in cases_keys">{{case.custom_fields[key]}}</td>
         <td>{{ case.updated_at | date:'dd/MM/yy HH:mm'}}</td>
         <td ng-if="case.get_responsible_user">
           <a href="#/users/{{ case.get_responsible_user.id }}">
