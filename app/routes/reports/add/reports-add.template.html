@@ -13,7 +13,7 @@
     <h3>1. Selecione a causa</h3>
 
     <div style="width: 40%">
-      <select-list ng-model="selectedCategory" option-name="title">
+      <select-list ng-model="selectedCategory" option-name="title" my-place-holder="Selecione uma causa">
         <li ng-repeat="category in $parent.$parent.categories | filter: q" ng-class="{ 'active': isSelected(category.id) }">
           <a href="" ng-click="select(category.id, category)"><strong><span ng-bind-html="category.title | highlight: q"></span></strong> <b class="glyphicon pull-right"></b></a>
 
