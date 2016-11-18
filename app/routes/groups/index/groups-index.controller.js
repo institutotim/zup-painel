@@ -63,6 +63,14 @@ angular
       });
     };
 
+    $scope.cloneGroup = function(group) {
+      var groupPromise = Restangular.one('groups/' + group.id + '/clone').customPOST();
+
+      groupPromise.then(function(response) {
+        $scope.groups.splice($scope.groups.indexOf(group), 0, response.data);
+      });
+    }
+
     $scope.manageNamespaces = function () {
       NamespacesModalService.open();
     };
