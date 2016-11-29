@@ -21,23 +21,37 @@ angular
                 style: google.maps.ZoomControlStyle.MEDIUM,
                 position: google.maps.ControlPosition.LEFT_BOTTOM
               },
-              mapTypeControl: false,
+              mapTypeControl: true,
               mapTypeControlOptions: {
-                mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'zup']
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                mapTypeIds: ['Google Map', 'Open Street Map']
               }
             }
+          },
+          osmMapTypeOptions: {
+            getTileUrl: function(coord, zoom) {
+              return "http://tile.openstreetmap.org/" +
+              zoom + "/" + coord.x + "/" + coord.y + ".png";
+            },
+            tileSize: new google.maps.Size(256, 256),
+            isPng: true,
+            maxZoom: 19,
+            minZoom: 0,
+            name: 'Open Street Map'
           },
 
           map: null,
           mainMarker: null,
 
           start: function() {
-            var styledMap = new google.maps.StyledMapType(this.options.styles, { name: 'zup' });
+            var styledMap = new google.maps.StyledMapType(this.options.styles, { name: 'Google Map' });
+            var osmMapType = new google.maps.ImageMapType(this.osmMapTypeOptions);
 
             this.map = new google.maps.Map(element[0], this.options.map);
 
-            this.map.mapTypes.set('zup', styledMap);
-            this.map.setMapTypeId('zup');
+            this.map.mapTypes.set('Google Map', styledMap);
+            this.map.mapTypes.set('Open Street Map', osmMapType);
+            this.map.setMapTypeId('Google Map');
 
             var position;
 
