@@ -4,7 +4,19 @@ angular
   .module('GoogleMapServiceModule', [])
   .factory('GoogleMapService', function (ENV, $compile, $rootScope) {
 
-    var _options = {map:{zoom: null,mapTypeControl:!1,panControl:!0,panControlOptions:{position:google.maps.ControlPosition.TOP_RIGHT},zoomControl:!0,zoomControlOptions:{position:google.maps.ControlPosition.TOP_RIGHT},scaleControl:!0,scaleControlOptions:{position:google.maps.ControlPosition.TOP_RIGHT},streetViewControl:!0,streetViewControlOptions:{position:google.maps.ControlPosition.TOP_RIGHT}}};
+    var _options = {map:{zoom: null,mapTypeControl:!0,mapTypeControlOptions:{style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,mapTypeIds: ['Google Map','Open Street Map']},panControl:!0,panControlOptions:{position:google.maps.ControlPosition.TOP_RIGHT},zoomControl:!0,zoomControlOptions:{position:google.maps.ControlPosition.TOP_RIGHT},scaleControl:!0,scaleControlOptions:{position:google.maps.ControlPosition.TOP_RIGHT},streetViewControl:!0,streetViewControlOptions:{position:google.maps.ControlPosition.TOP_RIGHT}}};
+
+    var osmMapTypeOptions = {
+      getTileUrl: function(coord, zoom) {
+        return "http://tile.openstreetmap.org/" +
+        zoom + "/" + coord.x + "/" + coord.y + ".png";
+      },
+      tileSize: new google.maps.Size(256, 256),
+      isPng: true,
+      maxZoom: 19,
+      minZoom: 0,
+      name: 'Open Street Map'
+    };
 
     /***
     *  Creates a new Google Map canvas
@@ -16,11 +28,12 @@ angular
     *  @param mapElement {Element} - Element object that binds to the map
     */
     var Map = function(itemsAreReports, mapLat, mapLng, mapZoom, mapElement) {
-      _options.map.zoom = mapZoom;
+      _options.map.zoom = osmMapTypeOptions.zoom = mapZoom;
 
       // we define some helpers
       var homeLatlng = new google.maps.LatLng(mapLat, mapLng);
-      var styledMap = new google.maps.StyledMapType(_options.styles, { name: 'zup' });
+      var styledMap = new google.maps.StyledMapType(_options.styles, { name: 'Google Map' });
+      var osmMapType = new google.maps.ImageMapType(osmMapTypeOptions);
 
       // we set the type of items the map will handle
       this.itemsAreReports = itemsAreReports;
@@ -28,8 +41,9 @@ angular
       // we bind the google maps to out element
       this.map = new google.maps.Map(mapElement, _options.map);
 
-      this.map.mapTypes.set('zup', styledMap);
-      this.map.setMapTypeId('zup');
+      this.map.mapTypes.set('Google Map', styledMap);
+      this.map.mapTypes.set('Open Street Map', osmMapType);
+      this.map.setMapTypeId('Google Map');
       this.map.setCenter(homeLatlng);
 
       // we also initialize a few variables that we are going to use it :-D

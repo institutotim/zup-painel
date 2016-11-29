@@ -19,7 +19,11 @@ angular
             homeLatlng: new google.maps.LatLng(ENV.mapLat, ENV.mapLng),
             map: {
               zoom: zoom,
-              mapTypeControl: false,
+              mapTypeControl: true,
+              mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                mapTypeIds: ['Google Map', 'Open Street Map']
+              },
               panControl: true,
               panControlOptions: {
                 position: google.maps.ControlPosition.RIGHT_CENTER
@@ -37,6 +41,17 @@ angular
                 position: google.maps.ControlPosition.RIGHT_CENTER
               }
             }
+          },
+          osmMapTypeOptions: {
+            getTileUrl: function(coord, zoom) {
+              return "http://tile.openstreetmap.org/" +
+              zoom + "/" + coord.x + "/" + coord.y + ".png";
+            },
+            tileSize: new google.maps.Size(256, 256),
+            isPng: true,
+            maxZoom: 19,
+            minZoom: 0,
+            name: 'Open Street Map'
           },
 
           zoomLevels: {},
@@ -63,12 +78,14 @@ angular
             this.zoomLevels = {};
             this.currentZoom = 11;
 
-            var styledMap = new google.maps.StyledMapType(this.options.styles, { name: 'zup' });
+            var styledMap = new google.maps.StyledMapType(this.options.styles, { name: 'Google Map' });
+            var osmMapType = new google.maps.ImageMapType(this.osmMapTypeOptions);
 
             this.map = new google.maps.Map(element[0], this.options.map);
 
-            this.map.mapTypes.set('zup', styledMap);
-            this.map.setMapTypeId('zup');
+            this.map.mapTypes.set('Google Map', styledMap);
+            this.map.mapTypes.set('Open Street Map', osmMapType);
+            this.map.setMapTypeId('Google Map');
             this.map.setCenter(this.options.homeLatlng);
 
             setTimeout(function() {
