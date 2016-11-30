@@ -3,7 +3,6 @@ angular
     'ItemsIndexModule',
     'ItemsShowModule',
     'ItemsEditModule',
-    'ItemsSelectCategoryModule',
     'ItemsCategoriesIndexModule',
     'ItemsCategoriesEditModule'
   ])
