@@ -16,7 +16,7 @@ module.exports = function (grunt) {
 
     SERVER_IP: process.env.SERVER_IP || '127.0.0.1',
     SERVER_PORT: process.env.SERVER_PORT || 9000,
-    API_URL: process.env.API_URL,
+    API_URL: process.env.API_URL  || 'http://zup.conexaobrasil.org:8282',
     MAP_LAT: process.env.MAP_LAT,
     MAP_LNG: process.env.MAP_LNG,
     MAP_ZOOM: process.env.MAP_ZOOM,
