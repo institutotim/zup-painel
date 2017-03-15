@@ -7,9 +7,9 @@
 
   #login .logo {
     width: 280px;
-    height: 37px;
+    height: 100px;
     margin-bottom: 60px;
-    background-image: url('../images/logo-dark.png');
+    background-image: url('../images/logo-light.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -18,9 +18,9 @@
       @extend %logo;
     }
 
-    .slogan-title::before {
+    /* .slogan-title::before {
       content: "Zeladoria Urbana Participativa";
-    }
+    } */
   }
 
   #login .sponsor_logo {
@@ -42,13 +42,13 @@
       .logo {
         display: block;
         width: 300px;
-        padding-top: 20px;
+        padding-top: 2px;
         padding-bottom: 20px;
 
         .img {
           @extend %logo;
           width: 300px;
-          height: 37px;
+          height: 67px;
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center;
@@ -65,7 +65,7 @@
       height: 37px;
 
       &::before {
-        content: url('../images/logo-dark.png');
+        content: url('../images/logo-light.png');
       }
     }
   }
