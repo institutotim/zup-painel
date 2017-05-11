@@ -1,38 +1,69 @@
-'use strict';
+(function (angular, _) {
+  'use strict';
 
-angular
-  .module('ReportsShowControllerModule', [
-    'MapShowReportComponentModule',
-    'ReportsEditStatusModalControllerModule',
-    'ReportsEditDescriptionModalControllerModule',
-    'ReportsEditCustomFieldModalControllerModule',
-    'ReportsEditCategoryModalControllerModule',
-    'ReportsSelectAddressModalControllerModule',
-    'ReportsForwardModalControllerModule',
-    'ReportsSelectUserModalControllerModule',
-    'ReportsEditReferenceModalControllerModule',
-    'ReportsPrintModalControllerModule',
-    'ReportSearchMapComponentModule',
-    'MapNewReportComponentModule',
-    'NextFieldOnEnterComponentModule',
-    'duScroll',
-    'ReportsSendNotificationsModalControllerModule',
-    'ReportsCategoriesNotificationsServiceModule',
-    'ReportsCategoriesServiceModule',
-    'ReportsFeatureFlagsServiceModule',
-    'ckeditor', 'angularLoad',
-    'CasesServiceModule'
-  ])
+  angular
+    .module('ReportsShowControllerModule', [
+      'MapShowReportComponentModule',
+      'MapStreetViewComponentModule',
+      'ReportsEditStatusModalControllerModule',
+      'ReportsEditDescriptionModalControllerModule',
+      'ReportsEditCategoryModalControllerModule',
+      'ReportsSelectAddressModalControllerModule',
+      'ReportsForwardModalControllerModule',
+      'ReportsSelectUserModalControllerModule',
+      'ReportsEditReferenceModalControllerModule',
+      'ReportsPrintModalControllerModule',
+      'ReportSearchMapComponentModule',
+      'MapNewReportComponentModule',
+      'NextFieldOnEnterComponentModule',
+      'duScroll',
+      'ReportsSendNotificationsModalControllerModule',
+      'ReportsCategoriesNotificationsServiceModule',
+      'ReportsCategoriesServiceModule',
+      'ReportsItemsServiceModule',
+      'ReportsFeatureFlagsServiceModule',
+      'ReportsPhraseologiesServiceModule',
+      'ReportsImagesDestroyModalModule',
+      'ReportsImagesEditModalModule',
+      'ReportsImagesAddModalModule',
+      'GalleryModalControllerModule',
+      'ckeditor', 'angularLoad',
+      'CasesServiceModule'
+    ])
 
-  .value('duScrollOffset', 200)
+    .value('duScrollOffset', 200)
+    .controller('ReportsShowController', ReportsShowController);
 
-  .controller('ReportsShowController', function ($scope, Restangular, $q, $modal, $window, reportResponse, $state, $rootScope, $log, CasesService, ReportsCategoriesNotificationsService, ReportsCategoriesService, ReportsFeatureFlagsService, angularLoad, ENV) {
+  ReportsShowController.$inject = [
+    '$scope',
+    'Restangular',
+    '$q',
+    '$modal',
+    '$window',
+    'reportResponse',
+    '$state',
+    '$rootScope',
+    '$log',
+    'CasesService',
+    'ReportsCategoriesNotificationsService',
+    'ReportsCategoriesService',
+    'ReportsPhraseologiesService',
+    'ReportsItemsService',
+    'ReportsFeatureFlagsService',
+    'ReportsImagesService',
+    'ReportsImagesAddModalService',
+    'ReportsImagesEditModalService',
+    'ReportsImagesDestroyModalService',
+    'GalleryModalService',
+    'angularLoad',
+    'ENV'
+  ];
+  function ReportsShowController($scope, Restangular, $q, $modal, $window, reportResponse, $state, $rootScope, $log, CasesService, ReportsCategoriesNotificationsService, ReportsCategoriesService, ReportsPhraseologiesService, ReportsItemsService, ReportsFeatureFlagsService, ReportsImagesService, ReportsImagesAddModalService, ReportsImagesEditModalService, ReportsImagesDestroyModalService, GalleryModalService, angularLoad, ENV) {
 
     $log.info('ReportsShowController created.');
     $scope.$on('$destroy', function () {
       $log.info('ReportsShowController destroyed.');
     });
-
 
     $scope.report = reportResponse.data;
 
@@ -63,11 +94,21 @@ angular
       $scope.lng = null;
     }
 
+    function _parseCommentUrls(comment) {
+      var regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
+        matches = _.uniq((comment.message || '').match(regex));
+
+      _.each(matches, function (url) {
+        comment.message = comment.message.replace(url, '[' + url + '](' + url + ')');
+      });
+      return comment;
+    }
+
     // Fetch comments
     Restangular.one('reports', $scope.report.id).all('comments').getList({
       return_fields: 'id,created_at,message,visibility,author.id,author.name'
     }).then(function (response) {
-      $scope.comments = response.data;
+      $scope.comments = _.map(response.data, _parseCommentUrls);
     });
 
     // Fetch feedback
@@ -77,13 +118,39 @@ angular
       $scope.feedback = response.data;
     });
 
+    // Fetch phraseologies
+    ReportsPhraseologiesService.fetchAll({
+      display_type: 'full',
+      return_fields: 'title,description',
+      grouped: true
+    }).then(function (phraseologies) {
+      $scope.phraseologies = _.pick(phraseologies, function (value, key) {
+        return (key === '') || (value[0].reports_category_id === $scope.report.category.id);
+      });
+    });
+
     ReportsFeatureFlagsService.getFeatureFlags().then(function (response) {
       ReportsFeatureFlagsService.convertFeaturesFlagsFrom(response.data).and().addInto($scope)
     });
 
-    for (var c = $scope.report.images.length - 1; c >= 0; c--) {
-      $scope.images.push({versions: $scope.report.images[c]});
-    }
+    // Fetch group items
+    var _fetchGroupItems = function () {
+      if ($scope.report.grouped) {
+        $scope.loadingGroupedReports = true;
+        Restangular.one('reports').one('items', $scope.report.id).all('group')
+          .getList()
+          .then(function (res) {
+            $scope.loadingGroupedReports = false;
+            if (res.status !== 200) {
+              $rootScope.showMessage('exclamation-sign', 'Erro ao carregar relatos agrupados', 'error', false);
+              return $scope.report.grouped = false;
+            }
+            $scope.report.grouped_items = res.data;
+          });
+      }
+    };
+
+    _fetchGroupItems();
 
     $scope.newUserResponse = {message: null, privateComment: true, typing: false};
     $scope.newSystemComment = {message: null, typing: false};
@@ -95,7 +162,7 @@ angular
     var sendComment = function (message, visibility) {
       return Restangular.one('reports', $scope.report.id)
         .customPOST({
-          message: message,
+          message: message, replicate: !!$scope.report.replicate,
           visibility: visibility,
           return_fields: 'id,created_at,message,visibility,author.id,author.name'
         }, 'comments');
@@ -114,7 +181,7 @@ angular
         $scope.newUserResponse.message = null;
         $scope.processingComment = false;
 
-        $scope.comments.push(response.data);
+        $scope.comments.push(_parseCommentUrls(response.data));
 
         $scope.refreshHistory();
       });
@@ -317,11 +384,11 @@ angular
         windowClass: 'modal-reports-select-user',
         resolve: {
           setUser: ['Restangular', '$state', '$rootScope', function (Restangular, $state, $rootScope) {
-            return function (user) {
+            return function (user, replicate) {
               $rootScope.resolvingRequest = true;
 
               var changeStatusPromise = Restangular.one('reports', $scope.report.category.id).one('items', $scope.report.id).one('assign').customPUT({
-                'user_id': user.id,
+                'user_id': user.id, 'replicate': !!replicate,
                 'return_fields': ''
               });
 
@@ -336,6 +403,10 @@ angular
 
           filterByGroup: function () {
             return $scope.report.assigned_group.id;
+          },
+
+          report: function () {
+            return $scope.report;
           }
         },
         controller: 'ReportsSelectUserModalController'
@@ -412,7 +483,7 @@ angular
       {type: 'status', name: 'Estados', selected: false},
       {type: 'address', name: 'Endereço', selected: false},
       {type: 'description', name: 'Descrição', selected: false},
-      {type: 'category', name: 'Categoria', selected: false},
+      {type: 'category', name: 'Categoria', selected: false}
     ];
 
     $scope.availableHistoryDateFilters = [
@@ -461,7 +532,7 @@ angular
 
     var lastAddress = $scope.report.address, lastNumber = $scope.report.number;
     var wasPositionUpdated = false;
-    $scope.fieldOnEnter = function (previousField, currentField) {
+    $scope.fieldOnEnter = function (previousField) {
       if (previousField.name == 'address' || $scope.address.address == '' || $scope.address.number == '') {
         wasPositionUpdated = false;
         return;
@@ -522,20 +593,19 @@ angular
 
     $scope.canSendNotifications = $scope.report.category.notifications &&
       $rootScope.hasAnyPermission(['reports_items_restart_notification',
-      'reports_items_send_notification',
-      'reports_full_access',
-      'reports_categories_edit',
-      'reports_items_edit']);
+        'reports_items_send_notification',
+        'reports_full_access',
+        'reports_categories_edit',
+        'reports_items_edit']);
 
     $scope.notifications = $scope.report.notifications;
 
-    $scope.reloadNotifications = function() {
+    $scope.reloadNotifications = function () {
       var reloadNotificationsFields = ['status', 'notifications.notification_type.title', 'notifications.notification_type.default_deadline_in_days', 'notifications.created_at', 'notifications.days_to_deadline',
         'notifications.content', 'notifications.active'];
-      Restangular.one('reports').one('items', $scope.report.id).get({ 'return_fields': reloadNotificationsFields.join() }).then(function(r){
+      Restangular.one('reports').one('items', $scope.report.id).get({'return_fields': reloadNotificationsFields.join()}).then(function (r) {
         $scope.notifications = r.data.notifications;
       });
-
     };
 
     $scope.scriptLoaded = false;
@@ -575,11 +645,71 @@ angular
       });
     };
 
+    $scope.ungroupReport = function (report_id) {
+      if (confirm('Tem certeza que deseja desvincular o relato ' + report_id + ' do grupo?')) {
+        ReportsItemsService.ungroupReport(String(report_id));
+      }
+    };
+
+    $scope.$on('reportGroupsUpdated', function (event, response) {
+      if (!_.contains([200, 201], response.status)) {
+        return $rootScope.showMessage('exclamation-sign', response.message, 'error', false);
+      }
+
+      $rootScope.showMessage('ok', response.message, 'success', false);
+      _fetchGroupItems();
+    });
+
+    $scope.hasPhraseologies = function () {
+      return !!_.size($scope.phraseologies);
+    };
+
+    $scope.applyPhraseology = function (phraseology) {
+      $scope.newUserResponse.typing = true;
+      $scope.newUserResponse.message = phraseology.description;
+    };
+
+    $scope.getVisibilityIcon = function (image) {
+      return (image.visibility === 'visible') ? 'fa-unlock-alt' : 'fa-lock';
+    };
+
+    $scope.refreshImages = function () {
+      $scope.loadingReportImages = true;
+
+      var promise = ReportsImagesService.listImages($scope.report.id);
+      promise.then(function (response) {
+        $scope.loadingReportImages = false;
+        $scope.report.images = response.data.images;
+      }, function () {
+        $scope.loadingReportImages = false;
+        $rootScope.showMessage('exclamation-sign', 'Erro ao atualizar imagens.', 'error', false);
+      });
+    };
+
+    $scope.editImage = function (image) {
+      ReportsImagesEditModalService.open($scope, $scope.report, _.clone(image));
+    };
+
+    $scope.removeImage = function (image) {
+      ReportsImagesDestroyModalService.open($scope, $scope.report, image);
+    };
+
+    $scope.addImages = function () {
+      ReportsImagesAddModalService.open($scope, $scope.report);
+    };
+
+    $scope.showImageGallery = function (image) {
+      image.versions = {};
+      image.versions.original = image.original;
+      GalleryModalService.open(image);
+    }
+
     $scope.openRelatedCase = function(kase){
       $state.go('cases.edit', { id: kase.id });
     };
 
     $scope.openRelatedInventoryItem = function(item){
       $state.go('items.show', { id: item.id });
-    }
-  });
+    };
+  }
+})(angular, _);

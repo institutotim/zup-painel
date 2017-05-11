@@ -9,7 +9,6 @@ exports.config = {
 
   baseUrl: baseUrl,
   directConnect : process.env.DEBUG_TESTS || false,
-  seleniumAddress: 'http://localhost:4444/wd/hub',
   framework: 'cucumber',
 
   specs: [

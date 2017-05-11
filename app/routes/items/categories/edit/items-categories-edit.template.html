@@ -282,7 +282,7 @@
                     <a href="" class="handle icon"><span class="glyphicon glyphicon-move"></span></a>
                   </div>
 
-                  <div class="option trash" ng-hide="!hasPermission('inventories_formulas_full_access')">
+                  <div class="option trash" ng-hide="!hasPermission('inventories_formulas_full_access') && !hasPermission('inventories_categories_edit', category.id) && !hasPermission('inventories_full_access')">
                     <div class="popover bottom" inventory-popover="remove" ng-if="popover.remove === true">
                       <div class="arrow"></div>
                       <h3 class="popover-title">Remover campo {{ field.label }}</h3>

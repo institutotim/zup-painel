@@ -7,14 +7,14 @@ angular
   .config(['$stateProvider', function($stateProvider) {
 
     $stateProvider.state('reports.show', {
-      url: '/{id:[0-9]{1,9}}',
+      url: '/{id:[0-9]+}',
       resolve: {
         'reportResponse': ['Restangular', '$stateParams', 'ReturnFieldsService', function(Restangular, $stateParams, ReturnFieldsService) {
           var returnFields = [
             "id", "protocol", "address", "number", "district", "country", "postal_code", "state",
             "city", "created_at", "description", "comment_required_when_updating_status", "feedback", "images",
             "inventory_item", "inventory_item_category_id", "overdue", "position", "reference", "status",
-            "custom_fields", "perimeter", "offensive_flags",
+            "custom_fields", "perimeter", "offensive_flags", "grouped",
             {
               "notifications": [
                 "created_at", "days_to_deadline", "content", "active",

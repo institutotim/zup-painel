@@ -102,3 +102,49 @@ case-step-field .uploader {
     margin: 0 0 0 20px;
   }
 }
+
+@media print {
+  case {
+    & > * {
+      page-break-inside: avoid !important;
+      position: relative !important;
+    }
+
+    .header {
+      display: block;
+      background: #ffffff;
+      color: #333333;
+      position: static !important;
+
+      a {
+        display: none !important;
+      }
+    }
+
+    .tabs, .case-content.aside {
+      display: none !important;
+    }
+
+    .case-content.principal {
+      width: 100% !important;
+      border: none !important;
+
+      .case-header a, .upload-image {
+        display: none !important;
+      }
+
+      .uploader .queue {
+        text-align: left !important;
+      }
+    }
+
+    case-step .case-footer, i.glyphicon.glyphicon-trash {
+      display: none !important;
+    }
+
+    a:link:after, a:visited:after {
+      display: none;
+      content: "" !important;
+    }
+  }
+}

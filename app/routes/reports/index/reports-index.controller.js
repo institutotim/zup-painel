@@ -1,16 +1,33 @@
-'use strict';
+(function (angular) {
+  'use strict';
 
-angular
-  .module('ReportsIndexControllerModule', [
-    'ReportsDestroyModalControllerModule',
-    'OnFocusComponentModule',
-    'OnBlurComponentModule',
-    'AdvancedFiltersServiceModule',
-    'ReportsItemsServiceModule'
-  ])
+  angular
+    .module('ReportsIndexControllerModule', [
+      'ReportsDestroyModalControllerModule',
+      'ExporterComponentModule',
+      'OnFocusComponentModule',
+      'OnBlurComponentModule',
+      'AdvancedFiltersServiceModule',
+      'ReportsItemsServiceModule',
+      'MenuActionsComponentModule',
+      'CreateReportsGroupModalControllerModule'
+    ])
+    .controller('ReportsIndexController', ReportsIndexController);
 
-  .controller('ReportsIndexController', function ($rootScope, $scope, Restangular, $modal, $q, AdvancedFilters, $location, $window, $cookies, ReportsItemsService, $state, $log, $translate) {
-
+  ReportsIndexController.$inject = [
+    '$rootScope',
+    '$scope',
+    'AdvancedFilters',
+    '$location',
+    '$window',
+    '$cookies',
+    'ReportsItemsService',
+    'CreateReportsGroupModalService',
+    '$state',
+    '$log',
+    '$translate'
+  ];
+  function ReportsIndexController($rootScope, $scope, AdvancedFilters, $location, $window, $cookies, ReportsItemsService, CreateReportsGroupModalService, $state, $log, $translate) {
     $log.debug('ReportsIndexController created.');
 
     $scope.loading = true;
@@ -20,6 +37,9 @@ angular
     $scope.filtersHash = null;
     $scope.categories = {};
     $scope.categoriesStatuses = {};
+    $scope.suggestions = {};
+    $scope.groupSelection = [];
+    $scope.currentGroupCategory = null;
 
     // Basic filters
     var resetFilters = function () {
@@ -60,6 +80,7 @@ angular
         {name: 'Por perímetro de encaminhamento...', action: 'shapefile'},
         {name: translations.REPORTS_FILTERS_ONLY_DELAYED_REPORTS, action: 'overdueOnly'},
         {name: 'Associados ao meu grupo...', action: 'assignedToMyGroup'},
+        {name: 'Atribuído ao grupo responsável...', action: 'group'},
         {name: 'Associados à mim...', action: 'assignedToMe'},
         {name: 'Quantidade de notificações emitidas...', action: 'minimumNotificationNumber'},
         {name: 'Dias desde a última notificação emitida...', action: 'daysSinceLastNotification'},
@@ -328,7 +349,7 @@ angular
       }
 
       if (status === 'overdueOnly') {
-        $translate('REPORTS_FILTERS_ADVANCED_FILTERS_ONLY_DELAYED_REPORTS').then(function(translation) {
+        $translate('REPORTS_FILTERS_ONLY_DELAYED_REPORTS').then(function(translation) {
           $scope.activeAdvancedFilters.push({
             title: 'Atraso',
             type: 'overdueOnly',
@@ -393,7 +414,94 @@ angular
       AdvancedFilters.share();
     };
 
-    var $handleDestroy = $scope.$on('$destroy', function () {
+    $scope.editFilter = function (filter) {
+      if (filter.type === 'area') {
+        AdvancedFilters.area($scope.activeAdvancedFilters, filter);
+      }
+    };
+
+    $scope.isReportSelected = function (report) {
+      return $scope.groupSelection.indexOf(report) > -1;
+    };
+
+    $scope.validateCategory = function (report) {
+      return (!$scope.currentGroupCategory || !$scope.groupSelection.length) || ($scope.currentGroupCategory === report.category_id);
+    };
+
+    $scope.toggleGroupSelection = function (report) {
+      if ($scope.validateCategory(report)) {
+        $scope.currentGroupCategory = report.category_id;
+        var index = $scope.groupSelection.indexOf(report);
+
+        if (index === -1) {
+          return $scope.groupSelection.push(report);
+        }
+        $scope.groupSelection.splice(index, 1);
+      }
+    };
+
+    $scope.clearGroupSelection = function () {
+      $scope.groupSelection = [];
+    };
+
+    $scope.submitGroupSelection = function () {
+      if (!$scope.groupSelection.length > 1) {
+        return new Error('Group selection must have two or more items');
+      }
+      CreateReportsGroupModalService.open(null, $scope.groupSelection);
+    };
+
+    $scope.acceptSuggestion = function (suggestion) {
+      CreateReportsGroupModalService.open(suggestion, null);
+    };
+
+    $scope.ignoreSuggestion = function (suggestion) {
+      ReportsItemsService.updateSuggestion(suggestion, 'ignore');
+    };
+
+    $scope.updateSuggestions = function () {
+      $scope.$parent.loadingContent = true;
+      ReportsItemsService.fetchSuggestions();
+    };
+
+    if ($rootScope.hasPermission('reports_items_group')) {
+      $scope.updateSuggestions();
+    }
+
+    $scope.getReportPopoverTemplate = ReportsItemsService.getReportPopoverTemplate;
+    $scope.reportPopoverContent = ReportsItemsService.reportPopoverContent;
+
+    $scope.showSuggestionPopup = function () {
+      angular.element('.groupSuggestions').css('z-index', 1000);
+    };
+
+    $scope.hideSuggestionPopup = function () {
+      angular.element('.groupSuggestions').css('z-index', 899);
+    };
+
+    $scope.$on('reportsSuggestionsFetched', function (event, suggestions) {
+      $scope.suggestions = suggestions;
+      $scope.suggtotal = ReportsItemsService.suggtotal;
+      $scope.$parent.loadingContent = false;
+    });
+
+    $scope.$on('reportGroupsUpdated', function (event, response) {
+      if (!_.contains([200, 201], response.status)) {
+        return $rootScope.showMessage('exclamation-sign', response.message, 'error', false);
+      }
+      $rootScope.showMessage('ok', response.message, 'success', false);
+
+      if (response.report_id) {
+        $state.go('reports.show', {id: response.report_id});
+      } else {
+        $scope.updateSuggestions();
+        $scope.clearGroupSelection();
+      }
+    });
+
+    $scope.$on('$destroy', function () {
       $log.debug('ReportsIndexController destroyed.');
     });
-  });
+  }
+
+})(angular);

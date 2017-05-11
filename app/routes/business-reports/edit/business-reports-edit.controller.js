@@ -7,7 +7,8 @@
       'BusinessReportsEditFormDirectiveModule',
       'BusinessReportsEditChartsDirectiveModule',
       'BusinessReportsServiceModule',
-      'AngularPrint'
+      'AngularPrint',
+      'dndLists'
     ])
     .controller('BusinessReportsEditController', BusinessReportsEditController);
 

@@ -49,7 +49,7 @@ Reports.prototype = {
   },
 
   getAllItems: function (byColumn) {
-    var selectorItems = byColumn ? ':nth-child(' + byColumn + ')' : ':not(.status_color):not(:last-child)';
+    var selectorItems = byColumn ? ':nth-child(' + byColumn + ')' : ':not(:nth-child(2)):not(:nth-child(4)):not(.status_color):not(:last-child)';
 
     return element.all(by.css('#reports-listing-table tbody tr td' + selectorItems));
   },
@@ -93,7 +93,7 @@ Reports.prototype = {
   },
 
   getProtocol: function () {
-    return element.all(by.css('#reports-listing-table tbody .column-protocol')).get(0);
+    return element.all(by.css('#reports-listing-table tbody .column-protocol a')).get(0);
   },
 
   getAdress: function () {

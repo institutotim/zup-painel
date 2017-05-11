@@ -402,7 +402,7 @@ $sidebar-size-full: 300px;
       top: 129px;
       left: 0;
       padding-left: $sidebar-size;
-      z-index: 999;
+      z-index: 998;
 
       &.advancedSearch {
         min-height: 44px;
@@ -652,10 +652,16 @@ $sidebar-size-full: 300px;
 
         .icon_action {
           font-size: 18px;
+
+          &.widish {
+            padding-left: 5px;
+            padding-right: 5px;
+          }
         }
 
         .actions {
           text-align: right;
+          min-width: 120px;
         }
 
         .status_color {

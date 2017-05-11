@@ -1,0 +1,97 @@
+@import "compass/css3";
+
+.groupSuggestions {
+  width: 100%;
+  left: 0;
+  min-width: 680px;
+  height: auto;
+  background: #c8c9c7;
+  border-bottom: 1px solid #C5C5C5;
+  position: fixed;
+  padding-left: 80px;
+  top: 129px;
+  z-index: 899;
+}
+
+.groupSuggestion {
+  width: auto;
+  background-color: #F0F0F0;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 11px 10px 10px 10px;
+  display: flex;
+  align-items: center;
+
+  .inline {
+    display: inline;
+  }
+
+  .suggestionSummary {
+    width: 100%;
+    float: left;
+  }
+
+  .suggestionActions {
+    float: right;
+    min-width: 165px;
+  }
+}
+
+.reportGroupPopover + .popover {
+  background-color: #259ecb;
+  color: white;
+  z-index: 9999;
+
+  .arrow:after {
+    border-top-color: #259ecb;
+  }
+}
+
+.reportPopover + .popover {
+  max-width: 650px;
+  z-index: 9999;
+
+  h3 {
+    background-color: transparent;
+  }
+
+  .centered-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    opacity: .15;
+    z-index: -1;
+  }
+}
+
+.preview-icon {
+  top: -2px;
+}
+
+.loadingGroupedReports {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  z-index: 999;
+
+  span {
+    display: block;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    background: url(../../images/loading.gif);
+    background-size: 64px 64px;
+  }
+}

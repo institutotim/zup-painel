@@ -1,26 +1,31 @@
-'use strict';
+(function (angular) {
+  'use strict';
 
-angular
-  .module('GalleryModalControllerModule', [
-    'panzoom',
-    'panzoomwidget',
-    'GalleryImageOnLoadComponentModule'
-  ])
+  angular
+    .module('GalleryModalControllerModule', [
+      'panzoom',
+      'panzoomwidget',
+      'GalleryImageOnLoadComponentModule'
+    ])
+    .controller('GalleryModalController', GalleryModalController)
+    .factory('GalleryModalService', GalleryModalService);
 
-  .controller('GalleryModalController', function($scope, $modalInstance, $window, image) {
+  GalleryModalController.$inject = [
+    '$scope',
+    '$modalInstance',
+    '$window',
+    'image'
+  ];
+  function GalleryModalController($scope, $modalInstance, $window, image) {
     $scope.loading = true;
     $scope.image = image;
 
-    
-
-    if (typeof image.url === 'undefined')
-    {
+    if (typeof image.url === 'undefined') {
       $scope.image.url = image.versions.original;
     }
 
-    $scope.$watch('imageDimensions', function(newValue, oldValue) {
-      if (newValue !== oldValue)
-      {
+    $scope.$watch('imageDimensions', function (newValue, oldValue) {
+      if (newValue !== oldValue) {
         $scope.panzoomConfig = {
           zoomLevels: 12,
           neutralZoomLevel: 5,
@@ -34,7 +39,30 @@ angular
 
     $scope.panzoomModel = {};
 
-    $scope.close = function() {
+    $scope.close = function () {
       $modalInstance.close();
     };
-  });
+  }
+
+  GalleryModalService.$inject = ['$modal'];
+  function GalleryModalService($modal) {
+    var self = {};
+
+    self.open = open;
+
+    function open(image) {
+      return $modal.open({
+        templateUrl: 'modals/gallery/gallery.template.html',
+        windowClass: 'gallery-modal',
+        controller: 'GalleryModalController',
+        resolve: {
+          image: function () {
+            return image;
+          }
+        }
+      }).result;
+    }
+
+    return self;
+  }
+})(angular);

@@ -2,11 +2,11 @@
 
 angular
   .module('ReportsSelectUserModalControllerModule', [])
-  .controller('ReportsSelectUserModalController', function(Restangular, $scope, $modalInstance, $q, setUser, filterByGroup) {
+  .controller('ReportsSelectUserModalController', function(Restangular, $scope, $modalInstance, $q, setUser, filterByGroup, report) {
     $scope.loadingPagination = false;
+    $scope.report = report;
 
-    if (filterByGroup)
-    {
+    if (filterByGroup) {
       $scope.resultsFiltered = true;
     }
 
@@ -30,7 +30,7 @@ angular
     };
 
     $scope.setUser = function(user) {
-      setUser(user);
+      setUser(user, $scope.report.replicate);
 
       $modalInstance.close();
     };

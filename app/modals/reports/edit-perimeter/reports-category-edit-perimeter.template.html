@@ -1,0 +1,61 @@
+<div class="modal-header perimeters-modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title">Editar perímetro</h4>
+</div>
+
+<div class="modal-body">
+
+  <form ng-submit="save()">
+
+    <div class="form-group">
+      <label for="perimeter">Perímetro/região</label>
+      <select-list
+        id="perimeter"
+        ng-model="perimeter.perimeter_id"
+        option-name="title"
+        option-value="id"
+        options="perimeters"
+        my-place-holder="Selecione o perímetro/região"
+        mark-dirty="perimeter"></select-list>
+    </div>
+
+    <hr/>
+
+    <div class="form-group">
+      <label for="group">Grupo responsável</label>
+      <select-list
+        id="group"
+        ng-model="perimeter.group_id"
+        option-name="name"
+        option-value="id"
+        options="groups"
+        my-place-holder="Selecione o grupo responsável"
+        mark-dirty="perimeter"></select-list>
+    </div>
+
+    <hr/>
+
+    <div class="form-group" style="margin-bottom: -20px;">
+      <label for="priority">Prioridade padrão do perímetro (opcional)</label>
+      <input type="number" min="0" max="100" class="form-control perimeters-input" ng-model="perimeter.priority" style="width: 70px;" id="priority" />
+      <span class="perimeter-help-label">Insira um valor de 0 a 100. Quanto maior o valor, maior a prioridade.</span>
+    </div>
+
+    <hr/>
+
+    <div class="form-group">
+      <label for="active">Status do perímetro</label>
+
+      <div class="clearfix"></div>
+
+      <div class="custom-private-option-column">
+        <input type="checkbox" bs-switch ng-model="perimeter.active" id="active" switch-on-text="Ativo" switch-off-text="Inativo">
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-info btn-custom btn-fat-custom" ng-click="save()" promise-btn="savePromise">Salvar</button>
+</div>

@@ -8,6 +8,24 @@
       <a ng-href="#/items/map"><span class="glyphicon glyphicon-map-marker"></span> <p>Explorar no mapa</p></a>
     </div>
 
+    <menu-actions>
+      <menu-action>
+        <a href="" ng-click="share()">Compartilhar link</a>
+      </menu-action>
+      <menu-action ng-if="hasAnyPermission(['inventories_full_access', 'inventories_items_export'])">
+        <exporter kind="inventory" filters="generateItemsFetchingOptions">Exportar</exporter>
+      </menu-action>
+      <menu-action ng-if="hasAnyPermission([
+        'reports_full_access', 'inventories_full_acess',
+        'reports_items_export', 'inventories_items_export'
+      ])">
+        <a ng-href="#/exports">Gerenciar exportações</a>
+      </menu-action>
+      <menu-action ng-if="hasPermission('inventories_full_access')">
+        <a ng-href="#/items/categories/deleted">Categorias deletadas</a>
+      </menu-action>
+    </menu-actions>
+
     <div class="btn-group">
       <a ng-href="#/items/select-category" class="btn btn-info btn-custom-group" ng-show="hasPermission('inventories_items_create') || hasPermission('inventories_categories_edit') || hasPermission('inventories_full_access')">+ Novo item</a>
       <a ng-href="#/items/categories" class="btn btn-info btn-custom-group" ng-show="hasPermission('inventories_categories_edit') || hasPermission('inventories_full_access')">Gerenciar categorias</a>
@@ -32,7 +50,11 @@
       </div>
 
       <div class="advanced_filters_bar" ng-show="activeAdvancedFilters.length !== 0">
-        <div class="filter" ng-repeat="filter in activeAdvancedFilters"><b>{{ filter.title }}</b> {{ filter.desc }} <span class="glyphicon glyphicon-remove" ng-click="removeFilter(filter)"></span></div>
+        <div class="filter" ng-repeat="filter in activeAdvancedFilters">
+          <b>{{ filter.title }}</b>&nbsp{{ filter.desc }}&nbsp
+          <span class="glyphicon glyphicon-edit" ng-click="editFilter(filter)" ng-show="filter.type === 'area'" title="Editar filtro"></span>
+          <span class="glyphicon glyphicon-remove" ng-click="removeFilter(filter)" title="Remover filtro"></span>
+        </div>
       </div>
 
       <div class="clearfix"></div>
@@ -47,16 +69,16 @@
     <thead>
       <tr>
         <td style="min-width: 5px" class="status_color"></td>
-        <td width="20%">
+        <td width="20%" ng-click="changeSorting('id')" ng-class="selectedCls('id')" class="sort-table">
           <span>Nome</span><span class="arrow"></span>
         </td>
-        <td width="{{ canUserEditItems ? '20%' : '30%' }}">
+        <td width="20%" ng-click="changeSorting('address')" ng-class="selectedCls('address')" class="sort-table">
           <span>Endereço</span><span class="arrow"></span>
         </td>
         <td width="15%" ng-click="changeSorting('user_name')" ng-class="selectedCls('user_name')" class="sort-table">
           <span>Criador</span><span class="arrow"></span>
         </td>
-        <td width="15%">
+        <td width="15%" ng-click="changeSorting('category_title')" ng-class="selectedCls('category_title')" class="sort-table">
           <span>Categoria</span><span class="arrow"></span>
         </td>
         <td width="10%" ng-click="changeSorting('created_at')" ng-class="selectedCls('created_at')" class="sort-table">

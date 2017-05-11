@@ -195,6 +195,10 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDimensionC
           drilldownLevelLabels.push(info.label);
         });
 
+        if (parts.dimension.role = 'time') {
+          drilldownLevelLabels = drilldownLevelLabels.reverse()
+        }
+
         dimensionValues.push({
           'label': drilldownLevelLabels.join(' / '),
           'value': drilldownLevelValues.join(','),
@@ -229,4 +233,3 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDimensionC
     $scope.initialize();
 
   }]);
-

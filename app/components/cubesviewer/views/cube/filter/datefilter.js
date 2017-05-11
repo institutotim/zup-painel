@@ -102,7 +102,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDateContro
     };
 
     $scope.dateStartOpen = function () {
-      PeriodSelectorService.open(false).then(function(period){
+      PeriodSelectorService.open(false, $scope.dateStart.value, $scope.dateEnd.value).then(function(period){
         $scope.dateStart = { value: moment(period.beginDate).startOf('day').format() };
         $scope.dateEnd = { value: moment(period.endDate).endOf('day').format() };
         $scope.updateDateFilter();
@@ -125,6 +125,19 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeFilterDateContro
 
     $scope.initialize();
 
-  }]);
+  }]).directive('date', function (dateFilter) {
+    return {
+      require:'ngModel',
+      
+      link:function (scope, elm, attrs, ctrl) {
+        var dateFormat = attrs['date'] || 'yyyy-MM-dd';
+      
+        console.log('Entrou');
 
-
+        ctrl.$formatters.unshift(function (modelValue) {
+          console.log(dateFilter(modelValue, dateFormat));
+          return dateFilter(modelValue, dateFormat);
+        });
+      }
+    };
+});

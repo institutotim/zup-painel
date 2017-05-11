@@ -1,0 +1,82 @@
+@import "compass/css3";
+
+.phraseologies-modal-header {
+  .modal-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .close {
+    font-size: 25px;
+  }
+}
+
+.phraseologies-no-content-message {
+  text-align: center;
+  margin-top: 100px;
+
+  p {
+    color: #909090;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.77);
+    margin: 17px 15px 0 0;
+    font-size: large;
+  }
+}
+
+.phraseologies-content {
+  overflow: hidden;
+}
+
+.phraseology-hint-text {
+  font-size: smaller;
+  font-style: italic;
+  width: 400px;
+}
+
+.big-text-area {
+  height: 225px !important;
+  resize: none;
+}
+
+.phraseologiesModal .modal-content {
+  height: 600px;
+  max-height: 600px;
+  overflow: hidden;
+}
+
+.phraseologies-category-title {
+  padding: 10px 10px 10px 30px;
+  height: 60px;
+  border-bottom: 1px solid #D9D9D9;
+  cursor: pointer;
+
+  :after {
+    font-family: 'Glyphicons Halflings';
+    content: '\e113';
+    color: #c6c6c6;
+    float: right;
+    margin-right: 15px;
+  }
+
+  &.collapsed {
+    :after {
+      content: '\e114';
+    }
+  }
+}
+
+.phraseologies-category-content {
+  border-bottom: 1px solid #D9D9D9;
+  padding: 15px 10px 15px 60px;
+
+  p {
+    color: #676767;
+  }
+
+  .phrasiology-actions {
+    font-size: 18px;
+
+    .icon_action {
+      cursor: pointer;
+    }
+  }
+}

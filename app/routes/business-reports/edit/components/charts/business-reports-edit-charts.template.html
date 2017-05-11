@@ -1,6 +1,12 @@
 <div class="charts-list">
-  <ul>
-    <li ng-repeat="chart in charts">
+  <ul dnd-list="charts">
+
+    <li ng-repeat="chart in charts  track by $index"
+        dnd-draggable="chart"
+        dnd-moved="charts.splice($index, 1)"
+        dnd-effect-allowed="move"
+        dnd-disable-if="!editable">
+
       <business-reports-chart
         ng-if="chart && isActive(chart)"
         editable="editable"
@@ -9,6 +15,9 @@
         on-chart-delete="deleteChart(chart.index)"
         on-chart-update="updatedChart(chart.index)">
       </business-reports-chart>
+
+    </li>
+    <li class="dndPlaceholder">
     </li>
   </ul>
   <div class="new-graphic-button-container" ng-if="editable">

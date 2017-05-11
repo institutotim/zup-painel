@@ -1,12 +1,30 @@
-/*global angular, _*/
-'use strict';
+(function (angular, _) {
+  'use strict';
 
-angular
-  .module('GroupsEditControllerModule', [
-    'DiacriticsInsensitiveFilterHelperModule'
-  ])
+  angular
+    .module('GroupsEditControllerModule', [
+      'DiacriticsInsensitiveFilterHelperModule'
+    ])
+    .controller('GroupsEditController', GroupsEditController);
 
-  .controller('GroupsEditController', function ($scope, $rootScope, Restangular, $stateParams, $location, $timeout, groupResponse, permissionsResponse, Resource, objectsResponse, $translate) {
+  GroupsEditController.$inject = [
+    '$scope',
+    '$rootScope',
+    'Restangular',
+    '$timeout',
+    'groupResponse',
+    'permissionsResponse',
+    'Resource',
+    'objectsResponse',
+    '$translate',
+    '$log'
+  ];
+  function GroupsEditController($scope, $rootScope, Restangular, $timeout, groupResponse, permissionsResponse, Resource, objectsResponse, $translate, $log) {
+    $log.info('GroupsEditController created.');
+    $scope.$on('$destroy', function () {
+      $log.info('GroupsEditController destroyed.');
+    });
+
     var isService = $scope.isService = Resource.route === 'services';
     $scope.resource = Resource;
     $scope.group = groupResponse.data;
@@ -19,7 +37,7 @@ angular
     $scope.reportsCategories = objectsResponse.data.reports_categories;
     $scope.businessReports = objectsResponse.data.business_reports;
     $scope.availablePermissionTypes = [];
-    $scope.newPermission = { type: null, objects: [], slugs: [] };
+    $scope.newPermission = {type: null, objects: [], slugs: []};
 
     $scope.isString = function (variable) {
       return typeof variable === 'string';
@@ -98,6 +116,12 @@ angular
               slug: 'manage_config',
               name: 'Gerenciar configurações do sistema',
               needsObject: false
+            },
+            {
+              slug: 'event_logs_view',
+              name: 'Visualizar auditoria de eventos',
+              needsObject: false,
+              tooltip: 'Permite visualizar a auditoria de eventos do sistema.'
             }
           ]
         },
@@ -146,6 +170,12 @@ angular
               needsObject: true,
               tooltip: 'Ao selecionar quais categorias de inventário o grupo terá acesso, os usuários poderão visualizar e excluir os itens de inventário das categorias selecionadas. Essa opção automaticamente ativará a permissão "Visualizar itens".'
             },
+          {
+            slug: 'inventories_items_export',
+            name: 'Exportar itens',
+            needsObject: false,
+            tooltip: 'Essa opção permitirá a exportação de inventários para CSV'
+          },
             {
               slug: 'inventories_items_read_only',
               name: 'Listar itens',
@@ -163,7 +193,7 @@ angular
               slug: 'reports_full_access',
               name: 'Gerenciar todas as ' + translations.REPORTS_ATTRIBUTES_CATEGORIES.toLowerCase(),
               needsObject: false,
-              tooltip: 'Selecionada esta opção, o grupo obtém todas as permissões de edição sobre todas as ' + translations.REPORTS_ATTRIBUTES_CATEGORIES.toLowerCase() + ' de ' + translations.REPORTS.toLowerCase() + ' existentes, sobre novas ' + translations.REPORTS_ATTRIBUTES_CATEGORIES.toLowerCase() + ' adicionados no futuro, e sobre todos os ' + translations.REPORTS.toLowerCase() +' criados pertencentes a todas as ' + translations.REPORTS_ATTRIBUTES_CATEGORIES.toLowerCase() + '. Também permite a visualização e edição de dados dos ' + translations.REPORTS.toLowerCase() + ', buscar, deletar e adicionar ' + translations.REPORTS.toLowerCase()
+              tooltip: 'Selecionada esta opção, o grupo obtém todas as permissões de edição sobre todas as ' + translations.REPORTS_ATTRIBUTES_CATEGORIES.toLowerCase() + ' de ' + translations.REPORTS.toLowerCase() + ' existentes, sobre novas ' + translations.REPORTS_ATTRIBUTES_CATEGORIES.toLowerCase() + ' adicionados no futuro, e sobre todos os ' + translations.REPORTS.toLowerCase() + ' criados pertencentes a todas as ' + translations.REPORTS_ATTRIBUTES_CATEGORIES.toLowerCase() + '. Também permite a visualização e edição de dados dos ' + translations.REPORTS.toLowerCase() + ', buscar, deletar e adicionar ' + translations.REPORTS.toLowerCase()
             },
             {
               slug: 'reports_categories_edit',
@@ -212,7 +242,7 @@ angular
 
             {
               slug: 'reports_items_forward',
-              name: 'Encaminhar ' + translations.REPORTS.toLowerCase(),
+              name: 'Alterar grupo/usuário responsável',
               needsObject: true,
               tooltip: 'Grupo pode encaminhar item de ' + translations.REPORT.toLowerCase() + ' da ' + translations.REPORTS_ATTRIBUTES_CATEGORY.toLowerCase() + ' atribuída.'
             },
@@ -244,12 +274,23 @@ angular
               needsObject: true,
               tooltip: 'Grupo pode enviar e reenviar notificações.'
             },
-
+            {
+              slug: 'reports_items_export',
+              name: 'Exportar relatos',
+              needsObject: false,
+              tooltip: 'Essa opção permitirá a exportação de relatos para CSV'
+            },
             {
               slug: 'reports_items_restart_notification',
-              name: 'Reeiniciar processo de notificação de '+ translations.REPORTS.toLowerCase(),
+              name: 'Reeiniciar processo de notificação de ' + translations.REPORTS.toLowerCase(),
               needsObject: true,
               tooltip: 'Grupo pode reiniciar todo o processo de notificações.'
+            },
+            {
+              slug: 'reports_items_group',
+              name: 'Agrupar itens de ' + translations.REPORTS.toLowerCase(),
+              needsObject: false,
+              tooltip: 'Grupo pode agrupar itens de relatos sugeridos pelo sistema.'
             }
           ]
         },
@@ -297,22 +338,6 @@ angular
             {
               slug: 'cases_with_reports_view',
               name: 'Visualizar casos com ' + translations.REPORTS_ATTRIBUTES_CATEGORIES.toLowerCase() + ' de relato',
-              needsObject: true
-            }
-          ]
-        },
-        {
-          type: 'namespace',
-          name: 'Localidade',
-          permissionsNames: [
-            {
-              slug: 'manage_namespaces',
-              name: 'Gerenciar localidades',
-              needsObject: false
-            },
-            {
-              slug: 'namespaces_access',
-              name: 'Visualizar localidade',
               needsObject: true
             }
           ]
@@ -370,6 +395,27 @@ angular
       };
 
       $scope.availablePermissionTypes.push(flowsPermissions);
+    }
+
+    if ($rootScope.namespacesEnabled) {
+      var namespacesPermissions = {
+        type: 'namespace',
+        name: 'Localidade',
+        permissionsNames: [
+          {
+            slug: 'manage_namespaces',
+            name: 'Gerenciar localidades',
+            needsObject: false
+          },
+          {
+            slug: 'namespaces_access',
+            name: 'Visualizar localidade',
+            needsObject: true
+          }
+        ]
+      }
+
+      $scope.availablePermissionTypes.push(namespacesPermissions);
     }
 
     $scope.isAllowed = function (permissionType) {
@@ -531,7 +577,7 @@ angular
 
         var x = false;
 
-        for (var j = 0 ; j < $scope.newPermission.objects.length; j++) {
+        for (var j = 0; j < $scope.newPermission.objects.length; j++) {
           if ($scope.newPermission.objects[j].id == objects[i].id) {
             x = true;
           }
@@ -616,7 +662,7 @@ angular
       }
 
       var url = Restangular.one('permissions').one(isService ? 'services' : 'groups', $scope.resource.id).one(type);
-      var postPermissionPromise = url.customPOST({ 'permissions': slugs, 'objects_ids': objectIds });
+      var postPermissionPromise = url.customPOST({'permissions': slugs, 'objects_ids': objectIds});
 
       postPermissionPromise.then(function (response) {
         $scope.creatingPermission = false;
@@ -657,7 +703,7 @@ angular
 
       var deletePermissionPromise = Restangular.one('permissions')
         .one(isService ? 'services' : 'groups', $scope.resource.id)
-        .one(permissionObj.permission_type).customDELETE(null, { permission: slug, object_id: objectId });
+        .one(permissionObj.permission_type).customDELETE(null, {permission: slug, object_id: objectId});
 
       deletePermissionPromise.then(function () {
         if (typeof permissionObj.permission_names === 'string' || (typeof permissionObj.permission_names === 'object' && permissionObj.permission_names.length === 1)) {
@@ -682,4 +728,6 @@ angular
 
       return index;
     };
-  });
+  }
+
+})(angular, _);

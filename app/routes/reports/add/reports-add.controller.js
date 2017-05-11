@@ -4,13 +4,14 @@ angular
   .module('ReportsAddControllerModule', [
     'SelectListComponentModule',
     'ReportsSelectUserModalControllerModule',
-    'ReportsCreateUserModalControllerModule',
+    'UsersEditModalModule',
     'ReportSearchMapComponentModule',
     'MapNewReportComponentModule',
+    'UsersSelectorComponentModule',
     'NgThumbComponentModule'
   ])
 
-  .controller('ReportsAddController', function (ENV, $scope, $rootScope, Restangular, $q, $modal, $state, FileUploader, onlyImagesUploaderFilter, reportCategoriesResponse, inventoriesCategoriesResponse, $log) {
+  .controller('ReportsAddController', function (ENV, $scope, $rootScope, Restangular, $q, $modal, $state, FileUploader, onlyImagesUploaderFilter, reportCategoriesResponse, inventoriesCategoriesResponse, UsersEditModalService) {
     var categories = reportCategoriesResponse.data;
 
     $scope.address = {
@@ -66,38 +67,28 @@ angular
       }
     });
 
-    $scope.selectUser = function () {
-      $modal.open({
-        templateUrl: 'modals/reports/select-user/reports-select-user.template.html',
-        windowClass: 'modal-reports-select-user',
-        resolve: {
-          setUser: function () {
-            return function (user) {
-              $scope.user = user;
-            }
-          },
-
-          filterByGroup: function () {
-            return null;
-          }
-        },
-        controller: 'ReportsSelectUserModalController'
-      });
+    $scope.onUserSelect = function (user) {
+      $scope.user = user;
     };
 
-    $scope.registerUser = function () {
-      $modal.open({
-        templateUrl: 'modals/reports/create-user/reports-create-user.template.html',
-        windowClass: 'modal-reports-create-user',
-        resolve: {
-          setUser: function () {
-            return function (user) {
-              $scope.user = user;
-            }
-          }
-        },
-        controller: 'ReportsCreateUserModalController'
-      });
+    $scope.unselectUser = function () {
+      $scope.user = undefined;
+    };
+
+    $scope.createUser = function () {
+      UsersEditModalService
+        .open()
+        .then(function (user) {
+          $scope.user = user;
+        });
+    };
+
+    $scope.editUser = function () {
+      UsersEditModalService
+        .open($scope.user)
+        .then(function (user) {
+          $scope.user = user;
+        });
     };
 
     var addAsyncImage = function (img) {
@@ -111,6 +102,8 @@ angular
         image.content = picFile.result.replace(/^data:image\/[^;]+;base64,/, '');
         image.title = img.file.title;
         image.file_name = img.file.name;
+        image.visibility = (img.file.visibility) ? 'internal' : 'visible';
+        image.origin = 'fiscal';
         deferred.resolve(image);
       });
       // pass as base64 and strip data:image
@@ -149,6 +142,15 @@ angular
         $scope.$broadcast('addressChanged', true);
       }
     });
+
+    $scope.isReadyToSave = function () {
+      var invalidImages = _.filter($scope.uploader.queue, function (image) {
+        return (image.file.title || '').length > 120;
+      });
+
+      $scope.description = $scope.description || '';
+      return ($scope.description.length < 800 && $scope.address.address && !$scope.markerOutOfBounds && $scope.user && _.size(invalidImages) === 0);
+    };
 
     $scope.send = function () {
       $rootScope.resolvingRequest = true;

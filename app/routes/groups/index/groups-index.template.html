@@ -7,7 +7,7 @@
       <li>Grupos</li>
     </ul>
 
-    <a href="" ng-click="manageNamespaces()" class="btn btn-info btn-custom" ng-show="hasPermission('manage_namespaces')">Gerenciar localidades</a>
+    <a href="" ng-click="manageNamespaces()" class="btn btn-info btn-custom" ng-show="namespacesEnabled && hasPermission('manage_namespaces')">Gerenciar localidades</a>
     <a href="" ng-click="addGroup()" class="btn btn-info btn-custom" ng-show="hasPermission('groups_full_access')">+ Novo grupo</a>
   </div>
 

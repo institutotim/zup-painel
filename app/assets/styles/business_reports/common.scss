@@ -15,12 +15,7 @@
   .business-report-foreground {
     background-color: #fff;
     width: 100%;
-    max-width: 880px;
-    padding: 25px;
-    margin-top: 20px;
-    margin-bottom: 40px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 50px 40px;
     @include border-radius(2px);
     @include box-shadow(#ccc -2px 2px 2px);
   }
@@ -187,6 +182,44 @@
     }
   }
 
+  ul[dnd-list] li dnd-nodrag {
+    display: block;
+    padding: 10px 15px;
+  }
+
+  ul[dnd-list] .dndPlaceholder {
+    display: block;
+    background-color: #ddd;
+    padding: 10px 15px;
+    min-height: 42px;
+  }
+
+  ul[dnd-list] .handle {
+    top: 21px;
+    width: 1px;
+    cursor: move;
+    position: absolute;
+    margin-left: -12px;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    padding-top: 6px;
+    padding-right: 12px;
+    padding-left: 5px;
+    height: 95%;
+    font-size: 8px;
+    background-color: #e1e1e1;
+    border-color: #d7d7d7;
+    color: #ababab;
+
+    &:hover {
+      background-color: #39b3d7;
+      border-color: #269abc;
+      color: white;
+    }
+  }
+
   // Inline edit settings
   h1 {
     margin: 0 0 5px 0;
@@ -247,9 +280,6 @@
 }
 
 @media print {
-  body {
-    zoom: 125% !important;
-  }
   * {
     -webkit-transition: none !important;
     transition: none !important;
@@ -258,6 +288,22 @@
   business-reports-chart > * {
     page-break-inside: avoid !important;
     position: relative !important;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px !important;
+  }
+
+  .header {
+    margin-bottom: 0 !important;
+  }
+
+  .summary {
+    font-size: 12px;
   }
 
   .state-business-reports-show {

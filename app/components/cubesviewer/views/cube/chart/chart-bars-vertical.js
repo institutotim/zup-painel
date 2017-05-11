@@ -55,6 +55,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
 
       var container = $($element).find("svg").get(0);
       var xAxisLabel = ( (view.params.xaxis != null) ? view.cube.dimensionParts(view.params.xaxis).label : "Nenhuma dimensão horizontal selecionada.");
+      var yAxisLabel = ( (view.params.yaxis != null) ? view.cube.aggregateFromName(view.params.yaxis).label : "Nenhuma medida selecionada.");
 
       var d = [];
 
@@ -115,6 +116,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
         chart.multibar.hideable(true);
 
         chart.xAxis.axisLabel(xAxisLabel);
+        chart.yAxis.axisLabel(yAxisLabel);
 
         //chart.yAxis.tickFormat(d3.format(',.2f'));
         chart.yAxis.tickFormat(function (d, i) {
@@ -153,5 +155,3 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsVertica
     $scope.initialize();
 
   }]);
-
-
