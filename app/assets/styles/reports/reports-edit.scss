@@ -1,6 +1,6 @@
 @import "compass/css3";
 
-.editReports {
+.editReports, .images-add-modal-body {
   .select2-container .select2-choice {
     font-size: 16px;
     height: 50px;
@@ -38,6 +38,25 @@
       color: #666;
       margin-top: 10px;
     }
+  }
+
+  users-selector {
+    margin-right: 10px;
+  }
+
+  .after-margin {
+    margin-bottom: 200px;
+  }
+
+  .table {
+    td {
+      vertical-align: middle;
+      padding: .7em 0;
+    }
+
+    tr:first-child td { padding: .5em 0; }
+
+    .actions { font-size: 1.4em; }
   }
 
   textarea {

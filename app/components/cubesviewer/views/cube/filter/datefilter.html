@@ -38,7 +38,7 @@
 
                  <div class="form-group" style="display: inline-block; margin: 0px;">
                     <p class="input-group disabled" style="margin: 0px; display: inline-block;">
-                      <input ng-disabled="view.getControlsHidden()" autocomplete="off" type="text" style="height: 20px; width: 80px; display: inline-block;" class="form-control input-sm" ng-model="dateStart.value" is-open="dateStart.opened" ng-required="true" close-text="Fechar" />
+                      <input ng-disabled="view.getControlsHidden()" autocomplete="off" type="text" style="height: 20px; width: 80px; display: inline-block;" class="form-control input-sm" ng-model="dateStart.value" is-open="dateStart.opened" ng-required="true" close-text="Fechar" date='dd/MM/yyyy' />
                       <span ng-hide="view.getControlsHidden()"  class="input-group-btn" style="display: inline-block;">
                         <button type="button" style="height: 20px;" class="btn btn-default" ng-click="dateStartOpen()"><i class="fa fa-fw fa-calendar"></i></button>
                       </span>
@@ -50,7 +50,7 @@
 
                  <div class="form-group" style="display: inline-block; margin: 0px;">
                     <p class="input-group" style="margin: 0px; display: inline-block;">
-                      <input ng-disabled="view.getControlsHidden()" autocomplete="off" type="text" style="height: 20px; width: 80px; display: inline-block;" class="form-control input-sm" ng-model="dateEnd.value" ng-required="true" close-text="Fechar" />
+                      <input ng-disabled="view.getControlsHidden()" autocomplete="off" type="text" style="height: 20px; width: 80px; display: inline-block;" class="form-control input-sm" ng-model="dateEnd.value" ng-required="true" close-text="Fechar" date='dd/MM/yyyy' />
                       <span ng-hide="view.getControlsHidden()" class="input-group-btn" style="display: inline-block;">
                         <button type="button" style="height: 20px;" class="btn btn-default" ng-click="dateStartOpen()"><i class="fa fa-fw fa-calendar"></i></button>
                       </span>

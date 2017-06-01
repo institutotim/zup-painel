@@ -21,7 +21,9 @@ angular
       'shp_file',
       'shx_file',
       'status',
-      'geometry'
+      'geometry',
+      'priority',
+      'active'
     ];
 
     service.cleanCache = function () {
@@ -44,7 +46,7 @@ angular
       var defaults = {
         display_type: 'full',
         return_fields: ReturnFieldsService.convertToString([
-          "id", "title", "status", "geometry", "created_at",
+          "id", "title", "status", "geometry", "created_at", 'priority', 'active',
           {
             "group": [
               "id", "name"
@@ -78,7 +80,7 @@ angular
 
         $rootScope.$broadcast('perimetersFetched');
 
-      }, function(){
+      }, function () {
         deferred.reject('Erro na consulta');
       });
 
@@ -109,11 +111,15 @@ angular
     service.updatePerimeter = function (perimeter) {
       $log.debug('Update an existing perimeter/region [title: ' + perimeter.title + ', id: ' + perimeter.id + ']');
       perimeter.return_fields = 'id';
+
+      var perimeterId = perimeter.id;
+      delete perimeter.id;
+
       return Restangular
         .one('reports')
-        .one('perimeters', perimeter.id)
+        .one('perimeters', perimeterId)
         .withHttpConfig({treatingErrors: true})
-        .customPUT({title: perimeter.title});
+        .customPUT(perimeter);
     };
 
     /**
@@ -167,9 +173,16 @@ angular
         (perimeterGroup.id ? ('id: ' + perimeterGroup.id + ', ') : '') +
         'category_id: ' + perimeterGroup.category_id + ', ' +
         'group_id: ' + perimeterGroup.group_id + ', ' +
-        'perimeter_id: ' + perimeterGroup.perimeter_id + ']');
+        'perimeter_id: ' + perimeterGroup.perimeter_id + ', ' +
+        'active: ' + perimeterGroup.active + ', ' +
+        'priority: ' + perimeterGroup.priority + ']');
 
-      var requestParam = {perimeter_id: perimeterGroup.perimeter_id, group_id: perimeterGroup.group_id};
+      var requestParam = {
+        perimeter_id: perimeterGroup.perimeter_id,
+        group_id: perimeterGroup.group_id,
+        active: perimeterGroup.active,
+        priority: perimeterGroup.priority
+      };
 
       var promise;
 
@@ -215,7 +228,7 @@ angular
         .one('reports')
         .one('categories', categoryId)
         .all('perimeters')
-        .customGET(null, {display_type: 'full', return_fields: 'id,perimeter.title,group.id,perimeter.id,category.id'});
+        .customGET(null, {display_type: 'full', return_fields: 'id,perimeter.title,group.id,perimeter.id,category.id,active,priority'});
       var deferred = $q.defer();
       promise.then(function (resp) {
         service.perimetersGroups = [];
@@ -228,6 +241,8 @@ angular
           perimeterGroup.group_id = val.group.id;
           perimeterGroup.category_id = val.category.id;
           perimeterGroup.title = val.perimeter.title;
+          perimeterGroup.active = val.active;
+          perimeterGroup.priority = val.priority;
           service.perimetersGroups.push(perimeterGroup);
         });
         deferred.resolve(service.perimetersGroups);

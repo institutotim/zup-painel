@@ -76,6 +76,36 @@ angular
     };
 
     /**
+     * Fetches all categories marked for deletion
+     * This function is safe to call multiple times and will not duplicate categories in the cache
+     * @returns {Object} Restangular promise for basic category fields fetching
+     */
+    self.fetchAllDeleted = function () {
+      var url = FullResponseRestangular.all('inventory').all('categories').all('deleted'), options = { };
+
+      options.display_type = 'full';
+      options.return_fields = ReturnFieldsService.convertToString([
+        "id", "title", "pin", "plot_format", "color", "days_for_deletion",
+        {
+          "statuses": [
+            "id", "color", "title"
+          ],
+          "marker": [
+            {
+              "retina": [
+                "web"
+              ]
+            }
+          ]
+        }
+      ]);
+
+      var promise = url.customGET(null, options);
+      return promise;
+    };
+
+
+    /**
      * Returns pairs of IDs and Titles for all inventory categories
      * @returns {*}
      */
@@ -146,6 +176,15 @@ angular
           return $q.reject(response.data.error);
         });
     };
+
+    /*
+     * Restore a deleted category
+     * @returns Promise
+     */
+    self.restoreCategory = function(category) {
+      return Restangular.one('inventory').one('categories', category.id).one('restore').customPUT();
+    }
+
 
     return self;
   });

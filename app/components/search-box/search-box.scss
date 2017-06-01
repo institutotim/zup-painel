@@ -1,0 +1,25 @@
+search-box {
+  display: block;
+  width: 100%;
+  min-width: 680px;
+  height: 44px;
+  background: #E2E2E2;
+  border-bottom: 1px solid #C5C5C5;
+  z-index: 999;
+
+  .icon-search {
+    color: #999999;
+    margin: 14px 0 0 23px;
+    float: left;
+  }
+
+  input[type="text"] {
+    width: 90%;
+    float: left;
+    margin: 11px 0 0 13px;
+    color: #999999;
+    border: 0;
+    background: transparent;
+    outline: none;
+  }
+}

@@ -1,0 +1,15 @@
+<input type="text"
+       ng-model="vm.user"
+       placeholder="Busque pelo nome, email ou CPF"
+       typeahead="user for user in vm.fetchUsers($viewValue)"
+       typeahead-template-url="components/users-selector/users-selector-choice.template.html"
+       typeahead-on-select="vm.onUserSelect($item, $model)"
+       class="users-selector-input form-control input-lg" />
+
+<script type="text/ng-template"
+        id="components/users-selector/users-selector-choice.template.html">
+    <span class="col-md-3"><strong>{{ match.model.name }}</strong></span>
+    <span class="col-md-6" bind-html-unsafe="match.model.email | typeaheadHighlight:query"></span>
+    <span class="col-md-3" bind-html-unsafe="match.model.document | cpf | typeaheadHighlight:query"></span>
+    <div class="clearfix"></div>
+</script>

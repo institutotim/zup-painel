@@ -84,6 +84,9 @@ angular
         .one('users', user.id)
         .withHttpConfig({treatingErrors: true})
         .customPUT(user, null, options)
+        .then(function () {
+          return user;
+        })
         .catch(function (response) {
           return $q.reject(response.data.error);
         });

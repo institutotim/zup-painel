@@ -168,6 +168,8 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
       $($element).find('svg').height(size);
       $($element).find('svg').resize();
 
+      view.params.height = size;
+
       if (chartCtrl.chart) chartCtrl.chart.update();
     };
 
@@ -256,5 +258,3 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartController"
     this.initialize();
 
   }]);
-
-

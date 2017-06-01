@@ -2,37 +2,50 @@
 
 angular
   .module('zupPainelApp')
-  .config(['$urlRouterProvider', 'RestangularProvider', 'ENV', 'uiSelectConfig', '$tooltipProvider', '$provide', '$translateProvider', function ($urlRouterProvider, RestangularProvider, ENV, uiSelectConfig, $tooltipProvider, $provide, $translateProvider) {
-    $urlRouterProvider.otherwise('/');
+  .config([
+    '$urlRouterProvider',
+    'RestangularProvider',
+    'ENV',
+    'uiSelectConfig',
+    '$tooltipProvider',
+    '$provide',
+    'markedProvider',
+    '$translateProvider',
+    function ($urlRouterProvider, RestangularProvider, ENV, uiSelectConfig, $tooltipProvider, $provide, markedProvider, $translateProvider) {
+      $urlRouterProvider.otherwise('/');
 
-    RestangularProvider.setBaseUrl(ENV.apiEndpoint);
-    RestangularProvider.setFullResponse(true);
+      RestangularProvider.setBaseUrl(ENV.apiEndpoint);
+      RestangularProvider.setFullResponse(true);
 
-    // add a response interceptor for prevent 'getList SHOULD be array error' which occur when the data is already an array.
-    RestangularProvider.addResponseInterceptor(function (data, operation) {
-      // .. to look for getList operations
-      if (operation === "getList") {
-        // When the data is already an array
-        if (angular.isArray(data)) {
-          var extractedData = {};
-          extractedData.data = data;
-          return extractedData;
+      // add a response interceptor for prevent 'getList SHOULD be array error' which occur when the data is already an array.
+      RestangularProvider.addResponseInterceptor(function (data, operation) {
+        // .. to look for getList operations
+        if (operation === "getList") {
+          // When the data is already an array
+          if (angular.isArray(data)) {
+            var extractedData = {};
+            extractedData.data = data;
+            return extractedData;
+          }
         }
-      }
-      return data;
-    });
+        return data;
+      });
 
-    // ui-select config
-    uiSelectConfig.theme = 'bootstrap';
+      // Marked config
+      markedProvider.setOptions({
+        gfm: true,
+        tables: false,
+        sanitize: true
+      });
 
-    // angular-bootstrap tooltip
-    $tooltipProvider.options({
-      appendToBody: true
-    });
+      markedProvider.setRenderer({
+        link: function(href, title, text) {
+          return "<a href='" + href + "'" + (title ? " title='" + title + "'" : '') + " target='_blank'>" + text + "</a>";
+        }
+      });
 
-    // translate bs-switch
-    $.fn.bootstrapSwitch.defaults.onText = 'Sim';
-    $.fn.bootstrapSwitch.defaults.offText = 'Não';
+      // ui-select config
+      uiSelectConfig.theme = 'bootstrap';
 
     $provide.decorator('GridOptions', ['$delegate', 'i18nService', function ($delegate, i18nService) {
       var gridOptions;
@@ -45,6 +58,27 @@ angular
       i18nService.setCurrentLang('pt-br');
       return gridOptions;
     }]);
+
+    // Workaround for bug #1404
+    // https://github.com/angular/angular.js/issues/1404
+    // Source: http://plnkr.co/edit/hSMzWC?p=preview
+    $provide.decorator('ngModelDirective', ['$delegate', function ($delegate) {
+      var ngModel = $delegate[0], controller = ngModel.controller;
+      ngModel.controller = ['$scope', '$element', '$attrs', '$injector', function (scope, element, attrs, $injector) {
+        var $interpolate = $injector.get('$interpolate');
+        attrs.$set('name', $interpolate(attrs.name || '')(scope));
+        $injector.invoke(controller, this, {
+          '$scope': scope,
+          '$element': element,
+          '$attrs': attrs
+        });
+      }];
+      return $delegate;
+    }]);
+
+    // translate bs-switch
+    $.fn.bootstrapSwitch.defaults.onText = 'Sim';
+    $.fn.bootstrapSwitch.defaults.offText = 'Não';
 
     // Workaround for bug #1404
     // https://github.com/angular/angular.js/issues/1404
@@ -79,7 +113,8 @@ angular
 
     $translateProvider.preferredLanguage('pt-BR');
     $translateProvider.useLoader('apiTranslationsLoader');
-  }])
+  }
+  ])
   .factory('singleItemUploaderFilter', function () {
     return {
       name: 'fixQueueLimit',
@@ -128,6 +163,7 @@ angular
     $rootScope.namespace = Auth.getCurrentNamespace();
 
     $rootScope.flowsEnabled = (ENV.flowsEnabled === 'true' || ENV.flowsEnabled === 'TRUE');
+    $rootScope.namespacesEnabled = (ENV.namespacesEnabled === 'true' || ENV.namespacesEnabled === 'TRUE');
 
     if (ENV.name == 'development') {
       $rootScope.errorReporting = true;

@@ -38,15 +38,16 @@ angular
       var putData = {
         'status_id': $scope.selected_status_id,
         'comment': $scope.report.comment,
-        'comment_visibility': visibility
+        'comment_visibility': visibility,
+        'replicate': !!$scope.report.replicate
       };
 
       if ($scope.caseUsers[0]) {
         putData['case_conductor_id'] = $scope.caseUsers[0].id;
       }
 
-      var changeStatusPromise = Restangular.one('reports', $scope.category.id).one('items', $scope.report.id).one('update_status')
-        .customPUT(putData, '?return_fields=status_id,case.id,case.created_at,case.updated_at,case.status,case.initial_flow.title'); // jshint ignore:line
+      var changeStatusPromise = Restangular.one('reports', $scope.category.id).one('items', $scope.report.id).one('update_status').customPUT(putData,
+        '?return_fields=status_id,case.id,case.created_at,case.updated_at,case.status,case.initial_flow.title'); // jshint ignore:line
 
       changeStatusPromise.then(function (response) {
         $scope.report.status_id = $scope.selected_status_id;

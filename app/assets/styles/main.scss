@@ -407,6 +407,8 @@ $sidebar-size-full: 300px;
       &.advancedSearch {
         min-height: 44px;
         height: auto;
+        z-index: 1;
+
 
         .availableFilters {
           position: absolute;
@@ -652,10 +654,16 @@ $sidebar-size-full: 300px;
 
         .icon_action {
           font-size: 18px;
+
+          &.widish {
+            padding-left: 5px;
+            padding-right: 5px;
+          }
         }
 
         .actions {
           text-align: right;
+          min-width: 120px;
         }
 
         .status_color {

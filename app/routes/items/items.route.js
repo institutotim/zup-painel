@@ -5,6 +5,7 @@ angular
     'ItemsEditModule',
     'ItemsSelectCategoryModule',
     'ItemsCategoriesIndexModule',
+    'ItemsCategoriesDeletedModule',
     'ItemsCategoriesEditModule'
   ])
 

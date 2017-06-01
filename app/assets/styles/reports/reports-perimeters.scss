@@ -1,9 +1,13 @@
 @import "compass/css3";
 
 .perimeter-btn-cell {
-  width: 30px;
-  font-size: 15px;
+  width: 75px;
+  font-size: 18px;
   text-align: right;
+
+  a:hover, a:visited, a:link, a:active {
+    text-decoration: none !important;
+  }
 }
 .perimeter-table-tr {
   height: 65px;
@@ -11,29 +15,12 @@
     font-weight: bold;
   }
 }
-.perimeter-span-title {
-  cursor: pointer;
-}
-.perimeter-title-cell {
-  width: 30%;
-  padding-left: 5px !important;
-}
-.perimeter-group-cell {
-  width: 20%;  
-}
-.perimeter-status-cell {
-  width: 20%;
-  padding-left: 0 !important;
-}
-.perimeter-date-cell {
-  width: 20%;
-}
 .perimeters-table {
-  margin-top: 44px;  
+  margin-top: 44px;
 }
 .perimeters-table thead tr td {
   font-size: 12px;
-  line-height: 40px;
+  //line-height: 40px;
 }
 
 .glyphicon-refresh-animate {
@@ -109,6 +96,13 @@
 
 .perimeters-labels {
   font-weight: bold;
+}
+
+.perimeter-help-label {
+  position: relative;
+  top: -28px;
+  left: 80px;
+  color: #737373;
 }
 
 .perimeters-disclaimer {

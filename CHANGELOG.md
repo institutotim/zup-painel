@@ -1,11 +1,35 @@
 # Changelog
 
-## 1.2.0 - 05/09/2016
+## 1.3.4 - 06/12/2016
+- [Correção] Corrige os dados exibidos no preview de informações
+
+## 1.3.3 - 25/11/2016
+- [Nova funcionalidade] Nova funcionalidade de marcar categoria de relato e inventário para deleção
+- [Correção] Corrige agrupamento de relatos
+- [Correção] Corrige exibição da aba "Imagens" dentro de exibição de relato
+- [Correção] Corrige filtro de exibição de relatos atrasados
+
+## 1.3.2 - 04/11/2016
+- [Nova funcionalidade] Página de auditoria
+- [Correção] Adicionada a permissão de agrupar relatos
+
+## 1.3.1 - 02/11/2016
+- [Relatos] Adiciona popover para visualização rápida de um relato
+
+## 1.2.3 - 05/10/2016
 ### Novas funcionalidades
-- [Relatórios] Novo sistema de relatórios baseado em OLAP
-- [Localidades] Implementação de limite de acesso a recursos baseado em localidades (namespaces).
-- [Inventário] Possibilidade de selecionar um campo para ser usado como título do item
-- [Relatos] Implementado campos personalizáveis
+- [Perímetros] Perímetros agora podem ser ativados/desativados
+- [Perímetros] Perímetros podem ter sua prioridade ordenada
+- [Fluxos e Casos] Desativar e ativar fluxos e casos com variável de ambiente
+### Melhorias
+- [Geral] Melhorias de performance geral
+
+## 1.2.0 - 05/09/2016
+### novas funcionalidades
+- [relatórios] novo sistema de relatórios baseado em olap
+- [localidades] implementação de limite de acesso a recursos baseado em localidades (namespaces).
+- [inventário] possibilidade de selecionar um campo para ser usado como título do item
+- [relatos] implementado campos personalizáveis
 
 ### Correções
 - [Fluxos e casos] Correção de diversos problemas com permissionamento e avanço de etapas

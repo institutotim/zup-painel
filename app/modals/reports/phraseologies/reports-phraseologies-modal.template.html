@@ -1,0 +1,54 @@
+<div class="modal-header phraseologies-modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h3 class="modal-title">{{ phraseology.id ? 'Atualizar cadastro' : 'Novo cadastro' }}</h3>
+</div>
+
+<div class="modal-body">
+
+  <div class="row">
+    <div class="col-md-9">
+      <div class="form-group">
+
+        <select-list ng-model="phraseology.category" option-name="title" ng-show="!phraseology.id">
+          <li ng-repeat="category in $parent.$parent.categories | filter: q"
+              ng-class="{ 'active': isSelected(category) }">
+            <a href="" ng-click="select(category, category)"><strong><span ng-bind-html="category.title | highlight: q"></span></strong> <b class="glyphicon glyphicon-ok pull-right"></b></a>
+
+            <ul>
+              <li ng-repeat="subcategory in category.subcategories | filter: q" ng-class="{ 'active': isSelected(subcategory) }">
+                <a href="" ng-click="select(subcategory, subcategory)"><span ng-bind-html="subcategory.title | highlight: q"></span> <b class="glyphicon glyphicon-ok pull-right"></b></a>
+              </li>
+            </ul>
+          </li>
+        </select-list>
+
+        <input type="text" ng-model="phraseology.category.title" class="form-control" ng-show="phraseology.id" disabled/>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="row" ng-show="phraseology.category">
+    <div class="col-md-9">
+      <div class="form-group">
+        <input type="text" ng-model="phraseology.title" placeholder="Defina o título (tipo) da resposta..." class="form-control"/>
+        <p class="phraseology-hint-text">Para uso interno. Busque utilizar termos de fácil e rápida compreensão.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="phraseology.category">
+    <div class="col-md-12">
+      <div class="form-group">
+        <textarea ng-model="phraseology.description" class="form-control big-text-area" placeholder="Redija com atenção a resposta padrão..."></textarea>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-footer" ng-show="phraseology.category">
+  <button type="button" ng-click="save()" ng-disabled="!isReadyToSave()" class="btn btn-info btn-custom btn-lg-custom">Salvar resposta</button>
+  <button type="button" ng-click="save(true)" ng-disabled="!isReadyToSave()" class="btn btn-info btn-custom btn-lg-custom">Salvar e adicionar novo</button>
+</div>

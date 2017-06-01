@@ -54,6 +54,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsHorizon
 
       var container = $($element).find("svg").get(0);
       var xAxisLabel = ( (view.params.xaxis != null) ? view.cube.dimensionParts(view.params.xaxis).label : "Nenhuma dimensão horizontal selecionada.");
+      var yAxisLabel = ( (view.params.yaxis != null) ? view.cube.aggregateFromName(view.params.yaxis).label : "Nenhuma medida selecionada.");
 
       var d = [];
 
@@ -112,13 +113,16 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsHorizon
           .controlLabels({"stacked":"Empilhado","stream":"Em fluxo","expanded":"Expandido", "grouped": "Agrupado"})
           .showLegend(!!view.params.chartoptions.showLegend)
           .showValues(true)           //Show bar value next to each bar.
-          .showControls(true);        //Allow user to switch between "Grouped" and "Stacked" mode.
+          .showControls(true)         //Allow user to switch between "Grouped" and "Stacked" mode.
+          .valueFormat(d3.format('..0f'));
 
         if (view.params["chart-barsvertical-stacked"]) {
           chart.stacked(view.params["chart-barsvertical-stacked"]);
         }
 
         chart.options(chartOptions);
+
+        chart.yAxis.axisLabel(yAxisLabel);
 
         chart.yAxis.tickFormat(function (d, i) {
           if (dataRows.length == 2 && view.params.chartoptions.mirrorSerie2 && d < 0) d = -d;
@@ -177,5 +181,3 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartBarsHorizon
     $scope.initialize();
 
   }]);
-
-

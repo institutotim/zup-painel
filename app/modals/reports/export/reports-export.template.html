@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title">Exportar relato</h4>
+</div>
+<div class="modal-body">
+  <p>Atenção, você clicou em um botão para exportar <b>{{ total }}</b> relatos.
+
+  <p class="text-danger">Se você tem certeza, digite abaixo a palavra <code>EXPORTAR</code> e clique no botão Exportar.</p>
+
+  <div class="form-group has-error">
+    <input type="text" class="form-control" ng-model="confirmText">
+  </div>
+</div>
+
+<div class="modal-footer">
+<button type="button" class="btn btn-fat-custom btn-default" ng-click="close()">Cancelar</button>
+  <button type="button" class="btn btn-fat-custom btn-danger" ng-click="confirm()" ng-disabled="confirmText.toLowerCase() !== 'exportar' || deleting">Exportar</button>
+</div>

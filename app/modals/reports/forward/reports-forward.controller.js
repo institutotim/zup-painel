@@ -1,4 +1,5 @@
 'use strict';
+/*global angular*/
 
 angular
   .module('ReportsForwardModalControllerModule', [])
@@ -21,7 +22,7 @@ angular
       $scope.processing = true;
 
       var changeStatusPromise = Restangular.one('reports', $scope.category.id).one('items', $scope.report.id).one('forward').customPUT({
-        'group_id': $scope.report.group_id, 'comment': $scope.report.comment,
+        'group_id': $scope.report.group_id, 'comment': $scope.report.comment, 'replicate': !!$scope.report.replicate,
         'return_fields': ''
       });
 

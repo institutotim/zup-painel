@@ -1,0 +1,57 @@
+<div class="loading" ng-show="loading"></div>
+
+<div ng-hide="loading" class="pages-animation">
+  <div class="title">
+
+    <ul>
+      <li><a ui-sref="reports.index.list">Relatos</a></li>
+      <li><a ui-sref="reports.categories">Gerenciar categorias</a></li>
+      <li>Gerenciar padrões de respostas</li>
+    </ul>
+
+    <div style="float: right">
+      <div class="btn-group">
+        <a href="" ng-click="addPhraseology()" class="btn btn-info btn-custom-group">Cadastrar nova resposta</a>
+      </div>
+
+      <p class="total">{{ total }} respostas encontradas</p>
+    </div>
+
+  </div>
+
+  <div ng-hide="total" class="phraseologies-no-content-message">
+
+    <p>Não existe nenhum padrão de resposta cadastrado.</p>
+
+  </div>
+
+  <div ng-show="total" class="phraseologies-content">
+
+    <div ng-repeat="(name, category) in categories">
+
+      <div class="phraseologies-category-title collapsed" data-toggle="collapse"
+           data-target="#{{name.split(' ').join('')}}-content">
+        <h4>{{ name || 'Respostas Globais' }}</h4>
+      </div>
+
+      <div class="collapse" id="{{name.split(' ').join('')}}-content">
+        <div ng-repeat="phraseology in category" class="phraseologies-category-content row">
+
+          <div class="col-md-3">
+            <strong>{{ phraseology.title }}</strong>
+          </div>
+
+          <div class="col-md-8" marked="phraseology.description"></div>
+
+          <div class="col-md-1 phrasiology-actions">
+            <a class="icon_action" title="Editar" ng-click="editPhraseology(phraseology)"><span class="glyphicon glyphicon-edit"></span></a>
+            <a class="icon_action" title="Remover" ng-click="deletePhraseology(phraseology)"><span class="glyphicon glyphicon-trash"></span></a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

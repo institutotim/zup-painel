@@ -16,6 +16,7 @@
     "angular-bootstrap-slider": "^0.1.27",
     "flotr2": "*",
     "nvd3": "1.8.4",
+    "angular-drag-and-drop-lists": "2.1.0",
     "angular-ui-router": "~0.2.11",
     "angular-ui-select": "~0.8.3",
     "angular-ui-select2": "~0.0.5",
@@ -23,7 +24,6 @@
     "angular-ui-sortable": "~0.13.4",
     "angular-mousewheel": "~1.0.4",
     "angular-pan-zoom": "~1.0.14",
-    "angular-md": "~1.0.0",
     "angular-raven": "~0.5.9",
     "angular-elastic": "~2.4.2",
     "angular-scroll": "~0.6.4",
@@ -33,6 +33,7 @@
     "angular-google-chart": "~0.0.11",
     "angular-print": "~0.3.7",
     "angular-ckeditor": "~0.4.2",
+    "angular-marked": "<=0.0.19",
     "ui-autocomplete": "~0.6.1",
     "restangular": "~1.4.0",
     "json3": "~3.2.6",
@@ -66,7 +67,8 @@
     "lrInfiniteScroll": "1.0.0",
     "ment.io": "~0.9.23",
     "angular-rt-popup": "~1.0.6",
-    "angular-translate": "~2.10.0"
+    "angular-translate": "~2.10.0",
+    "async": "^1.5.2"
   },
   "devDependencies": {
     "angular-mocks": "1.2.10",
@@ -76,6 +78,7 @@
     "angular": "1.2.26",
     "jquery": ">=2.1.4",
     "hamsterjs": ">=1.0.2",
-    "bootstrap-switch": "~3.0.2"
+    "bootstrap-switch": "~3.0.2",
+    "marked": "~0.3.1"
   }
 }

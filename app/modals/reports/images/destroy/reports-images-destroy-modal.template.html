@@ -1,0 +1,22 @@
+<div class="modal-header images-destroy-modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title">Remover imagem</h4>
+</div>
+<div class="modal-body">
+  <img style="display: block; margin-left: auto; margin-right: auto; max-width: 100%;" src="{{ image.low }}" height="300">
+
+  <hr>
+
+  <p>Atenção, você clicou em um botão para remover esta imagem do relato <b>{{ report.id }}</b>. Ao confirmar, você esta ciente de que não será possível recuperar esta imagem.</p>
+
+  <p class="text-danger">Se você tem certeza, digite abaixo a palavra <code>DELETAR</code> e clique no botão remover.</p>
+
+  <div class="form-group has-error">
+    <input type="text" class="form-control" ng-model="confirmText">
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-fat-custom btn-default" ng-click="close()" ng-if="!deleting">Cancelar</button>
+  <button type="button" class="btn btn-fat-custom btn-danger" ng-click="confirm()" ng-disabled="confirmText.toLowerCase() !== 'deletar' || deleting">Remover</button>
+</div>

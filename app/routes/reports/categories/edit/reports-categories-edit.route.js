@@ -6,7 +6,7 @@ angular
   .config(['$stateProvider', function($stateProvider) {
 
     $stateProvider.state('reports.categories.edit', {
-      url: '/{id:[0-9]{1,4}}/edit',
+      url: '/{id:[0-9]+}/edit',
 
       views: {
         '@reports': {

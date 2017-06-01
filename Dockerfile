@@ -24,9 +24,6 @@ RUN \
   cd /tmp && \
   printf '\n# Node.js\nexport PATH="node_modules/.bin:$PATH"' >> /root/.bashrc
 
-# Use cache server if available
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq netcat
-RUN (nc -z -w 3 npm.ntxdev.com.br 4873 && npm config set registry http://npm.ntxdev.com.br) || true
 
 # Update npm and install bower and grunt
 RUN \

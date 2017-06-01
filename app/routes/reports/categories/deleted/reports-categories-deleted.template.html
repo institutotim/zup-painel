@@ -1,0 +1,33 @@
+<div class="loading" ng-show="loading"></div>
+
+<div ng-hide="loading" class="pages-animation">
+  <div class="title">
+    <ul>
+      <li><a ng-href="#/reports">Relatos</a></li>
+      <li>Categorias deletadas</li>
+    </ul>
+  </div>
+
+  <table class="table custom_table big_text">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Dias para deleção</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="category in categories | orderBy:'title' | filter:q">
+      <tr>
+        <td><img ng-src="{{ category.icon.default.web.active }}?{{ iconSeed }}" width="50" height="50" class="category-icon"> {{ category.title }}</td>
+        <td>
+          {{ category.days_for_deletion }}
+        </td>
+        <td width="90">
+          <a href="" ng-click="restoreCategory(category)">
+            <span class="fa fa-undo"></span>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

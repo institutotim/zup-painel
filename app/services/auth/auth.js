@@ -13,7 +13,7 @@ angular
 
         if (token !== null && user === null) {
           // has token, check it by getting user data
-          var req = FullResponseRestangular.one('me').get({return_fields: 'id,email,permissions,groups.id,groups.name'}),
+          var req = FullResponseRestangular.one('me').get({return_fields: 'id,name,email,permissions,groups.id,groups.name'}),
             that = this;
 
           req.then(function (response) {

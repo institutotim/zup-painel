@@ -1,5 +1,6 @@
 'use strict';
 
+/*global angular */
 angular
   .module('StyleResultsTableComponentModule', [])
   .directive('styleResultsTable', function ($timeout) {
@@ -8,20 +9,28 @@ angular
       restrict: 'A',
       priority: 0,
       link: function postLink(scope, element) {
-        var changeMargin = function() {
-          element.find('.custom_table').css({'margin-top': element.find('.advancedSearch').height()});
+        var _changeMargin = function () {
+          var customTable = element.find('.custom_table'),
+              advancedSearch = element.find('.advancedSearch'),
+              groupSuggestions = element.find('.groupSuggestions');
+
+          customTable.css({ 'margin-top': (advancedSearch ? advancedSearch.height() : 0) + (groupSuggestions ? groupSuggestions.height() : 0) });
+          groupSuggestions.css({ 'margin-top': (advancedSearch ? advancedSearch.height() : 0) });
         };
 
-        changeMargin();
+        _changeMargin();
 
-        scope.$watch('activeAdvancedFilters', function() {
+        var _handleMarginChange = function () {
           if (timeoutId) {
             $timeout.cancel(timeoutId);
           }
-          timeoutId = $timeout(function() {
-            changeMargin();
-          },0);
-        }, true);
+          timeoutId = $timeout(function () {
+            _changeMargin();
+          }, 0);
+        };
+
+        scope.$watch('activeAdvancedFilters', _handleMarginChange, true);
+        scope.$watch('suggestions', _handleMarginChange);
       }
     };
   });

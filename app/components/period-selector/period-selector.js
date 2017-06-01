@@ -2,9 +2,9 @@
 
 angular
   .module('PeriodSelectorModule', [])
-  .controller('PeriodSelectorController', function($scope, $modalInstance, promise, openEnded) {
+  .controller('PeriodSelectorController', function($scope, $modalInstance, promise, openEnded, beginDate, endDate) {
     $scope.openEnded = openEnded;
-    $scope.period = {beginDate: new Date(), endDate: new Date(), tab: 'between'};
+    $scope.period = {beginDate: beginDate, endDate: endDate, tab: 'between'};
 
     $scope.save = function() {
       var returnBeginDate = false, returnEndDate = false;
@@ -45,7 +45,7 @@ angular
   })
   .factory('PeriodSelectorService', function ($modal, $q) {
     return {
-      open: function (openEnded) {
+      open: function (openEnded, beginDate, endDate) {
         var deferred = $q.defer();
 
         $modal.open({
@@ -58,6 +58,14 @@ angular
 
             openEnded: function(){
               return openEnded;
+            },
+
+            beginDate: function(){
+              return beginDate || new Date();
+            },
+
+            endDate: function(){
+              return endDate || new Date();
             }
           },
           controller: 'PeriodSelectorController'

@@ -60,6 +60,14 @@
     <div class="loadingScrolling" ng-show="loadingPagination"></div>
 </div>
 
-<div class="modal-footer">
-    <button type="button" class="btn btn-info btn-custom btn-fat-custom" ng-click="close()">Fechar</button>
+<div class="modal-footer" style="display: table; width: 100%;">
+  <div style="display: table-row;">
+    <div class="checkbox" style="display: table-cell;" ng-show="report.grouped">
+      <label>
+        <input type="checkbox" ng-model="report.replicate"> Aplicar a todos os relatos do grupo
+      </label>
+    </div>
+    <div style="display: table-cell;">
+      <button type="button" class="btn btn-info btn-custom btn-fat-custom" ng-click="close()">Fechar</button>
+    </div>
 </div>

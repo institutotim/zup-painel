@@ -46,6 +46,9 @@
   <link rel="stylesheet" href="assets/styles/reports/reports-select.css">
   <link rel="stylesheet" href="assets/styles/chat-rooms/chat-rooms.css">
   <link rel="stylesheet" href="assets/styles/zup-chat/zup-chat.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-phraseologies.css">
+  <link rel="stylesheet" href="assets/styles/reports/reports-groups.css">
+  <link rel="stylesheet" href="assets/styles/exports.css">
 
   <link rel="stylesheet" href="assets/styles/advanced-filters/advanced-filters-modals.css">
 
@@ -75,6 +78,7 @@
   <link rel="stylesheet" href="assets/styles/business_reports/common.css">
   <link rel="stylesheet" href="assets/styles/business_reports/index.css">
   <link rel="stylesheet" href="assets/styles/business_reports/explore.css">
+
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) assets/styles/theme.css -->
   <link rel="stylesheet" href="assets/styles/cubesviewer.css">
@@ -135,6 +139,7 @@
 <script src="bower_components/flotr2/flotr2.js"></script>
 <script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/nvd3/build/nv.d3.js"></script>
+<script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-ui-select/dist/select.js"></script>
 <script src="bower_components/select2/select2.js"></script>
@@ -156,6 +161,7 @@
 <script src="bower_components/angular-google-chart/ng-google-chart.js"></script>
 <script src="bower_components/angular-print/angularPrint.js"></script>
 <script src="bower_components/angular-ckeditor/angular-ckeditor.js"></script>
+<script src="bower_components/angular-marked/angular-marked.js"></script>
 <script src="bower_components/ui-autocomplete/autocomplete.js"></script>
 <script src="bower_components/lodash/dist/lodash.compat.js"></script>
 <script src="bower_components/restangular/dist/restangular.js"></script>
@@ -175,6 +181,7 @@
 <script src="bower_components/ment.io/dist/mentio.js"></script>
 <script src="bower_components/angular-rt-popup/dist/angular-rt-popup.js"></script>
 <script src="bower_components/angular-translate/angular-translate.js"></script>
+<script src="bower_components/async/lib/async.js"></script>
 <!-- endbower -->
 <script src="bower_components/moment/locale/pt-br.js"></script>
 <script src="bower_components/smartJQueryZoom/src/e-smart-zoom-jquery.js"></script>
@@ -220,6 +227,8 @@
 <script src="services/reports/reports-notifications.js"></script>
 <script src="services/reports/reports-perimeters.js"></script>
 <script src="services/reports/reports-feature-flags.js"></script>
+<script src="services/reports/reports-phraseologies.js"></script>
+<script src="services/reports/reports-images.js"></script>
 <script src="services/inventories/inventories-categories.js"></script>
 <script src="services/inventories/inventories-items.js"></script>
 <script src="services/business-reports/business-reports.js"></script>
@@ -232,6 +241,10 @@
 <script src="services/namespaces/namespaces.js"></script>
 <script src="services/chat/chat-service.js"></script>
 <script src="services/notifications/notification.js"></script>
+<script src="services/exports/exports.js"></script>
+<script src="services/authorization/authorization.js"></script>
+<script src="services/services/services.js"></script>
+<script src="services/audit/audit.js"></script>
 
 <script src="routes/user/user.route.js"></script>
 <script src="routes/user/login/user-login.route.js"></script>
@@ -251,7 +264,9 @@
 <script src="routes/chat-rooms/index/chat-rooms-index.controller.js"></script>
 <script src="routes/chat-rooms/show/chat-rooms-show.route.js"></script>
 <script src="routes/chat-rooms/show/chat-rooms-show.controller.js"></script>
-
+<script src="routes/exports/exports.route.js"></script>
+<script src="routes/exports/index/exports-index.route.js"></script>
+<script src="routes/exports/index/exports-index.controller.js"></script>
 <script src="routes/reports/reports.route.js"></script>
 <script src="routes/reports/index/reports-index.route.js"></script>
 <script src="routes/reports/index/reports-index.controller.js"></script>
@@ -271,8 +286,12 @@
 <script src="routes/reports/categories/index/reports-categories-index.controller.js"></script>
 <script src="routes/reports/categories/edit/reports-categories-edit.route.js"></script>
 <script src="routes/reports/categories/edit/reports-categories-edit.controller.js"></script>
+<script src="routes/reports/categories/deleted/reports-categories-deleted.route.js"></script>
+<script src="routes/reports/categories/deleted/reports-categories-deleted.controller.js"></script>
 <script src="routes/reports/perimeters/index/reports-perimeters-index.controller.js"></script>
 <script src="routes/reports/perimeters/index/reports-perimeters-index.route.js"></script>
+<script src="routes/reports/phraseologies/index/reports-phraseologies-index.route.js"></script>
+<script src="routes/reports/phraseologies/index/reports-phraseologies-index.controller.js"></script>
 
 <script src="routes/items/items.route.js"></script>
 <script src="routes/items/index/items-index.route.js"></script>
@@ -288,6 +307,8 @@
 <script src="routes/items/categories/index/items-categories-index.controller.js"></script>
 <script src="routes/items/categories/edit/items-categories-edit.route.js"></script>
 <script src="routes/items/categories/edit/items-categories-edit.controller.js"></script>
+<script src="routes/items/categories/deleted/items-categories-deleted.route.js"></script>
+<script src="routes/items/categories/deleted/items-categories-deleted.controller.js"></script>
 
 <script src="routes/users/users.route.js"></script>
 <script src="routes/users/index/users-index.route.js"></script>
@@ -334,6 +355,85 @@
 <script src="routes/cases/edit/components/steps/steps.directive.js"></script>
 <script src="routes/cases/edit/components/related-reports/related-reports.directive.js"></script>
 
+<script src="components/menu-actions/menu-actions.directive.js"></script>
+<script src="components/groups-selector-inline/groups-selector-inline.directive.js"></script>
+<script src="components/equals/equals.directive.js"></script>
+<script src="components/next-field-on-enter/next-field-on-enter.directive.js"></script>
+<script src="components/nav-item/nav-item.directive.js"></script>
+<script src="components/map/map.directive.js"></script>
+<script src="components/period-selector/period-selector.js"></script>
+<script src="components/group-selector/group-selector.js"></script>
+<script src="components/inline-edit/ng-inline-edit.js"></script>
+<script src="components/style-map/style-map.directive.js"></script>
+<script src="components/style-results-table/style-results-table.directive.js"></script>
+<script src="components/on-blur/on-blur.directive.js"></script>
+<script src="components/on-focus/on-focus.directive.js"></script>
+<script src="components/focus-on-event/focus-on-event.directive.js"></script>
+<script src="components/focus-if/focus-if.directive.js"></script>
+<script src="components/add-area-circle-form/add-area-circle-form.directive.js"></script>
+<script src="components/area-map/area-map.directive.js"></script>
+<script src="components/fields-filter-item/fields-filter-item.directive.js"></script>
+<script src="components/map-show-item/map-show-item.directive.js"></script>
+<script src="components/map-show-report/map-show-report.directive.js"></script>
+<script src="components/map-view-streetview/map-view-streetview.directive.js"></script>
+<script src="components/select-lat-lng-map/select-lat-lng-map.directive.js"></script>
+<script src="components/search-lat-lng-map/search-lat-lng-map.directive.js"></script>
+<script src="components/ng-thumb/ng-thumb.directive.js"></script>
+<script src="components/inputs-sidebar/inputs-sidebar.directive.js"></script>
+<script src="components/inventory-draggable-input/inventory-draggable-input.directive.js"></script>
+<script src="components/inventory-droppable-inputs-area/inventory-droppable-inputs-area.directive.js"></script>
+<script src="components/inventory-edit-label/inventory-edit-label.directive.js"></script>
+<script src="components/inventory-edit-section/inventory-edit-section.directive.js"></script>
+<script src="components/inventory-create-value/inventory-create-value.directive.js"></script>
+<script src="components/inventory-popover/inventory-popover.directive.js"></script>
+<script src="components/inventory-popover-link/inventory-popover-link.directive.js"></script>
+<script src="components/inventory-trigger-condition/inventory-trigger-condition.directive.js"></script>
+<script src="components/inventory-trigger/inventory-trigger.directive.js"></script>
+<script src="components/inventory-sortable-sections/inventory-sortable-sections.directive.js"></script>
+<script src="components/inventory-single-value/inventory-single-value.directive.js"></script>
+<script src="components/gallery/gallery.directive.js"></script>
+<script src="components/feature-flag/feature-flag.directive.js"></script>
+<script src="components/generic-input/generic-input.directive.js"></script>
+<script src="components/keyboard-poster/keyboard-poster.directive.js"></script>
+<script src="components/detect-scroll-top/detect-scroll-top.directive.js"></script>
+<script src="components/map-new-report/map-new-report.directive.js"></script>
+<script src="components/report-status/report-status.directive.js"></script>
+<script src="components/report-search-map/report-search-map.directive.js"></script>
+<script src="components/gallery-image-on-load/gallery-image-on-load.directive.js"></script>
+<script src="components/copy-text/copy-text.directive.js"></script>
+<script src="components/flows/create-value/flows-create-value.directive.js"></script>
+<script src="components/flows/droppable-inputs-area/flows-droppable-inputs-area.directive.js"></script>
+<script src="components/flows/resolution-state/flows-resolution-state.directive.js"></script>
+<script src="components/flows/single-value/flows-single-value.directive.js"></script>
+<script src="components/flows/step-field/flows-step-field.directive.js"></script>
+<script src="components/flows/steps-order/flows-steps-order.directive.js"></script>
+<script src="components/flows/trigger/flows-trigger.directive.js"></script>
+<script src="components/flows/draggable-input/flows-draggable-input.directive.js"></script>
+<script src="components/slide/slide.animation.js"></script>
+<script src="components/zup-transclude/zup-transclude.directive.js"></script>
+<script src="components/multiple-select-list/multiple-select-list.directive.js"></script>
+<script src="components/select-list/select-list.directive.js"></script>
+<script src="components/form-input-validator/integer/form-input-validator-integer.directive.js"></script>
+<script src="components/form-input-validator/great-than/form-input-validator-great-than.directive.js"></script>
+<script src="components/form-input-slider/form-input-slider.directive.js"></script>
+<script src="components/form-input-slider-range/form-input-slider-range.directive.js"></script>
+<script src="components/report-category-selector/report-category-selector.directive.js"></script>
+<script src="components/search-box/search-box.directive.js"></script>
+<script src="components/exports/exporter.directive.js"></script>
+<script src="components/users-selector/users-selector.directive.js"></script>
+<script src="components/map/streetview/map-streetview.directive.js"></script>
+<script src="components/bootstrap-popover-tooltip/bootstrap-popover-tooltip.js"></script>
+
+<script src="routes/services/services.route.js"></script>
+<script src="routes/services/index/services-index.route.js"></script>
+<script src="routes/services/index/services-index.controller.js"></script>
+<script src="routes/services/edit/services-edit.route.js"></script>
+<script src="routes/services/edit/services-edit.controller.js"></script>
+<script src="routes/services/show/services-show.route.js"></script>
+<script src="routes/services/show/services-show.controller.js"></script>
+<script src="routes/services/permissions/services-permissions.route.js"></script>
+<script src="routes/reports/categories/edit/components/custom-fields-editor/custom-fields-editor.directive.js"></script>
+
 <script src="routes/business-reports/business-reports.route.js"></script>
 <script src="routes/business-reports/index/business-reports-index.route.js"></script>
 <script src="routes/business-reports/index/business-reports-index.controller.js"></script>
@@ -348,16 +448,9 @@
 <script src="routes/business-reports/explore/business-reports-explore.route.js"></script>
 <script src="routes/business-reports/explore/business-reports-explore.controller.js"></script>
 <script src="routes/business-reports/explore/components/header/business-reports-explore-header.directive.js"></script>
-
-<script src="routes/services/services.route.js"></script>
-<script src="routes/services/index/services-index.route.js"></script>
-<script src="routes/services/index/services-index.controller.js"></script>
-<script src="routes/services/edit/services-edit.route.js"></script>
-<script src="routes/services/edit/services-edit.controller.js"></script>
-<script src="routes/services/show/services-show.route.js"></script>
-<script src="routes/services/show/services-show.controller.js"></script>
-<script src="routes/services/permissions/services-permissions.route.js"></script>
-<script src="routes/reports/categories/edit/components/custom-fields-editor/custom-fields-editor.directive.js"></script>
+<script src="routes/audit/audit.route.js"></script>
+<script src="routes/audit/index/audit-index.route.js"></script>
+<script src="routes/audit/index/audit-index.controller.js"></script>
 
 <script src="components/groups-selector-inline/groups-selector-inline.directive.js"></script>
 <script src="components/users-selector-inline/users-selector-inline.directive.js"></script>
@@ -489,6 +582,8 @@
 <script src="modals/reports/categories/manage-statuses/reports-categories-manage-statuses.controller.js"></script>
 <script src="modals/reports/categories/destroy/reports-categories-destroy.controller.js"></script>
 <script src="modals/reports/categories/notifications/reports-categories-notifications-layout.controller.js"></script>
+<script src="modals/reports/edit-perimeter/reports-edit-perimeter.controller.js"></script>
+<script src="modals/reports/edit-perimeter/reports-category-edit-perimeter.controller.js"></script>
 <script src="modals/items/destroy/items-destroy.controller.js"></script>
 <script src="modals/items/restore/items-restore.controller.js"></script>
 <script src="modals/items/select-address/items-select-address.controller.js"></script>
@@ -498,14 +593,23 @@
 <script src="modals/items/categories/edit-field-values/items-categories-edit-field-values.controller.js"></script>
 <script src="modals/items/categories/new-status/items-categories-new-status.controller.js"></script>
 <script src="modals/items/categories/edit-status/items-categories-edit-status.controller.js"></script>
+<script src="modals/items/categories/select/items-categories-select.js"></script>
 <script src="modals/items/select/items-select.controller.js"></script>
 <script src="modals/users/disable/users-disable.controller.js"></script>
+<script src="modals/users/edit/users-edit.controller.js"></script>
 <script src="modals/gallery/gallery.controller.js"></script>
 <script src="modals/reports/select-user/reports-select-user.controller.js"></script>
 <script src="modals/reports/create-user/reports-create-user.controller.js"></script>
 <script src="modals/reports/edit-description/reports-edit-description.controller.js"></script>
 <script src="modals/reports/perimeters/reports-perimeters-modal.controller.js"></script>
 <script src="modals/reports/select/reports-select.controller.js"></script>
+<script src="modals/reports/export/reports-export.controller.js"></script>
+<script src="modals/reports/group/create-report-group.controller.js"></script>
+<script src="modals/reports/images/destroy/reports-images-destroy-modal.controller.js"></script>
+<script src="modals/reports/images/edit/reports-images-edit-modal.controller.js"></script>
+<script src="modals/reports/images/add/reports-images-add-modal.controller.js"></script>
+<script src="modals/reports/phraseologies/reports-phraseologies-modal.controller.js"></script>
+<script src="modals/reports/phraseologies/destroy/reports-phraseologies-destroy-modal.controller.js"></script>
 <script src="modals/error/error.controller.js"></script>
 <script src="modals/flows/add/flows-add.controller.js"></script>
 <script src="modals/flows/edit/flows-edit.controller.js"></script>
@@ -521,6 +625,7 @@
 <script src="modals/groups/remove-user/groups-remove-user.controller.js"></script>
 <script src="modals/user/password-recovery/user-password-recovery.controller.js"></script>
 <script src="modals/services/disable/services-disable.controller.js"></script>
+<script src="modals/audit/request-data/audit-request-data.controller.js"></script>
 
 <script src="directives/display-notification/display-notification.directive.js"></script>
 <script src="directives/zup-print/zup-print.directive.js"></script>
@@ -532,6 +637,7 @@
 <script src="helpers/translate-errors/translate-errors.filter.js"></script>
 <script src="helpers/diacritics-insensitive-filter/diacritics-insensitive-filter.filter.js"></script>
 <script src="helpers/get-google-address-components/get-google-address-components.filter.js"></script>
+<script src="helpers/cpf-formatter/cpf-formatter.filter.js"></script>
 
 <!-- endbuild -->
 </body>

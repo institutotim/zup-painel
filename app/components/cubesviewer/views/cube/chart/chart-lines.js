@@ -62,7 +62,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
       var container = $($element).find("svg").get(0);
 
       var xAxisLabel = ( (view.params.xaxis != null) ? view.cube.dimensionParts(view.params.xaxis).label : "Nenhuma dimensão horizontal selecionada");
-
+      var yAxisLabel = ( (view.params.yaxis != null) ? view.cube.aggregateFromName(view.params.yaxis).label : "Nenhuma medida selecionada.");
 
       // TODO: Check there's only one value column
 
@@ -122,6 +122,8 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
               return (columnDefs[d].name);
             });
 
+          chart.yAxis.axisLabel(yAxisLabel);
+
           chart.yAxis.tickFormat(function (d, i) {
             return colFormatter(d);
           });
@@ -151,6 +153,7 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
           var chart = nv.models.stackedAreaChart()
           //.x(function(d) { return d[0] })
           //.y(function(d) { return "y" in d ? d.y : 0 })
+            .controlLabels({"stacked":"Empilhado","stream":"Em fluxo","expanded":"Expandido"})
             .showLegend(!!view.params.chartoptions.showLegend)
             .interpolate($scope.view.params.chartoptions.lineInterpolation)
             .margin({left: 130})
@@ -167,6 +170,8 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
             .tickFormat(function (d, i) {
               return (columnDefs[d].name);
             });
+
+          chart.yAxis.axisLabel(yAxisLabel);
 
           chart.yAxis.tickFormat(function (d, i) {
             return colFormatter(d);
@@ -270,5 +275,3 @@ angular.module('cv.views.cube').controller("CubesViewerViewsCubeChartLinesContro
     $scope.initialize();
 
   }]);
-
-
