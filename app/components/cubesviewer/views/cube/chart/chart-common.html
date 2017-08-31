@@ -5,7 +5,7 @@
               (!(view.params.charttype == 'radar' && view.grid.columnDefs.length < 4))" style="width: 99%;">
     <div>
         <div class="cv-chart-container">
-            <svg style="height: 400px;" />
+            <svg style="height: {{view.params.height || 400}}px;" />
         </div>
         <div ng-hide="view.getControlsHidden() || view.params.charttype == 'radar'" style="font-size: 8px; float: right;">
             <a href="" class="cv-chart-height" ng-click="chartCtrl.resizeChart(400);">Pequeno</a>

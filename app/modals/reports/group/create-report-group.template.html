@@ -1,0 +1,22 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title">Agrupar relatos</h4>
+</div>
+
+<div class="modal-body">
+  <h5 style="padding: 10px;">Confirme os relatos que deverão ser agrupados:</h5>
+
+  <ul class="fixed-height">
+    <li ng-repeat="report in reports" class="reportPopover"  bpt-template="{{ getReportPopoverTemplate(report.status.color) }}"  bpt-toggle="popover" bpt-trigger="hover" bpt-placement="bottom" bpt-html="true" bpt-title="{{ report.status.title }}" bpt-content="{{ reportPopoverContent }}" bpt-compile="true">
+      <a ng-class="{'selected': isActive(report)}" class="status" ng-click="toggleSelection(report)">
+        <span ng-class="{'not-selected': !isActive(report)}"></span>
+        <i class="glyphicon glyphicon-ok" ng-show="isActive(report)"></i>
+        Protocolo {{ report.id }}
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-info btn-custom btn-fat-custom" ng-disabled="!isAbleToSave()" ng-click="save()">Agrupar os relatos selecionados</button>
+</div>

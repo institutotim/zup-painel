@@ -1,5 +1,6 @@
 'use strict';
 
+/*global angular, _*/
 angular
   .module('ReportsIndexListControllerModule', [
     'ReportsDestroyModalControllerModule',
@@ -27,9 +28,13 @@ angular
     };
 
     $scope.sortableColumns = {
-      'user_name': true,
+      'protocol': true,
+      'address': true,
+      'user': true,
       'reporter': true,
       'created_at': true,
+      'category': true,
+      'assignment': true,
       'priority': true
     };
 
@@ -68,7 +73,7 @@ angular
             return function (report) {
               $scope.$parent.total--;
               $scope.reports.splice($scope.reports.indexOf(report), 1);
-            }
+            };
           },
 
           report: function () {
@@ -80,7 +85,8 @@ angular
     };
 
     var getReturnFieldsForColumns = function (columns) {
-      var defaultFields = ['id', 'status_id', 'category_id', 'overdue'];
+      var defaultFields = ['id', 'status_id', 'category_id', 'overdue',
+                           'description', 'images'];
 
       var customFieldFilter = function (field) {
         return field.type == 'custom_field';
@@ -161,6 +167,9 @@ angular
         return deferred.promise;
       }
     };
+
+    $scope.getReportPopoverTemplate = ReportsItemsService.getReportPopoverTemplate;
+    $scope.reportPopoverContent = ReportsItemsService.reportPopoverContent;
 
     $scope.$on('reportsItemsFetched', function () {
       $scope.$parent.total = ReportsItemsService.total;

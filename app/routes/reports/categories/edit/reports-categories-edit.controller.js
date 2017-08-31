@@ -1,20 +1,29 @@
-'use strict';
+(function (angular, _) {
+  'use strict';
 
-angular
-  .module('ReportsCategoriesEditControllerModule', [
-    'FormatErrorsHelperModule',
-    'NgThumbComponentModule',
-    'SelectListComponentModule',
-    'MultipleSelectListComponentModule',
-    'ReportsCategoriesManageStatusesModalControllerModule',
-    'ReportsCategoriesServiceModule',
-    'ReportsCategoriesNotificationsLayoutControllerModule',
-    'DisplayNotificationDirectiveModule',
-    'ReportsPerimetersServiceModule',
-    'CustomFieldsEditorDirectiveModule'
-  ])
+  angular
+    .module('ReportsCategoriesEditControllerModule', [
+      'FormatErrorsHelperModule',
+      'NgThumbComponentModule',
+      'SelectListComponentModule',
+      'MultipleSelectListComponentModule',
+      'ReportsCategoriesManageStatusesModalControllerModule',
+      'ReportsCategoriesServiceModule',
+      'ReportsCategoriesNotificationsLayoutControllerModule',
+      'DisplayNotificationDirectiveModule',
+      'ReportsPerimetersServiceModule',
+      'CustomFieldsEditorDirectiveModule',
+      'ReportsCategoryEditPerimeterModalControllerModule'
+    ])
 
-  .factory('NotificationTypesService', function (Restangular, $q) {
+    .factory('NotificationTypesService', NotificationTypesService)
+    .controller('ReportsCategoriesEditController', ReportsCategoriesEditController);
+
+  NotificationTypesService.$inject = [
+    'Restangular',
+    '$q'
+  ];
+  function NotificationTypesService(Restangular, $q) {
 
     function NotificationTypesService() {
 
@@ -79,9 +88,30 @@ angular
     }
 
     return new NotificationTypesService();
-  })
+  }
 
-  .controller('ReportsCategoriesEditController', function ($scope, $rootScope, $stateParams, NotificationTypesService, Restangular, FileUploader, $q, $http, $location, $anchorScroll, $modal, $document, reportCategoriesResponse, groupsResponse, notificationsTypesResponse, Error, ReportsCategoriesService, $log, $state, ReportsPerimetersService, $timeout) {
+  ReportsCategoriesEditController.$inject = [
+    '$scope',
+    '$rootScope',
+    '$stateParams',
+    'NotificationTypesService',
+    'Restangular',
+    'FileUploader',
+    '$q',
+    '$location',
+    '$modal',
+    '$document',
+    'reportCategoriesResponse',
+    'groupsResponse',
+    'notificationsTypesResponse',
+    'Error',
+    'ReportsCategoriesService',
+    '$log',
+    'ReportsPerimetersService',
+    '$timeout',
+    'ReportsCategoryEditPerimeterModalService'
+  ];
+  function ReportsCategoriesEditController($scope, $rootScope, $stateParams, NotificationTypesService, Restangular, FileUploader, $q, $location, $modal, $document, reportCategoriesResponse, groupsResponse, notificationsTypesResponse, Error, ReportsCategoriesService, $log, ReportsPerimetersService, $timeout, ReportsCategoryEditPerimeterModalService) {
     var updating = $scope.updating = false;
     var categoryId = $scope.categoryId = $stateParams.id;
 
@@ -157,9 +187,13 @@ angular
 
     $scope.addNewPerimeterGroup = function () {
       var newPerimeterGroup = {};
+      newPerimeterGroup.active = true;
       newPerimeterGroup.category_id = categoryId;
-      newPerimeterGroup.editing = true;
-      $scope.perimetersGroups.push(newPerimeterGroup);
+
+      ReportsCategoryEditPerimeterModalService.open(newPerimeterGroup)
+        .then(function (result) {
+          $scope.perimetersGroups.push(result);
+        });
     };
 
     $scope.changePerimetersDelay = function () {
@@ -373,21 +407,33 @@ angular
 
     var categoriesPromise = Restangular.one('inventory').all('categories').getList({return_fields: 'id,title'}), category;
 
+    function _loadPerimeterGroups() {
+      var defer = $q.defer();
+      var perimetersPromise = ReportsPerimetersService.getPerimetersGroups(categoryId);
+      perimetersPromise.then(function (perimeterGroups) {
+        $scope.perimetersGroups = perimeterGroups;
+        defer.resolve();
+      });
+
+      perimetersPromise.catch(defer.reject);
+
+      return defer.promise;
+    }
+
     if (updating) {
       // We create a empty category object to be passed on PUT
       category = $scope.category = {};
 
       var categoryPromise = Restangular.one('reports').one('categories', categoryId).get();
-      var perimetersPromise = ReportsPerimetersService.getPerimetersGroups(categoryId);
 
-      $q.all([categoriesPromise, categoryPromise, perimetersPromise]).then(function (responses) {
+      $q.all([categoriesPromise, categoryPromise, _loadPerimeterGroups()]).then(function (responses) {
         $scope.categories = responses[0].data;
 
         // ...and we populate $scope.category with the data from the server =)
         _.extend(category, responses[1].data);
 
-        category.statuses = _.map(responses[1].data.statuses, function(status){
-          if(status.flow) {
+        category.statuses = _.map(responses[1].data.statuses, function (status) {
+          if (status.flow) {
             status.flow_id = status.flow.id;
             status.flow_title = status.flow.title;
           }
@@ -398,7 +444,7 @@ angular
         if (!category.solver_groups_ids) {
           category.solver_groups_ids = [];
         }
-        if(category.default_solver_group) {
+        if (category.default_solver_group) {
           category.default_solver_group_id = category.default_solver_group.id;
         }
         if (category.default_solver_group_id && category.solver_groups_ids.length == 0) {
@@ -407,8 +453,6 @@ angular
         category.solver_groups = getSolverGroups($scope.groups, category.solver_groups_ids);
 
         $scope.showPerimeters = category.perimeters = responses[1].data.perimeters;
-
-        $scope.perimetersGroups = responses[2];
 
         NotificationTypesService.updateCache(categoryId, notificationsTypesResponse.data);
         $scope.notificationTypesArray = notificationsTypesResponse.data;
@@ -577,13 +621,15 @@ angular
     };
 
     var getSolverGroups = function (groups, solvers) {
-      return _.filter(groups, function (group) { return _.contains(solvers, group.id) });
+      return _.filter(groups, function (group) {
+        return _.contains(solvers, group.id)
+      });
     };
 
     $scope.$watchCollection('category.solver_groups_ids', function (newValue, oldValue) {
       if (!_.isEqual(newValue, oldValue)) {
         $scope.category.solver_groups = getSolverGroups($scope.groups, newValue);
-        if(_.isEmpty(newValue)) {
+        if (_.isEmpty(newValue)) {
           $scope.category.default_solver_group_id = null;
           $scope.category.default_solver_group = null;
         }
@@ -627,7 +673,7 @@ angular
       $scope.defaultUserResponseTimeSelection = seconds;
     };
 
-    $scope.shouldShowGlobalOption = function() {
+    $scope.shouldShowGlobalOption = function () {
       return ($scope.hasPermission('manage_namespaces') && !updating && $rootScope.namespace.id !== 1);
     };
 
@@ -754,6 +800,8 @@ angular
             for (var i = $scope.perimetersGroups.length - 1; i >= 0; i--) {
               if ($scope.perimetersGroups[i].__resetDirty) {
                 $scope.perimetersGroups[i].__resetDirty();
+              } else {
+                delete $scope.perimetersGroups[i].__isDirty;
               }
             }
             $scope.perimetersGroupsToRemove = [];
@@ -807,4 +855,18 @@ angular
         }
       });
     };
-  });
+
+    $scope.statusDecorator = {
+      true: ['', 'perimeter-status-ok', 'Ativo'],
+      false: ['', 'perimeter-status-process', 'Inativo']
+    };
+
+    $scope.editPerimeter = function (perimeter) {
+      ReportsCategoryEditPerimeterModalService.open(perimeter)
+        .then(function (result) {
+          angular.extend(perimeter, result);
+        });
+    };
+  }
+
+})(angular, _);

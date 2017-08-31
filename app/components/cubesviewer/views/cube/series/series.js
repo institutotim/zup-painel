@@ -190,8 +190,11 @@ cubesviewer._seriesAddRows = function ($scope, data) {
         drilldownLevelLabels.push(info.label);
       });
 
-      key.push(drilldownLevelLabels.join(" / "));
+      if (parts.dimension.role = 'time') {
+        drilldownLevelLabels = drilldownLevelLabels.reverse()
+      }
 
+      key.push(drilldownLevelLabels.join(" / "));
     }
 
     // Set key
@@ -296,4 +299,3 @@ cubesviewer._seriesAddRows = function ($scope, data) {
   }
 
 };
-

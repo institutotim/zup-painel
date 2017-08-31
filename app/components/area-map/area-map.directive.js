@@ -5,7 +5,7 @@ angular
   .directive('areaMap', function (ENV) {
     return {
       restrict: 'A',
-      link: function postLink(scope, element) {
+      link: function postLink(scope, element, attrs) {
         var mapProvider = {
           options:
           {
@@ -83,7 +83,7 @@ angular
 
             var dis = google.maps.geometry.spherical.computeDistanceBetween(center, ne) / 1000; // in km! :D
 
-            this.set('distance', dis / 3);
+            this.set('distance', attrs.initialDistance ? (attrs.initialDistance / 1000) : (dis / 3));
 
             // Bind the RadiusWidget bounds property to the circle bounds property.
             this.bindTo('bounds', circle);
@@ -183,10 +183,12 @@ angular
 
             this.setHelpers();
 
-            // and we create an event on click to create new circles
-            google.maps.event.addListener(mapProvider.map, 'click', function (a) {
-              mapProvider.addCircle(a.latLng);
-            });
+            if (!attrs.singleCircle) {
+              // and we create an event on click to create new circles
+              google.maps.event.addListener(mapProvider.map, 'click', function (a) {
+                mapProvider.addCircle(a.latLng);
+              });
+            }
           },
 
           setLastCircleInfo: function(widget) {
@@ -219,6 +221,7 @@ angular
 
         scope.$parent.circles = mapProvider.circles;
         scope.map = mapProvider.map;
+        scope.mapProvider = mapProvider;
 
         // helper functions for the modal
         scope.eraseAllCircles = function() {

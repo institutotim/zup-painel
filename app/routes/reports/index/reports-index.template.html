@@ -9,7 +9,25 @@
       <a ui-sref="reports.index.notifications" ui-sref-active="active" ui-sref-opts="{reload: true}"><span class="glyphicon glyphicon-bullhorn"></span> <p class="tab-label">Notificações</p></a>
     </div>
 
-    <div style="float: right">
+    <div style="float: right" ng-hide="groupSelection.length > 1">
+      <menu-actions>
+        <menu-action>
+          <a href="" ng-click="share()">Compartilhar link</a>
+        </menu-action>
+        <menu-action ng-if="hasAnyPermission(['reports_full_access', 'reports_items_export'])">
+          <exporter kind="report" filters="generateReportsFetchingOptions">Exportar</exporter>
+        </menu-action>
+        <menu-action ng-if="hasAnyPermission([
+          'reports_full_access', 'inventories_full_acess',
+          'reports_items_export', 'inventories_items_export'
+        ])">
+          <a ng-href="#/exports">Gerenciar exportações</a>
+        </menu-action>
+        <menu-action ng-if="hasPermission('reports_full_access')">
+          <a ng-href="#/reports/categories/deleted">Categorias deletadas</a>
+        </menu-action>
+      </menu-actions>
+
       <div class="btn-group">
         <a ng-href="#/reports/add" class="btn btn-info btn-custom-group" ng-show="hasPermission('reports_full_access') || hasPermission('reports_items_create') || hasPermission('reports_categories_edit')">+ Novo {{ 'REPORT' | translate }}</a>
         <a ng-href="#/reports/categories" class="btn btn-info btn-custom-group" ng-show="hasPermission('reports_full_access') || hasPermission('reports_categories_edit')">Gerenciar categorias</a>
@@ -20,6 +38,14 @@
       <a href="" ng-click="share()" class="btn btn-info btn-custom"><i class="glyphicon glyphicon-link"></i></a>
 
       <p class="total pages-animation" ng-hide="loadingContent">{{ total }} {{ 'REPORTS' | translate | lowercase }} encontrados</p>
+    </div>
+
+    <!-- Group Actions -->
+    <div ng-show="groupSelection.length > 1">
+      <button class="btn btn-info btn-custom" ng-click="submitGroupSelection()"><i class="fa fa-clone"></i> Agrupar selecionados</button>
+      <button class="btn btn-info btn-custom" ng-click="clearGroupSelection()"><i class="fa fa-minus-square-o"></i> Desfazer seleção</button>
+
+      <p class="total pages-animation" ng-hide="loadingContent">{{ groupSelection.length }} relatos selecionados</p>
     </div>
 
   </div>
@@ -36,7 +62,11 @@
       </div>
 
       <div class="advanced_filters_bar" ng-show="activeAdvancedFilters.length !== 0">
-        <div class="filter" ng-repeat="filter in activeAdvancedFilters track by $index"><b>{{ filter.title }}</b> {{ filter.desc }} <span class="glyphicon glyphicon-remove" ng-click="removeFilter(filter)"></span></div>
+        <div class="filter" ng-repeat="filter in activeAdvancedFilters track by $index">
+          <b>{{ filter.title }}</b>&nbsp{{ filter.desc }}&nbsp
+          <span class="glyphicon glyphicon-edit" ng-click="editFilter(filter)" ng-show="filter.type === 'area'" title="Editar filtro"></span>
+          <span class="glyphicon glyphicon-remove" ng-click="removeFilter(filter)" title="Remover filtro"></span>
+        </div>
       </div>
 
       <div class="clearfix"></div>
@@ -45,6 +75,28 @@
     </div>
 
     <div class="clearfix"></div>
+  </div>
+
+  <div class="groupSuggestions" id="groupSuggestions" ng-show="suggtotal">
+    <div class="groupSuggestion" ng-repeat="suggestion in suggestions">
+
+      <div class="suggestionSummary">
+        <div class="inline">Os protocolos</div>
+        <div class="inline" ng-repeat="report in suggestion.reports">
+          <div class="inline">{{ $last ? ' e ' : ' ' }}</div>
+          <a class="inline reportPopover" href="#/reports/{{report.id}}" bpt-template="{{ getReportPopoverTemplate(report.status.color) }}" bpt-toggle="popover" bpt-trigger="hover" bpt-placement="right" bpt-html="true" bpt-title="{{ report.status.title }}" bpt-content="{{ reportPopoverContent }}" bpt-compile="true" bpt-show="showSuggestionPopup" bpt-hide="hideSuggestionPopup"><strong style="text-decoration: underline;">{{ report.id }}</strong></a>{{ ((suggestion.reports_items_ids.length - ($index + 1)) > 1) ? ',' : ' ' }}
+        </div>
+        <div class="inline">({{ suggestion.category.title }}) na rua {{ suggestion.address }} parecem se referir a mesma solicitação.</div>
+      </div>
+
+      <div class="suggestionActions">
+        <a href="" style="padding-right: 20px;" ng-click="acceptSuggestion(suggestion)"><span class="fa fa-clone"></span>&nbsp<strong>Agrupar</strong></a>
+        <a href="" ng-click="ignoreSuggestion(suggestion)"><strong>Ignorar</strong></a>
+      </div>
+
+      <div class="clearfix"></div>
+
+    </div>
   </div>
 
   <div ui-view></div>

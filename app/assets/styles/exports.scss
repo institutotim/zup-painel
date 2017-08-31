@@ -1,0 +1,7 @@
+.exports-status {
+  font-weight: bold;
+
+  &.exports-status-pendent { color: #9b9b9b; }
+  &.exports-status-processed { color: #5fb971; }
+  &.exports-status-failed { color: #f14446; }
+}

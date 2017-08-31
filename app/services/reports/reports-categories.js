@@ -103,10 +103,49 @@ angular
     };
 
     /**
+     * Fetches basic information for deleted categories
+     * This function is safe to call multiple times and will not duplicate categories in the cache
+     * @returns {Object} Restangular promise for basic category fields fetching
+     */
+    self.fetchAllDeleted = function () {
+      var url = FullResponseRestangular.all('reports').all('categories').all('deleted'), options = {};
+
+      options.display_type = 'full'; // temporarily set display_type as full while API is being updated TODO
+      options.subcategories_flat = true;
+      options.return_fields = ReturnFieldsService.convertToString([
+        "id", "title", "priority", "priority_pretty", "pin",
+        "parent_id", "color", "icon", "days_for_deletion",
+        {
+          "statuses": [
+            "id", "color", "title"
+          ],
+          "marker": [
+            {
+              "retina": [
+                "web"
+              ]
+            }
+          ]
+        }
+      ]);
+
+      var promise = url.customGET(null, options);
+      return promise;
+    };
+
+    /*
+     * Restore a deleted category
+     * @returns Promise
+     */
+    self.restoreCategory = function(category) {
+      return Restangular.one('reports').one('categories', category.id).one('restore').customPUT();
+    }
+
+    /**
      * Fetches id, title and subcategories
      * @returns {Array} fetched categories
      */
-    self.fetchTitlesAndIds = function(){
+    self.fetchTitlesAndIds = function () {
       var request = FullResponseRestangular.all('reports').all('categories'), deferred = $q.defer(), options = {};
 
       options.display_type = 'full'; // temporarily set display_type as full while API is being updated TODO
@@ -124,7 +163,7 @@ angular
 
       promise.then(function (response) {
         deferred.resolve(response.data.categories);
-      }, function(response){
+      }, function (response) {
         deferred.reject(response);
       });
 
@@ -154,6 +193,27 @@ angular
       });
 
       return deferred.promise;
+    };
+
+    /**
+     *
+     * @param {Number} categoryId
+     * @param {Object} options
+     * @returns {Promise}
+     */
+    self.getCategoryById = function (categoryId, options) {
+      var url = FullResponseRestangular.all('reports').one('categories', categoryId),
+        deffered = $q.defer();
+
+      var promise = url.customGET(null, options);
+
+      promise.then(function (response) {
+        deffered.resolve(response.data.category);
+      }, function (response) {
+        deffered.reject(response);
+      });
+
+      return deffered.promise;
     };
 
     return self;

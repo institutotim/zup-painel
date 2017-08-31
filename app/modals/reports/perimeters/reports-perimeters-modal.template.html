@@ -60,6 +60,12 @@
       options="groups"
       my-place-holder="Selecione o grupo responsável"/>
   </div>
+  <hr/>
+  <div class="form-group" style="margin-bottom: -20px;">
+    <span class="perimeters-labels">5. Defina a prioridade padrão do perímetro (opcional)</span>
+    <input type="number" min="0" max="100" class="form-control perimeters-input" ng-model="perimeter.priority" style="width: 70px;" />
+    <span class="perimeter-help-label">Insira um valor de 0 a 100. Quanto maior o valor, maior a prioridade.</span>
+  </div>
 </div>
 
 <div class="modal-footer">

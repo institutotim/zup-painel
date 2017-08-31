@@ -75,7 +75,8 @@
     </td>
 
     <td class="actions">
-      <a class="icon_action" ng-href="#/reports/{{ report.id }}"><span class="glyphicon glyphicon-edit"
+      <a class="icon_action reportPopover" ng-click="openReport(report.id, $event)" bpt-template="{{ getReportPopoverTemplate(report.status.color) }}"  bpt-toggle="popover" bpt-trigger="hover" bpt-placement="left" bpt-html="true" bpt-title="{{ report.status.title }}" bpt-content="{{ reportPopoverContent }}" bpt-compile="true"><span class="fa-stack preview-icon"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-search fa-stack-1x fa-inverse"></i></span></a>
+      <a class="icon_action widish" ng-href="#/reports/{{ report.id }}"><span class="glyphicon glyphicon-edit"
                                                                        ng-show="hasPermission('reports_items_edit', report.category.id) || hasPermission('reports_categories_edit', report.category.id) || hasPermission('reports_full_access')"></span></a>
       <a class="icon_action" href="" ng-click="deleteReport(report)"
          ng-show="hasPermission('reports_items_delete') || hasPermission('reports_categories_edit', report.category.id) || hasPermission('reports_full_access')"><span

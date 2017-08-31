@@ -1,0 +1,47 @@
+<div class="pages-animation" infinite-scroll="getData()" infinite-scroll-distance="0">
+  <div class="title">
+    <ul>
+      <li>Audições</li>
+    </ul>
+
+    <div class="pull-right">
+      <p class="total">{{ total }} registros encontrados</p>
+    </div>
+  </div>
+
+  <table class="table custom_table">
+    <thead>
+    <tr>
+      <td ng-click="changeSorting('user.name')" ng-class="selectedCls('user.name')" class="sort-table">
+        <span>Usuário</span><span class="arrow"></span></td>
+      </td>
+      <td ng-click="changeSorting('updated_at')" ng-class="selectedCls('updated_at')" class="sort-table">
+        <span>Data</span><span class="arrow"></span></td>
+      </td>
+      <td ng-click="changeSorting('request_method')" ng-class="selectedCls('request_method')" class="sort-table">
+        <span>Método</span><span class="arrow"></span></td>
+      </td>
+      <td ng-click="changeSorting('url')" ng-class="selectedCls('url')" class="sort-table">
+        <span>Endereço</span><span class="arrow"></span></td>
+      </td>
+      <td></td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr ng-repeat="audit in auditions | orderBy:sort.column:sort.descending">
+      <td><a ng-href="#/users/{{ audit.user.id }}">{{ audit.user.name }}</a></td>
+      <td>{{ audit.updated_at | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+      <td>{{ audit.request_method }}</td>
+      <td>{{ audit.url }}</td>
+      <td width="1%">
+        <button ng-click="showRequestData(audit)" class="btn btn-custom btn-primary"><i class="fa fa-code" aria-hidden="true"></i> Dados da requisição</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="reports-perimeters-loading animate-if" ng-if="loading">
+    <img src="assets/images/loading.gif" width="50" height="50"/>
+  </div>
+</div>

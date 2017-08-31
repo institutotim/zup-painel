@@ -17,6 +17,7 @@ angular
     'ui.select',
     'ui.mask',
     'restangular',
+    'hc.marked',
     'infinite-scroll',
     'lrInfiniteScroll',
     'angularFileUpload',
@@ -28,6 +29,7 @@ angular
     'dibari.angular-ellipsis',
     'rt.popup',
     'pascalprecht.translate',
+    'bootstrap-popover-tooltip',
 
     // Providers
     'AuthorizationProviderModule',
@@ -50,6 +52,9 @@ angular
     'NotificationsCenterComponentModule',
     'NamespaceSelectorModule',
 
+    // Helpers
+    'CpfFormatterHelperModule',
+
     // Constants
     'config',
 
@@ -61,10 +66,11 @@ angular
     'ConfigModule',
     'UsersModule',
     'GroupsModule',
-    'HelpModule',
     'FlowsModule',
     'CasesModule',
     'BusinessReportsModule',
     'ServicesModule',
-    'ChatRoomsModule'
+    'ChatRoomsModule',
+    'ExportsModule',
+    'AuditModule'
   ]);

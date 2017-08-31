@@ -5,6 +5,7 @@ angular
     'AdvancedFiltersServiceModule',
     'InventoriesItemsServiceModule',
     'ItemsDestroyModalControllerModule',
+    'ExporterComponentModule',
     'angular-toArrayFilter'
   ])
 
@@ -482,6 +483,12 @@ angular
         && event.target.tagName.toLowerCase() != 'a'
       ) {
         $state.go('items.show', { id: item.id });
+      }
+    };
+
+    $scope.editFilter = function (filter) {
+      if (filter.type === 'area') {
+        AdvancedFilters.area($scope.activeAdvancedFilters, filter);
       }
     };
 

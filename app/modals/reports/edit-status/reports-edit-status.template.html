@@ -49,6 +49,15 @@
   </div>
 </div>
 
-<div class="modal-footer">
-   <button type="button" class="btn btn-info btn-custom btn-fat-custom" ng-click="save()" ng-disabled="processing || (category.comment_required_when_updating_status && (report.comment.length === 0 || !report.comment)) || (status.responsible_group && caseUsers.length === 0)">Salvar</button>
+<div class="modal-footer" style="display: table; width: 100%;">
+  <div style="display: table-row;">
+    <div class="checkbox" style="display: table-cell; padding-right: 30px;" ng-show="report.grouped">
+      <label>
+        <input type="checkbox" ng-model="report.replicate"> Aplicar a todos os relatos do grupo
+      </label>
+    </div>
+    <div style="display: table-cell;">
+      <button type="button" class="btn btn-info btn-custom btn-fat-custom" ng-click="save()" ng-disabled="processing || (category.comment_required_when_updating_status && (report.comment.length === 0 || !report.comment))">Salvar</button>
+    </div>
+  </div>
 </div>

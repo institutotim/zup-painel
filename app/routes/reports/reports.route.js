@@ -5,6 +5,8 @@ angular
     'ReportsAddModule',
     'ReportsCategoriesIndexModule',
     'ReportsCategoriesEditModule',
+    'ReportsCategoriesDeletedModule',
+    'ReportsPhraseologiesIndexModule',
     'ReportsPerimetersIndexModule'
   ])
 

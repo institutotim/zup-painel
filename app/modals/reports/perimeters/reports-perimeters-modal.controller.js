@@ -41,7 +41,7 @@ angular
         $scope.mandatoryCheckFlags[2] = false;
       }
       return $scope.mandatoryCheckFlags[0] && $scope.mandatoryCheckFlags[1] && $scope.mandatoryCheckFlags[2];
-    }
+    };
 
     var addAsyncFiles = function (data) {
       var deferred = $q.defer();
@@ -63,7 +63,7 @@ angular
     };
 
     $scope.save = function() {
-      $log.info('Saving perimeter.')
+      $log.info('Saving perimeter.');
       if(checkMandatoryFields()){
         var filePromises = [];
         filePromises.push(addAsyncFiles(uploaderShp.queue[0]));
@@ -84,7 +84,7 @@ angular
           });
         });
       }
-    }
+    };
 
     $scope.close = function () {
       $modalInstance.close();

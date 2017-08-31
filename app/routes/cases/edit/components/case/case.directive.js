@@ -50,7 +50,7 @@ angular
           }
 
           if ($scope.canExecute($scope.step)) {
-            $scope.step.editable = kase.current_step.id == $scope.step.id && !$scope.step.executed;
+            $scope.step.editable = kase.current_step.id == $scope.step.id && !$scope.step.executed && kase.status != 'Finalizado';
           } else {
             $scope.step.editable = false;
           }

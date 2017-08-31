@@ -1,0 +1,35 @@
+<div class="modal-header images-edit-modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h3 class="modal-title">Editar dados da imagem</h3>
+</div>
+
+<div class="modal-body images-edit-modal-body">
+  <div class="row">
+
+    <div class="col-md-4">
+      <img src="{{ image.low }}" width="100%">
+      <span class="origin">Enviada por {{ (report.images[i].origin === 'citizen') ? 'munícipe' : 'prefeitura' }}</span>
+    </div>
+
+    <div class="col-md-8">
+      <strong>Data da foto:</strong>&nbsp;<div style="display: inline;" ng-class="{ 'unavailable': !image.date }">{{ (image.date | date:'dd/MM/yyyy HH:mm') || 'Indisponível' }}</div>
+
+      <textarea ng-model="image.title" class="form-control report-image-title" placeholder="Adicione uma descrição (opcional)..." maxlength="120"></textarea>
+
+      <div class="options row">
+        <div class="col-md-5">
+          <input type="checkbox" bs-switch ng-model="image.visibility" switch-on-text="Privado" switch-off-text="Público" />
+        </div>
+        <div class="col-md-7" style="padding-left: 0;">
+          <span class="help">{{ (image.visibility === false) ? 'Imagens públicas serão visualizadas pelos munícipes.' : 'Imagens privadas não serão visualizadas pelos munícipes.' }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-footer images-edit-modal-footer">
+  <button type="button" ng-click="remove()" ng-disabled="saving" class="btn btn-danger btn-custom"><span class="glyphicon glyphicon-trash"></span> Excluir imagem</button>
+  <button type="button" ng-click="save()" ng-disabled="saving" class="btn btn-info btn-custom">Salvar alterações</button>
+</div>

@@ -1,0 +1,29 @@
+users-selector {
+  width: 450px;
+  display: block;
+
+  .users-selector-input {
+    font-size: 1em;
+  }
+
+  .dropdown-menu {
+    max-height: 300px;
+    min-width: 560px;
+    overflow-y: scroll;
+
+    li {
+      cursor: pointer;
+      padding: 0.7em 0.3em;
+
+      span {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+
+    li:hover {
+      background-color: #F0F0F0;
+    }
+  }
+}

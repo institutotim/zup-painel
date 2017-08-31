@@ -662,39 +662,33 @@
                 <td class="perimeter-title-cell">
                   <span>Grupo Responsável</span>
                 </td>
+                <td class="perimeter-title-cell">
+                  <span>Prioridade</span>
+                </td>
+                <td class="perimeter-title-cell">
+                  <span>Status</span>
+                </td>
                 <td class="perimeter-btn-cell"></td>
               </tr>
               </thead>
               <tbody>
               <tr class="perimeter-table-tr" ng-repeat="perimeterGroup in perimetersGroups" style="height: 77px">
                 <td class="perimeter-title-cell">
-                  <span ng-if="!perimeterGroup.editing">{{getPerimeterTitle(perimeterGroup.perimeter_id)}}</span>
-                  <select-list
-                    ng-model="perimeterGroup.perimeter_id"
-                    option-name="title"
-                    option-value="id"
-                    options="perimeters"
-                    my-place-holder="Selecione o perímetro/região"
-                    mark-dirty="perimeterGroup"
-                    ng-if="perimeterGroup.editing"/>
+                  <span>{{ getPerimeterTitle(perimeterGroup.perimeter_id) }}</span>
                 </td>
                 <td class="perimeter-title-cell">
-                  <span ng-if="!perimeterGroup.editing">{{getGroupTitle(perimeterGroup.group_id)}}</span>
-                  <select-list
-                    ng-model="perimeterGroup.group_id"
-                    option-name="name"
-                    option-value="id"
-                    options="groups"
-                    my-place-holder="Selecione o grupo responsável"
-                    mark-dirty="perimeterGroup"
-                    ng-if="perimeterGroup.editing"/>
+                  <span>{{ getGroupTitle(perimeterGroup.group_id) }}</span>
+                </td>
+                <td>
+                  <span>{{ perimeterGroup.priority }}</span>
+                </td>
+                <td class="perimeter-status-cell {{statusDecorator[perimeterGroup.active][1]}}">
+                  {{ statusDecorator[perimeterGroup.active][2] }}
                 </td>
                 <td class="perimeter-btn-cell">
-                  <a href="" class="btn btn-info btn-custom" ng-click="perimeterGroup.editing = true" ng-if="!perimeterGroup.editing">
-                    Editar</a>
-                  <a href="" class="btn btn-info btn-custom" ng-click="perimeterGroup.editing = false" ng-if="perimeterGroup.editing">
-                    Ok</a>
-                  <a href="" ng-click="removePerimeterGroup(perimeterGroup)">
+                  <a href="" title="Editar" ng-click="editPerimeter(perimeterGroup)">
+                    <span class="glyphicon glyphicon glyphicon-edit"></span></a>
+                  <a href="" title="Remover" ng-click="removePerimeterGroup(perimeterGroup)">
                     <span class="glyphicon glyphicon-trash"></span></a>
                 </td>
               </tr>

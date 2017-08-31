@@ -1,0 +1,32 @@
+// Obs: !important is a temp fix
+menu-actions {
+  $popover-width: 200px;
+  a.btn-info:focus { background-color: rgb(22, 147, 198); }
+
+  .menu-actions-list {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: $popover-width;
+  }
+
+  .menu-actions-item {
+    width: 100%;
+    display: block;
+    padding: 1em !important;
+    margin: 0 !important;
+    border-bottom: 1px solid rgb(217, 217, 217);
+    &:after { display: none !important; }
+
+    &:last-child { border-bottom: 0; }
+  }
+
+  .popover-content {
+    padding: 0;
+  }
+
+  .popover {
+    margin-left: -($popover-width / 2) + 20px; // 20px is arrow size
+
+    .arrow { left: initial !important; right: 10px; }
+  }
+}
